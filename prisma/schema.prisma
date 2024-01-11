@@ -24,10 +24,10 @@ model Level {
 model Record {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
     beaten_when_weekly Boolean?
-    levelId String @unique @db.ObjectId
+    levelId String @db.ObjectId
     level           Level  @relation(fields: [levelId], references: [id])
     link             String
-    playerId String @unique @db.ObjectId
+    playerId String @db.ObjectId
     player Player @relation(fields: [playerId], references: [id])
     verification     Boolean?
 
@@ -47,7 +47,7 @@ model Player {
 model Pack {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
     name String
-   levelId String @unique @db.ObjectId
+   levelId String @db.ObjectId
     level Level @relation(fields: [levelId], references: [id])
     color String
     position Int
