@@ -38,8 +38,8 @@ model Player {
    id     String @id @default(auto()) @map("_id") @db.ObjectId
     records Record[]
     name String
-    nationality String
-    abbr String
+    nationality String?
+    abbr String?
 
     @@map(name: "players")
 }
