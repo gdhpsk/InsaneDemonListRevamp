@@ -12,7 +12,7 @@ export default function Home() {
       </Flex>
       <br></br>
       <Text size="5" className="header">The Official Demonlist that has insane demons ranked based on difficulty!</Text>
-      <Grid columns="2" gap="9" style={{marginTop: "60px", padding: "50px"}}>
+      <Grid columns="2" gap="9" style={{marginTop: "60px", padding: "50px", maxWidth: "1400px", margin: "auto"}}>
         <Box>
           <Text className='header' size="8" align="left">Rules</Text>
           <br></br>
