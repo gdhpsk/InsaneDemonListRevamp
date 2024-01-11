@@ -15,18 +15,29 @@ export default function Home() {
       <Grid columns="2" gap="9" style={{marginTop: "60px", padding: "50px", maxWidth: "1400px", margin: "auto"}}>
         <Box>
           <Text className='header' size="8" align="left">Rules</Text>
-          <br></br>
-          <Text size="4">We have officially adopted most of the Pointercrate demonlist's guidelines, which you can find here. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to IDL, as well as some leniency changes:</Text>
-          <br></br><br></br>
-<Text size="4">- The level must be Rated "Insane Demon" for at least a week in order to be added. Also, a level needs to be rated to another difficulty for a week in order to be removed from the list. Levels that have been removed for a week will be seen at the "Removed Levels" section, which can be found at the bottom of the legacy list.</Text>
-<br></br>
-<Text size="4">- You are REQUIRED to have audible clicks/taps for the entire completion for it to be accepted. If you play on mobile and can not record your taps, you can enable the show taps settings on your phone.</Text>
-<br></br>
-<Text size="4">- Raw footage is not required, but feel free to submit it, especially if your clicks/taps are difficult to hear on your completion.</Text>
-<br></br>
-<Text size="4">- If you use a customized LDM for the level, we will review it ourselves and judge if it it acceptable. If you are uncertain whether or not it is acceptable, feel free to ask us in our Discord server.</Text>
-<br></br>
-<Text size="4">- Please do not submit multiple records of the same record (don't submit dupes)!</Text>
+
+          <Text size="4">
+            <p>
+              We have officially adopted most of the <a href="https://pointercrate.com/guidelines/index">Pointercrate Demonlist's guidelines</a>. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to <abbr>IDL</abbr>, as well as some leniency changes:
+            </p>
+            <ul>
+              <li>
+                The level must be Rated "Insane Demon" for at least a week in order to be added. Also, a level needs to be rated to another difficulty for a week in order to be removed from the list. Levels that have been removed for a week will be seen at the "Removed Levels" section, which can be found at the bottom of the legacy list.
+              </li>
+              <li>
+                You are <strong>required</strong> to have audible clicks/taps for the entire completion for it to be accepted. If you play on mobile and can not record your taps, you can enable the show taps settings on your phone.
+              </li>
+              <li>
+                Raw footage is not required, but feel free to submit it, especially if your clicks/taps are difficult to hear on your completion.
+              </li>
+              <li>
+                If you use a customized <abbr>LDM</abbr> for the level, we will review it ourselves and judge if it it acceptable. If you are uncertain whether or not it is acceptable, feel free to ask us in our Discord server.
+              </li>
+              <li>
+                Please do not submit multiple records of the same record (don't submit dupes)!
+              </li>
+            </ul>
+          </Text>
 <Box style={{marginTop: "40px"}}>
 <Text className='header' size="8" align="left">Discord Server</Text>
 <br></br>
