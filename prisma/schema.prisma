@@ -1,0 +1,66 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url               = env("MONGODB_URI")
+}
+
+model Level {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    formerRank  Int?
+    list        Record[]
+    name        String
+    position    Int
+    publisher   String
+    removalDate String?
+    ytcode      String
+    packs Pack[]
+    weekly Weekly?
+    @@map(name: "levels")
+}
+
+model Record {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    beaten_when_weekly Boolean?
+    levelId String @unique @db.ObjectId
+    level           Level  @relation(fields: [levelId], references: [id])
+    link             String
+    playerId String @unique @db.ObjectId
+    player Player @relation(fields: [playerId], references: [id])
+    verification     Boolean?
+
+    @@map(name: "records")
+}
+
+model Player {
+   id     String @id @default(auto()) @map("_id") @db.ObjectId
+    records Record[]
+    name String
+    nationality String
+    abbr String
+
+    @@map(name: "players")
+}
+
+model Pack {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    name String
+   levelId String @unique @db.ObjectId
+    level Level @relation(fields: [levelId], references: [id])
+    color String
+    position Int
+
+    @@map(name: "packs")
+}
+
+model Weekly {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    date String
+    color String
+    levelId String @unique @db.ObjectId
+    level Level @relation(fields: [levelId], references: [id])
+
+    @@map(name: "weekly")
+}
