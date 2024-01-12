@@ -3,7 +3,7 @@ import { Avatar, Box, Card, Flex, Grid, Text } from '@radix-ui/themes'
 
 export default async function Home() {
 
-  let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/admins`, {next: {revalidate: false}})
+  let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/admins`, {cache: "no-cache"})
   let admins = await req.json()
   
   return (

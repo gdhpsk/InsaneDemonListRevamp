@@ -56,3 +56,5 @@ export async function GET(request: Request) {
     }
     return new Response(JSON.stringify(rankings))
 }
+
+export const revalidate = 0
