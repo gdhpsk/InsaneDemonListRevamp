@@ -22,3 +22,13 @@
 .nav-content span:hover {
   background-color:rgba(117, 118, 179, 0.5);
 }
+
+.infoCard:hover {
+  scale: 1.05;
+  transition-duration: 0.5s;
+}
+
+.infoCard:not(:hover) {
+  scale: 1;
+  transition-duration: 0.5s;
+}
