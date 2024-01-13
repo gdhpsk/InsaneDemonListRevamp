@@ -14,7 +14,21 @@ export async function GET(req: Request, res: Record<any, any>) {
             id: res.params.id
         },
         include: {
-            packs: true,
+            weekly: {
+                select: {
+                    id: true,
+                    date: true,
+                    color: true
+                }
+            },
+            packs: {
+                select: {
+                    id: true,
+                    name: true,
+                    color: true,
+                    position: true
+                }
+            },
             list: {
                 select: {
                     id: true,

@@ -57,7 +57,7 @@ model Pack {
 
 model Weekly {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
-    date String
+    date Int
     color String
     levelId String @unique @db.ObjectId
     level Level @relation(fields: [levelId], references: [id])

@@ -10,6 +10,13 @@ export async function GET(request: Request) {
             }
         },
         include: {
+            weekly: {
+                select: {
+                    id: true,
+                    date: true,
+                    color: true
+                }
+            },
             packs: {
                 select: {
                     id: true,
