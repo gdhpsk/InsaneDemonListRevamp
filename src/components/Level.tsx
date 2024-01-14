@@ -38,7 +38,7 @@ export default function InfoCard({level}: info) {
                             {level.packs.length ? level.packs.sort((a: any,b: any) => a.position - b.positon).map((e: any) => {
                                 let rgb = hexToRGB(e.color)
                                 return <Badge style={{backgroundColor: `rgba(${rgb?.r}, ${rgb?.g}, ${rgb?.b}, 0.5)`, color: "white", fontSize: "20px", padding: "10px", paddingRight: "17px", borderRadius: "20px"}} key={e.name}><DotFilledIcon></DotFilledIcon>{e.name}</Badge>
-                            }) : level.removalReason ? <Text size="7" weight="bold">{level.removalReason}</Text> : ""}
+                            }) : ""}
             </Flex>
             <br></br>
             <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800).format("MMM D, YYYY")}` : "never"}</Text>
