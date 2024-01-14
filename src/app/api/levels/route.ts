@@ -9,6 +9,9 @@ export async function GET(request: Request) {
                 lte: parseInt(params.get("end") || "1000000000")
             }
         },
+        orderBy: {
+            position: 'asc'
+        },
         include: {
             weekly: {
                 select: {

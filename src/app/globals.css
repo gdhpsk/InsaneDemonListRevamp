@@ -15,12 +15,16 @@
   margin-top: -60px
 }
 
-.nav-content span {
+.nav-content a span {
   padding: 20px
 }
 
 .nav-content span:hover {
   background-color:rgba(117, 118, 179, 0.5);
+}
+
+.active {
+  background-color: rgba(117, 118, 179, 0.5);;
 }
 
 .infoCard:hover {

@@ -10,9 +10,9 @@ export default async function Home() {
     <main>
       <br></br>
       <Flex gap="4" style={{placeItems: "center", justifyContent: "center"}}>
-        <img src="https://insanedemonlist.com/favicon.ico" height="70px"></img>
+        <img src="/favicon.ico" height="70px"></img>
         <Text size="9" className="header" style={{display: "contents"}}>The Insane Demon List</Text>
-        <img src="https://insanedemonlist.com/favicon.ico" height="70px"></img>
+        <img src="/favicon.ico" height="70px"></img>
       </Flex>
       <br></br>
       <Text size="5" className="header">The Official Demonlist that has insane demons ranked based on difficulty!</Text>

@@ -15,6 +15,7 @@ model Level {
     position    Int
     publisher   String
     removalDate String?
+    removalReason String?
     ytcode      String
     packs Pack[]
     weekly Weekly?
