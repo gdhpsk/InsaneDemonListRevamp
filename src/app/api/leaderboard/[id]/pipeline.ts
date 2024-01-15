@@ -48,6 +48,7 @@ export default function createPipeline(id: string) {
                   'beaten_when_weekly': 1, 
                   'level': {
                     'name': 1, 
+                    'position': 1,
                     'ytcode': 1, 
                     'publisher': 1, 
                     'id': {
@@ -123,6 +124,7 @@ export default function createPipeline(id: string) {
                     }, {
                       '$project': {
                         'name': 1, 
+                        'position': 1,
                         'ytcode': 1, 
                         'publisher': 1, 
                         'id': {
@@ -140,7 +142,12 @@ export default function createPipeline(id: string) {
                     '$toString': '$packId'
                   }, 
                   'name': 1, 
-                  'levels': 1, 
+                  'levels': {
+                    '$sortArray': {
+                      'input': '$levels',
+                      'sortBy': { 'position': 1 }
+                    }
+                  }, 
                   'color': 1, 
                   'position': '$_id', 
                   '_id': 0
@@ -155,7 +162,12 @@ export default function createPipeline(id: string) {
               '$toString': '$_id'
             }, 
             'name': 1, 
-            'records': 1, 
+            'records': {
+              '$sortArray': {
+                'input': '$records',
+                'sortBy': { 'level.position': 1}
+              }
+            }, 
             'nationality': 1, 
             'abbr': 1, 
             'packs': 1, 
