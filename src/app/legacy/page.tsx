@@ -1,4 +1,4 @@
-import Level from '@/components/Level'
+import Level from '@/components/LevelCard'
 import { Flex, Grid, Text } from '@radix-ui/themes'
 
 export default async function Home() {

@@ -2,16 +2,19 @@ import prisma from "../../../../../prisma/prisma";
 import { ObjectId } from "bson";
 
 export async function GET(req: Request, res: Record<any, any>) {
-    try {
-        new ObjectId(res.params.id)
-    } catch(_) {
-        return new Response(JSON.stringify({error: "400 BAD REQUEST",  message: "Not a valid Object ID!"}), {
-            status: 400
-        })
+    let isInt = !isNaN(res.params.id)
+    if(!isInt) {
+        try {
+            new ObjectId(res.params.id)
+        } catch(_) {
+            return new Response(JSON.stringify({error: "400 BAD REQUEST",  message: "Not a valid Object ID!"}), {
+                status: 400
+            })
+        }
     }
     let level = await prisma.level.findFirst({
         where: {
-            id: res.params.id
+            [isInt ? "position" : "id"]: isInt ? parseInt(res.params.id) : res.params.id
         },
         include: {
             weekly: {

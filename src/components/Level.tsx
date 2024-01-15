@@ -1,59 +1,73 @@
-'use client'
-import styles from "../app/levels.module.css"
-import { Card, Flex, Avatar, Box, Text, ContextMenuRoot, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, Inset, Table, TableRoot, TableHeader, TableRow, TableColumnHeaderCell, TableBody, TableCell, TableRowHeaderCell, Badge, AspectRatio, IconButton, HoverCardRoot, HoverCardTrigger, HoverCardContent, ContextMenuSub, ContextMenuSubTrigger, ContextMenuSubContent, ContextMenuSeparator } from "@radix-ui/themes";
-import points from "../functions/points"
-import hexToRGB from "../functions/hexToRGB"
-import { DotFilledIcon, DotsHorizontalIcon, SpeakerLoudIcon } from "@radix-ui/react-icons";
-import dayjs from "dayjs";
+import hexToRGB from '@/functions/hexToRGB'
+import calc_points from '@/functions/points'
+import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon } from '@radix-ui/react-icons'
+import { Badge, Box, CalloutIcon, CalloutRoot, CalloutText, Flex, Grid, HoverCardContent, HoverCardRoot, HoverCardTrigger, IconButton, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
+import dayjs from 'dayjs'
+import styles from "@/app/level.module.css"
 
 interface info {
     level: Record<any, any>
+    count: number
 }
 
-export default function InfoCard({level}: info) {
-    return  <ContextMenuRoot>
-    <ContextMenuTrigger  className={styles.levelCard}>
-    <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() + 604_800 ? "rgba(53, 53, 99, 0.5)" : ""}` }} onClick={() => {
-        window.location.href = `/level/${level.id}`
-    }}>
-    <Flex gap="5">
-    <Inset side="left" clip="padding-box" style={{overflow: "visible"}}>
-      <a href={`https://youtu.be/${level.ytcode}`} target="_blank">
-      <img
-            src={`https://i.ytimg.com/vi/${level.ytcode}/mqdefault.jpg`}
-            className={styles.ytImage}
-            height="200px"
-        />
-      </a>
-  </Inset>
-      <Box p={"3"}>
-        <Text as="p" size="8" weight="bold">
-        <a href={`https://youtu.be/${level.ytcode}`} target="_blank" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{ level.position < 151 ? `${level.position}. ` : ""}{level.name} by {level.publisher}</a>
-        </Text>
-        <Text as="p" size="5" weight="bold">
-          {points(level.position)} points
-        </Text>
+export default function Level({level, count}: info) {
+  return (
+    <div className={styles.content}>
+      <Grid style={{placeItems: "center"}}>
+      <Box style={{padding: "30px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}} className={styles.hover}>
+      {level.removalReason ? <>
+            <CalloutRoot color="green">
+                <CalloutIcon style={{height: "25px"}}><InfoCircledIcon style={{scale: 2}} /></CalloutIcon>
+                <CalloutText size="5" ml="1">This level has since been removed off the list. Scroll down below to see why.</CalloutText>
+            </CalloutRoot>
+            <br></br>
+        </> : ""}
+      {level.position > 150 ? <>
+            <CalloutRoot color="yellow">
+                <CalloutIcon style={{height: "25px"}}><ExclamationTriangleIcon style={{scale: 2}} /></CalloutIcon>
+                <CalloutText size="5" ml="1">Since this level is legacy, you CANNOT submit records for it.</CalloutText>
+            </CalloutRoot>
+            <br></br>
+        </> : ""}
+        {level.weekly?.date > Date.now() + 604_800 ? <>
+            <CalloutRoot>
+                <CalloutIcon style={{height: "25px"}}><InfoCircledIcon style={{scale: "2"}} /></CalloutIcon>
+                <CalloutText size="5" ml="1">This level is the current weekly level!</CalloutText>
+            </CalloutRoot>
+            <br></br>
+        </> : ""}
+       <Flex justify={"center"} align="center" gap="9">
+            {level.position != 1 ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position - 1}`}></ChevronLeftIcon> : ""}
+            <Text as="p" align="center" size="9" weight="bold"><a href={`https://youtu.be/${level.ytcode}`} target="_blank" style={{textDecoration: "none"}}>{level.position < 151 ? `${level.position}. ` : ""}{level.name}</a></Text>
+            {level.position != count ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position + 1}`}></ChevronRightIcon> : ""}
+        </Flex>
+        <Text as="p" align="center" size="6" weight="bold" color="gray">by {level.publisher}</Text>
         <br></br>
-        <Flex gap="3" style={{maxWidth: "100%"}} wrap="wrap">
+        <Flex gap="2" style={{maxWidth: "100%"}} wrap="wrap" justify="center">
                             {level.packs.length ? level.packs.sort((a: any,b: any) => a.position - b.positon).map((e: any) => {
                                 let rgb = hexToRGB(e.color)
                                 return <Badge style={{backgroundColor: `rgba(${rgb?.r}, ${rgb?.g}, ${rgb?.b}, 0.5)`, color: "white", fontSize: "20px", padding: "10px", paddingRight: "17px", borderRadius: "20px"}} key={e.name}><DotFilledIcon></DotFilledIcon>{e.name}</Badge>
                             }) : ""}
             </Flex>
             <br></br>
-            <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800).format("MMM D, YYYY")}` : "never"}</Text>
-      </Box>
-    </Flex>
-    <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {
+        <hr></hr>
+        <br></br>
+        <Grid style={{placeItems: "center"}}>
+            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${level.ytcode}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+        </Grid>
+        <br></br>
+        <hr></hr>
+        <br></br>
+        <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {
         e.target.dispatchEvent(new MouseEvent('contextmenu', {
             bubbles: true,
-            clientX: e.currentTarget.getBoundingClientRect().x - 150,
+            clientX: e.currentTarget.getBoundingClientRect().x - 180,
             clientY: e.currentTarget.getBoundingClientRect().y + 50
         }))
     }}>
           <DotsHorizontalIcon></DotsHorizontalIcon>
           </IconButton>
-          <Box style={{position: "absolute", right: "10px", bottom: "10px"}}>
+          <Box style={{position: "absolute", right: "10px", top: "50px"}}>
           <HoverCardRoot>
             <HoverCardTrigger>
             <IconButton radius="full" color="teal" disabled>
@@ -65,31 +79,80 @@ export default function InfoCard({level}: info) {
             </HoverCardContent>
         </HoverCardRoot>
         </Box>
-            </Card>
-    </ContextMenuTrigger>
-    <ContextMenuContent>
-      <ContextMenuItem disabled><Flex align={"center"} gap="2"><img src="/song.png" height="20px"></img>Copy Song Link</Flex></ContextMenuItem>
-      <ContextMenuItem onClick={() => navigator.clipboard.writeText(`https://youtu.be/${level.ytcode}`)}><Flex align={"center"} gap="2"><img src="/youtube.svg" height="20px"></img>Copy Video Link</Flex></ContextMenuItem>
-      <ContextMenuItem onClick={() => {
-        navigator.clipboard.writeText(Object.entries(level).filter(e => e[1] && e[0] != "id").map(e => {
-             if(e[0] == "ytcode") {
-                e[0] = "link"
-                e[1] = `https://youtu.be/${e[1]}`
-             }
-            if(e[0] == "packs") {
-                e[1] = e[1].length ? e[1].map((x: any) => x.name).join(", ") : "none"
-            }
-            return `${e[0]}: ${e[1]}`
-        }).join("\n"))
-      }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenuItem>
-      <ContextMenuSeparator></ContextMenuSeparator>
-    <ContextMenuItem onClick={() => navigator.clipboard.writeText(level.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenuItem>
-    <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(level))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Level JSON</Flex></ContextMenuItem>
-    <ContextMenuItem onClick={async () => {
-        let req = await fetch(`/api/level/${level.id}`)
-        let full = await req.text()
-        navigator.clipboard.writeText(full)
-    }}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Full Level JSON</Flex></ContextMenuItem>
-    </ContextMenuContent>
-  </ContextMenuRoot>
+      </Box>
+      </Grid>
+      <br></br><br></br>
+      <Grid style={{placeItems: "center"}}>
+        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}} className={styles.hover}>
+        <Grid style={{placeItems: "center"}}>
+        <TableRoot size="3" m="2" style={{width: "90%"}}>
+            <TableHeader>
+                <TableRow>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Points</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Weekly</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Records</TableColumnHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points(level.position)}</TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
+                        {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800).format("MMM D, YYYY")}` : "never"}    
+                    </TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{level.list.length}</TableRowHeaderCell>
+                </TableRow>
+            </TableBody>
+        </TableRoot>
+        {level.removalReason ? <><br></br><TableRoot size="3" m="2" style={{width: "90%"}}>
+            <TableHeader>
+                <TableRow>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Formerly</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Removal Date</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Reason</TableColumnHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{level.formerRank}</TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
+                        {level.removalDate}
+                    </TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px", width: "33%"}} align="center">{level.removalReason}</TableRowHeaderCell>
+                </TableRow>
+            </TableBody>
+        </TableRoot></> : ""}
+        </Grid>
+        </Box>
+      </Grid>
+      <br></br><br></br>
+      <Grid style={{placeItems: "center"}}>
+        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}}>
+        <Grid style={{placeItems: "center"}}>
+        <TableRoot size="3" m="2" style={{width: "90%"}}>
+            <TableHeader>
+                <TableRow>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center"><img src="https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true" width="32px"></img></TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Link</TableColumnHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {level.list.map((e:any) => <TableRow key={e.id}>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.player.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.player.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32"></img></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.player.name}</a></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
+                        <a href={e.link} target="_blank">
+                        <IconButton color="violet">
+                            <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
+                        </IconButton>
+                        </a>
+                    </TableRowHeaderCell>
+                </TableRow>)}
+            </TableBody>
+        </TableRoot>
+        </Grid>
+        </Box>
+      </Grid>
+      </div>
+  )
 }

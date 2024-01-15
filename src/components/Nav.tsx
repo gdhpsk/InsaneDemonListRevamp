@@ -7,7 +7,7 @@ export default function Nav() {
   let search = usePathname()
   return (
     <>
-    <Link href="/" style={{textDecoration: "none", color: "lightblue"}}><Text size="6" className="header" style={{display: "flex", padding: "10px", width: "fit-content", gap: "10px"}}><img src="/favicon.ico" height="30px"></img> Insane Demon List</Text></Link>
+    <Link href="/" style={{textDecoration: "none", color: "lightblue", display: "contents"}}><Text size="6" className="header" style={{display: "flex", padding: "10px", width: "fit-content", gap: "10px"}}><img src="/favicon.ico" height="30px"></img> Insane Demon List</Text></Link>
    <Grid style={{placeItems: "end", marginTop: "-15px"}}>
    <Flex className="nav-content" gap="1">
             <Link href="/main" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/main" ? "active" : ""}>Main List</Text></Link>
