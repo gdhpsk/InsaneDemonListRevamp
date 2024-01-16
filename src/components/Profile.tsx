@@ -31,9 +31,12 @@ export default function Profile({profile, metadata, nationality}: info) {
                                         <Badge style={{backgroundColor: `rgba(${rgb?.r}, ${rgb?.g}, ${rgb?.b}, 0.5)`, color: "white", fontSize: "20px", padding: "10px", paddingRight: "17px", borderRadius: "20px"}} key={e.name}><DotFilledIcon></DotFilledIcon>{e.name}</Badge>
                                     </PopoverTrigger>
                                     <PopoverContent style={{maxWidth: 200}}>
+                                        <Text size="5" weight='bold' style={{textDecoration: "underline"}}>{e.name}</Text>
+                                        <br></br>
+                                        <br></br>
                                         {e.levels.map((x:any) => <><Text size="5">
-                                            <a href={`/level/${x.id}`} style={{textDecoration: "none"}}>#{x.position} - {x.name} by ${x.publisher}</a>
-                                        </Text><br></br></>)}
+                                            <a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by ${x.publisher}</a>
+                                        </Text><br></br><br></br></>)}
                                     </PopoverContent>
                                 </PopoverRoot>
                             }) : ""}
@@ -172,7 +175,7 @@ export default function Profile({profile, metadata, nationality}: info) {
             </TableHeader>
             <TableBody>
                 {profile.missing.map((e:any) => <TableRow key={e.id}>
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.position}</TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.position > 150 ? "" : e.position}</TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.position}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`https://youtu.be/${e.ytcode}`} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
