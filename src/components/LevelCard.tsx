@@ -7,17 +7,18 @@ import { DotFilledIcon, DotsHorizontalIcon, SpeakerLoudIcon } from "@radix-ui/re
 import dayjs from "dayjs";
 
 interface info {
-    level: Record<any, any>
+    level: Record<any, any>,
+    removeTn?: boolean
 }
 
-export default function InfoCard({level}: info) {
+export default function InfoCard({level, removeTn}: info) {
     return  <ContextMenuRoot>
     <ContextMenuTrigger  className={styles.levelCard}>
     <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() + 604_800 ? "rgba(53, 53, 99, 0.5)" : ""}` }} onClick={() => {
         window.location.href = `/level/${level.position}`
     }}>
     <Flex gap="5">
-    <Inset side="left" clip="padding-box" style={{overflow: "visible"}}>
+    <Inset side="left" clip="padding-box" style={{overflow: "visible", display: removeTn ? "none" : "block"}}>
       <a href={`https://youtu.be/${level.ytcode}`} target="_blank" onClick={(e) =>  e.stopPropagation()}>
       <img
             src={`https://i.ytimg.com/vi/${level.ytcode}/mqdefault.jpg`}

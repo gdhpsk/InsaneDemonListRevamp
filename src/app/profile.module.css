@@ -1,0 +1,17 @@
+.content div {
+    border-radius: 10px
+}
+
+.hover:hover {
+    scale: 1.01;
+    transition-duration: 0.5s;
+  }
+  
+  .hover:not(:hover) {
+    scale: 1;
+    transition-duration: 0.5s;
+  }
+
+  .pack:hover {
+    cursor: url('/cursor.png'), auto;
+  }
