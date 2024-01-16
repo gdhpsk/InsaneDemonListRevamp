@@ -3,11 +3,6 @@ import prisma from "../../../../../../prisma/prisma";
 import createPipeline from "./pipeline";
 
 export async function GET(req: Request, res: Record<any, any>) {
-    let packs = await prisma.pack.aggregateRaw({
-        pipeline: createPipeline()
-    })
-    let count = await prisma.level.count()
-    let pos_array = Array.from(new Array(count)).map((_, i) => i+1)
     let leaderboards = await prisma.player.findMany({
         where: {
             abbr: res.params.id
@@ -33,6 +28,14 @@ export async function GET(req: Request, res: Record<any, any>) {
             }
         }
     })
+    if(!leaderboards.length)  return new Response("null", {
+        status: 404
+    })
+    let packs = await prisma.pack.aggregateRaw({
+        pipeline: createPipeline()
+    })
+    let count = await prisma.level.count()
+    let pos_array = Array.from(new Array(count)).map((_, i) => i+1)
     let obj: Record<any, any> = {}
     leaderboards.forEach((e:any, ind: number) => {
         if(ind) {
@@ -53,9 +56,7 @@ export async function GET(req: Request, res: Record<any, any>) {
         return e
     }))
     await prisma.$disconnect()
-    return new Response(JSON.stringify(profile[0] ?? null), {
-        status: profile[0] ? 200 : 404
-    })
+    return new Response(JSON.stringify(profile[0]))
 }
 
 export const revalidate = 0

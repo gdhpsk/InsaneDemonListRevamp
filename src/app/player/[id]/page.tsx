@@ -8,7 +8,7 @@ export default async function Home(request: Record<any, any>) {
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboard/${request.params.id}`, {cache: "no-cache"}),
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboard/${request.params.id}/metadata`, {cache: "no-cache"})
   ])
-  if(!prof_req.ok) {
+  if(!prof_req.ok || !met_req.ok) {
     return <NotFound></NotFound>
   }
   let req_time = Date.now() - date
