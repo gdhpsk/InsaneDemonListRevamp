@@ -51,6 +51,7 @@ export default function ProfileContextMenu({profile, metadata, time, nationality
         </ContextMenuTrigger>
         <ContextMenuContent>
             <ContextMenuItem onClick={() => document.getElementById("debug")?.click()}><Flex align={"center"} gap="2"><img src="/debug.png" height="20px"></img>Debug</Flex></ContextMenuItem>
+            {!nationality ? <ContextMenuItem onClick={() => navigator.clipboard.writeText(profile.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenuItem> : ""}
             <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(profile))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Profile JSON</Flex></ContextMenuItem>
             <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(metadata))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Metadata JSON</Flex></ContextMenuItem>
         </ContextMenuContent>

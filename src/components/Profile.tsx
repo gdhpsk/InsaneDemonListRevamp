@@ -19,9 +19,20 @@ export default function Profile({profile, metadata, nationality}: info) {
       <Box style={{padding: "30px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}} className={styles.hover}>
        <Flex justify={"center"} align="center" gap="9">
             {metadata.last ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last}`}></ChevronLeftIcon> : ""}
-            <Text as="p" align="center" size="9" weight="bold">{metadata.position}. {profile.name}</Text>
+            <Flex align='center' gap='3'>
+            <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="80" onClick={() => {
+                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
+                    }}></img>
+                <Text as="p" align="center" size="9" weight="bold">{metadata.position}. {profile.name}</Text>
+            </Flex>
             {metadata.next ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.next}`}></ChevronRightIcon> : ""}
         </Flex>
+        {profile.nationality ? <><br></br><Flex align='center' gap='2' justify={'center'}>
+                <Text as="p" align="center" size="6" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
+            <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
+                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
+                    }}></img>
+            </Flex></> : ""}
         <br></br>
         <Flex gap="2" style={{maxWidth: "100%"}} wrap="wrap" justify="center">
                             {profile.packs.length ? profile.packs.sort((a: any,b: any) => a.position - b.positon).map((e: any) => {
