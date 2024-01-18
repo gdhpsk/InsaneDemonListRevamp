@@ -22,11 +22,11 @@ export default async function Home() {
 
           <Text size="4">
             <p>
-              We have officially adopted most of the <a href="https://pointercrate.com/guidelines/index" target="_blank">Pointercrate Demonlist's guidelines</a>. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to <abbr>IDL</abbr>, as well as some leniency changes:
+              We have officially adopted most of the <a href="https://pointercrate.com/guidelines/index" target="_blank">Pointercrate Demonlist&apos;s guidelines</a>. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to <abbr>IDL</abbr>, as well as some leniency changes:
             </p>
             <ul>
               <li>
-                The level must be Rated "Insane Demon" for at least a week in order to be added. Also, a level needs to be rated to another difficulty for a week in order to be removed from the list. Levels that have been removed for a week will be seen at the "Removed Levels" section, which can be found at the bottom of the legacy list.
+                The level must be Rated &quot;Insane Demon&quot; for at least a week in order to be added. Also, a level needs to be rated to another difficulty for a week in order to be removed from the list. Levels that have been removed for a week will be seen at the &quot;Removed Levels&quot; section, which can be found at the bottom of the legacy list.
               </li>
               <li>
                 You are <strong>required</strong> to have audible clicks/taps for the entire completion for it to be accepted. If you play on mobile and can not record your taps, you can enable the show taps settings on your phone.
@@ -38,7 +38,7 @@ export default async function Home() {
                 If you use a customized <abbr>LDM</abbr> for the level, we will review it ourselves and judge if it it acceptable. If you are uncertain whether or not it is acceptable, feel free to ask us in our Discord server.
               </li>
               <li>
-                Please do not submit multiple records of the same record (don't submit dupes)!
+                Please do not submit multiple records of the same record (don&apos;t submit dupes)!
               </li>
             </ul>
           </Text>
@@ -117,3 +117,5 @@ export default async function Home() {
     </main>
   )
 }
+
+export const revalidate = 0

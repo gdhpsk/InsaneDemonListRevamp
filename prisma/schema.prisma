@@ -37,6 +37,7 @@ model Record {
 
 model Player {
    id     String @id @default(auto()) @map("_id") @db.ObjectId
+   accountId String?
     records Record[]
     name String
     nationality String?

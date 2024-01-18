@@ -9,10 +9,11 @@ import styles from "@/app/profile.module.css"
 interface info {
     profile: Record<any, any>
     metadata: Record<any, any>
-    nationality?: boolean
+    nationality?: boolean,
+    icons?: Array<string>
 }
 
-export default function Profile({profile, metadata, nationality}: info) {
+export default function Profile({profile, metadata, nationality, icons}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
@@ -34,6 +35,11 @@ export default function Profile({profile, metadata, nationality}: info) {
                     }}></img>
             </Flex></> : ""}
         <br></br>
+        {icons ? <>
+        <Flex gap={"9"} justify={'center'} align={'center'}>
+            {icons.map(e => <img key={e} src={e} width={"64"}></img>)}
+        </Flex>
+        <br></br></> : ""}
         <Flex gap="2" style={{maxWidth: "100%"}} wrap="wrap" justify="center">
                             {profile.packs.length ? profile.packs.sort((a: any,b: any) => a.position - b.positon).map((e: any) => {
                                 let rgb = hexToRGB(e.color)
@@ -45,9 +51,9 @@ export default function Profile({profile, metadata, nationality}: info) {
                                         <Text size="5" weight='bold' style={{textDecoration: "underline"}}>{e.name}</Text>
                                         <br></br>
                                         <br></br>
-                                        {e.levels.map((x:any) => <><Text size="5">
+                                        {e.levels.map((x:any) => <div key={x.id}><Text size="5">
                                             <a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by ${x.publisher}</a>
-                                        </Text><br></br><br></br></>)}
+                                        </Text><br></br><br></br></div>)}
                                     </PopoverContent>
                                 </PopoverRoot>
                             }) : ""}
@@ -119,13 +125,13 @@ export default function Profile({profile, metadata, nationality}: info) {
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a><br></br><br></br></>)}</TableRowHeaderCell> : ""}
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a><br></br><br></br></div>)}</TableRowHeaderCell> : ""}
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.level.name}</a></TableRowHeaderCell>
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
                         </IconButton>
-                        </a><br></br></>)}</TableRowHeaderCell>
+                        </a><br></br></div>)}</TableRowHeaderCell>
                 </TableRow>
                 }).filter((e: any) => e)}
             </TableBody>
@@ -155,13 +161,13 @@ export default function Profile({profile, metadata, nationality}: info) {
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a><br></br><br></br></>)}</TableRowHeaderCell> : ""}
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a><br></br><br></br></div>)}</TableRowHeaderCell> : ""}
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.level.name}</a></TableRowHeaderCell>
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
                         </IconButton>
-                        </a><br></br></>)}</TableRowHeaderCell>
+                        </a><br></br></div>)}</TableRowHeaderCell>
                 </TableRow>
                 }).filter((e: any) => e)}
             </TableBody>

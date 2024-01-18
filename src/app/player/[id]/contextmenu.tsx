@@ -7,10 +7,11 @@ interface info {
     profile: Record<any, any>
     metadata: Record<any, any>,
     time: number,
-    nationality?: boolean
+    nationality?: boolean,
+    icons?: Array<string>
 }
 
-export default function ProfileContextMenu({profile, metadata, time, nationality}: info) {
+export default function ProfileContextMenu({profile, metadata, time, nationality, icons}: info) {
   return (
       <ContextMenuRoot>
         <ContextMenuTrigger>
@@ -46,6 +47,7 @@ export default function ProfileContextMenu({profile, metadata, time, nationality
                     profile={profile}
                     metadata={metadata}
                     nationality={nationality}
+                    icons={icons}
                 ></Profile>
            </Box>
         </ContextMenuTrigger>

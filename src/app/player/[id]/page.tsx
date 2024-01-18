@@ -4,18 +4,20 @@ import ProfileContextMenu from './contextmenu'
 
 export default async function Home(request: Record<any, any>) {
     let date = Date.now()
-  let [prof_req, met_req] = await Promise.all([
+  let [prof_req, met_req, icons_req] = await Promise.all([
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboard/${request.params.id}`, {cache: "no-cache"}),
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboard/${request.params.id}/metadata`, {cache: "no-cache"})
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboard/${request.params.id}/metadata`, {cache: "no-cache"}),
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboard/${request.params.id}/icons`, {cache: "no-cache"})
   ])
   if(!prof_req.ok || !met_req.ok) {
     return <NotFound></NotFound>
   }
   let req_time = Date.now() - date
 
-  let [profile, metadata] = await Promise.all([
+  let [profile, metadata, icons] = await Promise.all([
     await prof_req.json(),
-    await met_req.json()
+    await met_req.json(),
+    await icons_req.json()
   ])
   
   return (
@@ -25,6 +27,7 @@ export default async function Home(request: Record<any, any>) {
             profile={profile}
             metadata={metadata}
             time={req_time}
+            icons={icons.error ? undefined : icons}
         ></ProfileContextMenu>
     </main>
   )

@@ -5,6 +5,7 @@ import points from "../functions/points"
 import hexToRGB from "../functions/hexToRGB"
 import { DotFilledIcon, DotsHorizontalIcon, SpeakerLoudIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 
 interface info {
     profile: Record<any, any>,
@@ -12,6 +13,20 @@ interface info {
 }
 
 export default function LeaderboardCard({profile,nationalities}: info) {
+
+  let [icons, setIcons] = useState<any>(undefined)
+
+  useEffect(() => {
+   (async () => {
+    if(!nationalities && icons === undefined && profile.accountId) {
+      let data = await fetch(`/api/leaderboard/${profile.id}/icons`)
+      if(!data.ok) return setIcons(null)
+      let json = await data.json()
+      setIcons(json)
+    }
+   })()
+  })
+
     return  <ContextMenuRoot>
     <ContextMenuTrigger  className={styles.levelCard}>
     <Card style={{ marginTop: "15px", width: "min(100%, 800px)" }} onClick={() => {
@@ -33,6 +48,11 @@ export default function LeaderboardCard({profile,nationalities}: info) {
                             window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
                     }}></img>
             </Flex></> : ""}
+            {!nationalities && icons ? <><br></br>
+            <Flex gap={"9"} justify={'center'} align={'center'}>
+            {icons.map((e: string) => <img key={e} src={e} width={"64"}></img>)}
+            </Flex>
+            </> : ""}
       </Box>
     <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {
       e.stopPropagation()
