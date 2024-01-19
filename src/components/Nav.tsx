@@ -2,8 +2,14 @@
 import { Flex, Grid, Text } from '@radix-ui/themes'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Login from './Login'
+import Settings from './Settings'
 
-export default function Nav() {
+interface info {
+  authData: Record<any, any>
+}
+
+export default function Nav({authData}: info) {
   let search = usePathname()
   return (
     <>
@@ -14,8 +20,11 @@ export default function Nav() {
             <Link href="/extended" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/extended" ? "active" : ""}>Extended List</Text></Link>
             <Link href="/legacy" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/legacy" ? "active" : ""}>Legacy List</Text></Link>
             <Link href="/leaderboards" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/leaderboards" ? "active" : ""}>Leaderboards</Text></Link>
+            {!authData.user ? <Login></Login> : <Settings authData={authData}></Settings>}
         </Flex>
    </Grid>
+   <br></br>
+   {authData.user ? <Text as="p" align="center" weight="bold" size="3">Signed in as: {authData.user.name || authData.user.email}</Text> : ""}
     </>
   )
 }

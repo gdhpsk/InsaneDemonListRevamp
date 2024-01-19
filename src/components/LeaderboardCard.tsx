@@ -49,18 +49,23 @@ export default function LeaderboardCard({profile,nationalities}: info) {
                     }}></img>
             </Flex></> : ""}
             {!nationalities && icons ? <><br></br>
-            <Flex gap={"9"} justify={'center'} align={'center'}>
+            <HoverCardRoot>
+              <HoverCardTrigger onClick={(e) => {
+                e.stopPropagation()
+                e.target.dispatchEvent(new MouseEvent("onmouseover"))
+              }}>
+                <img src={icons[0]} width={"32"} style={{position: "absolute", right: "10px", bottom: "10px"}}></img>
+              </HoverCardTrigger>
+              <HoverCardContent>
+              <Flex gap={"8"} justify={'center'} align={'center'}>
             {icons.map((e: string) => <img key={e} src={e} width={"64"}></img>)}
             </Flex>
+              </HoverCardContent>
+            </HoverCardRoot>
             </> : ""}
       </Box>
     <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {
       e.stopPropagation()
-        e.target.dispatchEvent(new MouseEvent('contextmenu', {
-            bubbles: true,
-            clientX: e.currentTarget.getBoundingClientRect().x - 150,
-            clientY: e.currentTarget.getBoundingClientRect().y + 50
-        }))
     }}>
           <DotsHorizontalIcon></DotsHorizontalIcon>
           </IconButton>
