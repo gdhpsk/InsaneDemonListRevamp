@@ -1,5 +1,5 @@
 'use client';
-import { ButtonIcon, CheckIcon, CrossCircledIcon, EnterIcon, EnvelopeClosedIcon, EyeClosedIcon, EyeNoneIcon, EyeOpenIcon, InfoCircledIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
+import { ButtonIcon, ChatBubbleIcon, CheckIcon, CrossCircledIcon, EnterIcon, EnvelopeClosedIcon, EyeClosedIcon, EyeNoneIcon, EyeOpenIcon, InfoCircledIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { Button, CalloutIcon, CalloutRoot, CalloutText, DialogClose, DialogContent, DialogRoot, DialogTitle, DialogTrigger, Flex, Grid, Separator, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from "@radix-ui/themes";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
@@ -114,7 +114,7 @@ export default function Login() {
                </Flex> : ""}
                <br></br>
             <TextFieldRoot>
-                <TextFieldSlot pr="3"><PaperPlaneIcon></PaperPlaneIcon></TextFieldSlot>
+                <TextFieldSlot pr="3"><ChatBubbleIcon></ChatBubbleIcon></TextFieldSlot>
                 <TextFieldInput defaultValue={signup.username} placeholder="Name..." onChange={(e) => {
                     setSignUp({
                         ...signup,
