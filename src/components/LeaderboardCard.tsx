@@ -75,7 +75,6 @@ export default function LeaderboardCard({profile,nationalities}: info) {
     <ContextMenuItem onClick={() => {
         navigator.clipboard.writeText(Object.entries(profile).filter(e => e[1] && !["id", "position", "abbr"].includes(e[0])).map(e => {
             if(e[0] == "nationality") {e[1] = e[1].replaceAll("_", " ")}
-            console.log(e)
             return `${e[0]}: ${e[1]}`
         }).join("\n"))
       }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenuItem>

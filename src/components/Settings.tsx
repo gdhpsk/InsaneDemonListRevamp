@@ -9,6 +9,7 @@ interface info {
 }
 
 export default function Settings({authData}: info) {
+    let [error, setError] = useState({color: "red", message: "", type: 1})
   return (
     <DialogRoot>
         <DialogTrigger>
@@ -19,7 +20,38 @@ export default function Settings({authData}: info) {
                 <CalloutIcon>
                     <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>
                 </CalloutIcon>
-                <CalloutText size="3" ml="-1">Verify your email address by checking your inbox! Relog back in to receive the email again. Your account will be deleted after 24 hours if you don't verify your account.</CalloutText>
+                <CalloutText size="3" ml="-1">Verify your email address by checking your inbox! If you didn't receive it, <span style={{color: "skyblue", textDecoration: "underline"}} onClick={async () => {
+                    setError({
+                        color: "blue",
+                        message: "Loading...",
+                        type: 1
+                    })
+                    let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/resend`, {
+                        headers: {
+                            authorization: authData.user.token
+                        }
+                    })
+                    try {
+                        let data = await req.json()
+                        setError({
+                            color: "red",
+                            message: data.message,
+                            type: 1
+                        })
+                    } catch(_) {
+                        setError({
+                            color: "green",
+                            message: `Successfully resent verification email to ${authData.user.email}`,
+                            type: 1
+                        })
+                    }
+                }}>Resend it.</span> Your account will be deleted after 24 hours if you don't verify your account.</CalloutText>
+            </CalloutRoot><br></br></> : ""}
+            {error.message && error.type == 1 ? <><CalloutRoot color={error.color as any}>
+                <CalloutIcon>
+                    {error.color == "red" ? <CrossCircledIcon style={{scale: 1.5}}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{scale: 1.5}}></CheckIcon> : <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>}
+                </CalloutIcon>
+                <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
             <DialogTitle as="h1" align="center" style={{fontSize: "30px"}}>Account Settings</DialogTitle>
             <Text as="p" align="center" weight="bold" size="3">Email: {authData.user.email}</Text>
