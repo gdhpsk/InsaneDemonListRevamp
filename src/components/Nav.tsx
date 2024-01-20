@@ -24,7 +24,7 @@ export default function Nav({authData}: info) {
         </Flex>
    </Grid>
    <br></br>
-   {authData.user ? <Text as="p" align="center" weight="bold" size="3">Signed in as: {authData.user.name || authData.user.email}</Text> : ""}
+   {search != "/" || !authData.user ?  "" : authData.user.emailVerified ? <Text as="p" align="center" weight="bold" size="3">Signed in as: {authData.user.name}</Text> : <Text as="p" align="center" weight="bold" size="3">Verify your email ({authData.user.email}) for your account {authData.user.name}!</Text>}
     </>
   )
 }
