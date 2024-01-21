@@ -4,6 +4,7 @@ import { Button, CalloutIcon, CalloutRoot, CalloutText, DialogClose, DialogConte
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import ResetPassword from "./ResetPassword";
 
 export default function Login() {
     let [login, setLogin] = useState({
@@ -44,7 +45,7 @@ export default function Login() {
             </Flex>
             <br></br>
             <TextFieldRoot>
-                <TextFieldSlot pr="3"><PaperPlaneIcon></PaperPlaneIcon></TextFieldSlot>
+                <TextFieldSlot pr="3"><EnvelopeClosedIcon></EnvelopeClosedIcon></TextFieldSlot>
                 <TextFieldInput defaultValue={login.email.text} placeholder="Email..." color={login.email.valid ? "blue" : "red"} onChange={(e) => {
                     let valid = !e.target.value ||  /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(e.target.value)
                     setLogin({
@@ -68,6 +69,7 @@ export default function Login() {
                 }}></TextFieldInput>
                 <TextFieldSlot pr="3" onClick={() => setLogin({...login, password: {hidden: !login.password.hidden, text: login.password.text}})}>{login.password.hidden ? <EyeNoneIcon></EyeNoneIcon> : <EyeOpenIcon></EyeOpenIcon>}</TextFieldSlot>
             </TextFieldRoot>
+            <ResetPassword></ResetPassword>
             <br></br>
             {error.message && error.type == 1 ? <><CalloutRoot color={error.color as any}>
                 <CalloutIcon>
@@ -76,8 +78,7 @@ export default function Login() {
                 <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
             <Grid style={{placeItems: "center"}}>
-            <Button style={{width: "20%"}} onClick={async () => {
-                if(!login.email.valid || !login.email.text || !login.password.text) return;
+            <Button disabled={!login.email.valid || !login.email.text || !login.password.text} style={{width: "20%"}} onClick={async () => {
                 setError({color: "blue", message: "Loading...", type: 1})
                 let req = await signIn("credentials", {email: login.email.text, password: login.password.text, type: "login", redirect: false})
                 if(req?.error) {
@@ -96,7 +97,7 @@ export default function Login() {
             </Flex>
             <br></br>
             <TextFieldRoot>
-                <TextFieldSlot pr="3"><PaperPlaneIcon></PaperPlaneIcon></TextFieldSlot>
+                <TextFieldSlot pr="3"><EnvelopeClosedIcon></EnvelopeClosedIcon></TextFieldSlot>
                 <TextFieldInput defaultValue={signup.email.text} placeholder="Email..." color={signup.email.valid ? "blue" : "red"} onChange={(e) => {
                     let valid = !e.target.value ||  /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/.test(e.target.value)
                     setSignUp({
@@ -150,8 +151,7 @@ export default function Login() {
                 <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
             <Grid style={{placeItems: "center"}}>
-            <Button style={{width: "20%"}} onClick={async () => {
-                if(!signup.email.valid || !signup.email.text || !signup.password1.text || !signup.password2.text) return;
+            <Button disabled={!signup.email.valid || !signup.email.text || !signup.password1.text || !signup.password2.text || signup.password1.text != signup.password2.text} style={{width: "20%"}} onClick={async () => {
                 setError({color: "blue", message: "Loading...", type: 2})
                 let req = await signIn("credentials", {email: signup.email.text, username: signup.username, password: signup.password1.text, type: "signup", redirect: false})
                 if(req?.error) {
