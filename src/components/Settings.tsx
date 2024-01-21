@@ -23,7 +23,7 @@ export default function Settings({authData, stateFunc}: info) {
                 <CalloutIcon>
                     <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>
                 </CalloutIcon>
-                <CalloutText size="3" ml="-1">Verify your email address by checking your inbox! If you didn't receive it, <span style={{color: "skyblue", textDecoration: "underline"}} onClick={async () => {
+                <CalloutText size="3" ml="-1">Verify your email address by checking your inbox! If you didn&apos;t receive it, <span style={{color: "skyblue", textDecoration: "underline"}} onClick={async () => {
                     setError({
                         color: "blue",
                         message: "Loading...",
@@ -49,7 +49,7 @@ export default function Settings({authData, stateFunc}: info) {
                         })
                         setTimeout(() => setError({color: "red", message: "", type: 1}), 3000)
                     }
-                }}>Resend it.</span> Your account will be deleted after 24 hours if you don't verify your account.</CalloutText>
+                }}>Resend it.</span> Your account will be deleted after 24 hours if you don&apos;t verify your account.</CalloutText>
             </CalloutRoot><br></br></> : ""}
             <Flex justify={'end'}>
                     {!edit ? <IconButton style={{position: "absolute"}} onClick={() => {

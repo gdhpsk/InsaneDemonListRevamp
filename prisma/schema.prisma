@@ -66,3 +66,16 @@ model Weekly {
 
     @@map(name: "weekly")
 }
+
+model Submission {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    level String
+    player String
+    link String
+    comments String
+    createdAt DateTime
+    editedAt DateTime
+    userId String @db.ObjectId
+
+    @@map(name: "submissions")
+}

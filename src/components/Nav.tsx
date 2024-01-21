@@ -38,6 +38,7 @@ export default function Nav({authData}: info) {
             <Link href="/extended" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/extended" ? "active" : ""}>Extended List</Text></Link>
             <Link href="/legacy" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/legacy" ? "active" : ""}>Legacy List</Text></Link>
             <Link href="/leaderboards" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/leaderboards" ? "active" : ""}>Leaderboards</Text></Link>
+            {data.user ? <Link href="/submit" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/submit" ? "active" : ""}>Submit</Text></Link> : ""}
             {!data.user ? <Login></Login> : <Settings authData={data} stateFunc={setData}></Settings>}
         </Flex>
    </Grid>

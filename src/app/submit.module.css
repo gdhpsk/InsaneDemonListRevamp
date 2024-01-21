@@ -1,0 +1,7 @@
+.option {
+    padding: 10px
+}
+
+.option:hover {
+    background-color: rgba(77, 74, 255, 0.8);
+}
