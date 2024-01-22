@@ -57,8 +57,8 @@ export default function LeaderboardCard({profile,nationalities}: info) {
                 <img src={icons[0]} width={"32"} style={{position: "absolute", right: "10px", bottom: "10px"}}></img>
               </HoverCardTrigger>
               <HoverCardContent>
-              <Flex gap={"8"} justify={'center'} align={'center'}>
-            {icons.map((e: string) => <img key={e} src={e} width={"64"}></img>)}
+              <Flex gap={"5"} justify={'center'} align={'center'}>
+            {icons.map((e: string) => <img key={e} src={e} width={"40"}></img>)}
             </Flex>
               </HoverCardContent>
             </HoverCardRoot>

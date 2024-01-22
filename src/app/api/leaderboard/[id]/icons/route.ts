@@ -34,6 +34,9 @@ export async function GET(req: Request, res: Record<any, any>) {
         let ufo = json.findIndex((e: string) => e == "24")+1
         let wave = json.findIndex((e: string) => e == "25")+1
         let robot = json.findIndex((e: string) => e == "26")+1
+        let spider = json.findIndex((e: string) => e == "43")+1
+        let swing = json.findIndex((e: string) => e == "53")+1
+        let jetpack = json.findIndex((e: string) => e == "54")+1
 
         let metadata = {
             color1: json[color1],
@@ -43,7 +46,10 @@ export async function GET(req: Request, res: Record<any, any>) {
             ball: ball ? (json[ball] || "1") : "1",
             ufo: ufo ? (json[ufo] || "1") : "1",
             wave: wave ? (json[wave] || "1") : "1",
-            robot: robot ? (json[robot] || "1") : "1"
+            robot: robot ? (json[robot] || "1") : "1",
+            spider: spider ? (json[spider] || "1") : "1",
+            swing: swing ? (json[swing] || "1") : "1",
+            jetpack: jetpack ? (json[jetpack] || "1") : "1"
         }
         let obj =Object.entries(metadata).filter(e => !["color1", "color2"].includes(e[0])).map(e => `https://gdicon.oat.zone/icon.png?type=${e[0]}&value=${e[1]}&color1=${metadata.color1}&color2=${metadata.color2}`);
         (cache.icons as any)[res.params.id] = {

@@ -3,7 +3,8 @@ import { middleware } from "../../middleware"
 import prisma from "../../../../../prisma/prisma";
 
 export async function POST(req: NextRequest, res: Record<any, any>) {
-    await middleware(req)
+    let auth = await middleware(req)
+    if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
     let body: Record<any, any> = {}
     try {
         body = await req.json()

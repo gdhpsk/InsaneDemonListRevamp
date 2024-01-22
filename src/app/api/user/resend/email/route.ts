@@ -4,7 +4,8 @@ import clientPromise from "../../../../../../adapter"
 import { sendVerificationRequest } from "../../../auth/[...nextauth]/route"
 
 export async function GET(req: NextRequest, res: Record<any, any>) {
-    await middleware(req)
+  let auth = await middleware(req)
+  if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
     let db = await (await clientPromise).connect()
     let authDb = db.db("authentication")
     let exists = await authDb.collection("users").findOne({ $expr: { $eq: [{ $toString: "$_id" }, req.headers.get("user")] } })

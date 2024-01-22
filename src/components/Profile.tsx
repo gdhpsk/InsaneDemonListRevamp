@@ -36,8 +36,8 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
             </Flex></> : ""}
         <br></br>
         {icons ? <>
-        <Flex gap={"9"} justify={'center'} align={'center'}>
-            {icons.map(e => <img key={e} src={e} width={"64"}></img>)}
+        <Flex gap={"7"} justify={'center'} align={'center'}>
+            {icons.map(e => <img key={e} src={e} width={"50"}></img>)}
         </Flex>
         <br></br></> : ""}
         <Flex gap="2" style={{maxWidth: "100%"}} wrap="wrap" justify="center">
