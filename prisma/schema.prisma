@@ -70,12 +70,14 @@ model Weekly {
 model Submission {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
     level String
+    publisher String
     player String
     link String
     comments String
     createdAt DateTime
     editedAt DateTime
     userId String @db.ObjectId
+    status Int
 
     @@map(name: "submissions")
 }

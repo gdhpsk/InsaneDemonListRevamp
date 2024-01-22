@@ -3,6 +3,7 @@ import { Box, Button, CalloutIcon, CalloutRoot, CalloutText, DialogClose, Dialog
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import AdminPanel from "./AdminPanel";
 
 interface info {
     authData: Record<any, any>,
@@ -136,6 +137,7 @@ export default function Settings({authData, stateFunc}: info) {
                 </CalloutIcon>
                 <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
+            {authData.user.perms?.idl ? <><AdminPanel></AdminPanel><br></br></> : ""}
             <Grid style={{placeItems: "center"}}>
             <Button style={{width: "20%"}} onClick={() => signOut()} color="red">Log Out</Button>
             </Grid>

@@ -12,6 +12,7 @@
             "link": "https://www.youtube.com/channel/UCnlpzjbXM19xJJSdY8ztd_A"
         }
     ],
+    "status": ["pending", "accepted", "rejected"],
     "perms": ["helper", "moderator", "leader"],
     "nationalities": {
         "International": "International",

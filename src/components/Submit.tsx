@@ -24,6 +24,7 @@ export default function Submit({levels, leaderboards, authData}: info) {
         },
         player: "",
         level: "",
+        publisher: "",
         comments: ""
     })
     useEffect(() => {
@@ -59,9 +60,10 @@ export default function Submit({levels, leaderboards, authData}: info) {
             <Text size="7" weight="bold">Level Name</Text>
             <br></br>
             <Text size="2" style={{lineHeight: "20px"}}>Case sensitive</Text>
-            <TextFieldRoot mt="4">
+            <Flex gap="4" align='center' mt="4">
+            <TextFieldRoot>
                 <TextFieldSlot style={{paddingRight: "8px"}}><FileIcon></FileIcon></TextFieldSlot>
-                <TextFieldInput placeholder="Level Name..." id="level" onClick={(e) => {
+                <TextFieldInput style={{width: 225}} placeholder="Level Name..." id="level" onClick={(e) => {
                     setFilteredLevels(levels.filter((x:any) => x.name.toLowerCase().includes(submission.level.toLowerCase())))
                     setOpenLevels(true)
                 }} onChange={(e) => {
@@ -69,11 +71,23 @@ export default function Submit({levels, leaderboards, authData}: info) {
                         setFilteredLevels(levels.filter((x:any) => x.name.toLowerCase().includes(e.target.value.toLowerCase())))
                 }}></TextFieldInput>
             </TextFieldRoot>
+            <Text>By</Text>
+            <TextFieldRoot>
+            <TextFieldInput placeholder="Publisher..." id="publisher" onClick={(e) => {
+                    setFilteredLevels(levels.filter((x:any) => x.publisher.toLowerCase().includes(submission.publisher.toLowerCase())))
+                    setOpenLevels(true)
+                }} onChange={(e) => {
+                        setSubmission({...submission, publisher: e.target.value});
+                        setFilteredLevels(levels.filter((x:any) => x.publisher.toLowerCase().includes(e.target.value.toLowerCase())))
+                }}></TextFieldInput>
+            </TextFieldRoot>
+            </Flex>
             <Card style={{display: openLevels ? "block" : "none", maxHeight: "300px", overflowY: "scroll", overflowX: "hidden", animation: "ease-in-out 1s"}}>
             <div style={{marginBottom: "10px"}}></div>
             {filteredLevels.map((e:any, i: number) => <Box key={i}>{i ? <Separator my="3" size="4" /> : ""}<Text className={styles.option} size="3" as="p" style={{margin: "-8px"}} onClick={() => {
-                setSubmission({...submission, level: e.name});
-                (document.getElementById("level") as any).value = e.name
+                setSubmission({...submission, level: e.name, publisher: e.publisher});
+                (document.getElementById("level") as any).value = e.name;
+                (document.getElementById("publisher") as any).value = e.publisher
                 setOpenLevels(false)
             }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} by {e.publisher}</Text></Box>)}
             </Card>
@@ -145,7 +159,7 @@ export default function Submit({levels, leaderboards, authData}: info) {
                 </CalloutIcon>
                 <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
-        <Button disabled={!submission.level || !submission.player || !submission.comments || !submission.video.text || !submission.video.valid} onClick={async () => {
+        <Button disabled={!submission.level || !submission.publisher || !submission.player || !submission.video.text || !submission.video.valid} onClick={async () => {
             setError({color: "blue", message: "Loading..."})
             let req = await fetch("/api/user/submissions", {
                 method: "POST",
@@ -156,6 +170,7 @@ export default function Submit({levels, leaderboards, authData}: info) {
                 body: JSON.stringify({
                     link: submission.video.text,
                     level: submission.level,
+                    publisher: submission.publisher,
                     player: submission.player,
                     comments: submission.comments
                 })
