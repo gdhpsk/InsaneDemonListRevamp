@@ -1,13 +1,22 @@
 'use client';
-import { Button, DialogClose, DialogContent, DialogRoot, DialogTitle, DialogTrigger, Grid } from "@radix-ui/themes";
+import { HomeIcon, RocketIcon } from "@radix-ui/react-icons";
+import { Button, DialogClose, DialogContent, DialogRoot, DialogTitle, DialogTrigger, Flex, Grid, Text } from "@radix-ui/themes";
+import styles from "../account.module.css"
 
-export default function AdminPanel() {
+interface info {
+    part: string,
+    selectPart: Function
+}
+
+export default function AdminPanel({part, selectPart}: info) {
+
     return (
         <DialogRoot>
             <DialogTrigger>
-                <Grid style={{placeItems: "center"}}>
-                    <Button>Admin Panel</Button>
-                </Grid>
+            <Flex gap="3" align={'center'}className={`${styles.option}`} onClick={() => selectPart("home")}>
+                <RocketIcon style={{scale: 1.4}}></RocketIcon>
+                <Text size="4" as='p'>Admin Panel</Text>
+                </Flex>
             </DialogTrigger>
             <DialogContent>
                 <DialogTitle as="h1" weight="bold" align="center" size="8">Admin Panel</DialogTitle>

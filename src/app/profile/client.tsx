@@ -1,10 +1,12 @@
 'use client'
 import { Box, CalloutIcon, CalloutRoot, CalloutText, Card, Flex, Grid, IconButton, Separator, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes';
 import styles from "../account.module.css"
-import { ChatBubbleIcon, CheckIcon, Cross1Icon, CrossCircledIcon, EnvelopeClosedIcon, HomeIcon, InfoCircledIcon, Pencil1Icon, ReaderIcon } from '@radix-ui/react-icons';
+import { ChatBubbleIcon, CheckIcon, Cross1Icon, CrossCircledIcon, EnvelopeClosedIcon, ExitIcon, HomeIcon, InfoCircledIcon, Pencil1Icon, ReaderIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 import ProfileHome from './home';
 import ProfileSubmissions from './submissions';
+import AdminPanel from './adminpanel';
+import { signOut } from 'next-auth/react';
 
 interface info {
     account: Record<any, any>
@@ -18,7 +20,7 @@ export default function ProfileClient({account}: info) {
 
   return (
     <Grid style={{placeItems: "center"}}>
-        <Flex gap="9" style={{width: "min(1800px, 100%)"}}>
+        <Flex gap="9" style={{width: "min(1600px, 100%)"}}>
             <Box style={{width: "300px"}}>
                 <Grid style={{placeItems: "center"}}>
                 <Text size="8" weight="bold" as="p" align={'center'}>Logged in as:</Text>
@@ -32,11 +34,24 @@ export default function ProfileClient({account}: info) {
                 <HomeIcon style={{scale: 1.4}}></HomeIcon>
                 <Text size="4" as='p'>Home</Text>
                 </Flex>
-                <br></br>
                 <Flex gap="3" align={'center'}className={`${styles.option} ${part == "submissions" ? styles.active : ""}`} onClick={() => selectPart("submissions")}>
                 <ReaderIcon style={{scale: 1.4}}></ReaderIcon>
                 <Text size="4" as='p'>Submissions</Text>
                 </Flex>
+                <Separator my="3" size="4"></Separator>
+                {account.perms?.idl ? <><AdminPanel
+                    part={part}
+                    selectPart={selectPart}
+                ></AdminPanel><Separator my="3" size="4"></Separator></> : ""}
+                <Grid style={{placeItems: "center"}}>
+                <Flex gap="3" align={'center'}className={`${styles.logout}`} onClick={async () => {
+                    await signOut()
+                    window.location.href = "/"
+                }}>
+                <ExitIcon style={{scale: 1.4}}></ExitIcon>
+                <Text size="4" as='p'>Log Out</Text>
+                </Flex>
+                </Grid>
             </Box>
             <Separator orientation="vertical" style={{height: "93vh"}} />
             <Box width={"100%"}>

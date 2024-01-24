@@ -8,6 +8,26 @@
     background-color: rgba(77, 74, 255, 0.5);
 }
 
+.logout {
+    padding: 10px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.logout:hover {
+    background-color: rgba(214, 35, 29, 0.5);
+}
+
 .active {
     background-color: rgba(77, 74, 255, 0.5);
 }
+
+.submission:hover {
+    scale: 1.001;
+    transition-duration: 0.25s
+  }
+
+  .submission {
+    scale: 1;
+    transition-duration: 0.25s
+  }
