@@ -99,15 +99,20 @@ export default function EditLevels({ authData, levels, leaderboards }: info) {
                                          }, 3000)
                                      }
                 }}>Save</Button>
-                <Button size="4" disabled={!!!filteredLevels.find(e => e.difference)} color='red' onClick={() => setFilteredLevels(originalLevels)}>Cancel</Button>
+                <Button size="4" disabled={!!!filteredLevels.find(e => e.difference)} color='red' onClick={() => {
+                     setFilteredLevels(originalLevels)
+                     setEdits([])
+                }}>Cancel</Button>
             </Flex>
             <br></br>
-            {error.message ? <><CalloutRoot color={error.color as any}>
+            <Grid style={{placeItems: "center"}}>
+            {error.message ? <><CalloutRoot color={error.color as any} style={{width: "min(600px, 100%)"}}>
                 <CalloutIcon>
                     {error.color == "red" ? <CrossCircledIcon style={{scale: 1.5}}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{scale: 1.5}}></CheckIcon> : <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>}
                 </CalloutIcon>
                 <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
+            </Grid>
             <br></br>
             <Grid style={{placeItems: "center"}}>
             <Grid columns="6" gap="4" style={{width: "min(2500px, 100%)"}}>
