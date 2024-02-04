@@ -14,7 +14,7 @@ interface info {
 export default function InfoCard({level, removeTn}: info) {
     return  <ContextMenuRoot>
     <ContextMenuTrigger  className={styles.levelCard}>
-    <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() + 604_800 ? "rgba(53, 53, 99, 0.5)" : ""}` }} onClick={() => {
+    <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() + 604_800 ? "rgba(53, 53, 99, 0.5)" : ""}` }} variant="surface" onClick={() => {
         window.location.href = `/level/${level.position}`
     }}>
     <Flex gap="5">

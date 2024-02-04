@@ -52,7 +52,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                                         <br></br>
                                         <br></br>
                                         {e.levels.map((x:any) => <div key={x.id}><Text size="5">
-                                            <a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by ${x.publisher}</a>
+                                            <a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by {x.publisher}</a>
                                         </Text><br></br><br></br></div>)}
                                     </PopoverContent>
                                 </PopoverRoot>

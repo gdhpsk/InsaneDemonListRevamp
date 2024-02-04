@@ -45,8 +45,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
     }
         await authDb.collection("users").updateOne({ $expr: { $eq: [{ $toString: "$_id" }, req.headers.get("user")] } }, {
             $set: {
-                email: body.email,
-                sentVerification: new Date()
+                email: body.email
             },
             $unset: {
                 emailVerified: ""

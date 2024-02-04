@@ -180,7 +180,7 @@ export default function Submit({levels, leaderboards, authData}: info) {
                 setError({color: "red", message: data.message})
             } catch(_) {
                 setError({color: "green", message: `Successfully submitted record for level ${submission.level}!`})
-                setTimeout(() => window.location.href = '/submissions', 3000)
+                setTimeout(() => window.location.href = '/profile', 3000)
             }
         }}>Submit</Button>
     </Grid>

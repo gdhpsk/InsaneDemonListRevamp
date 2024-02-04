@@ -58,6 +58,7 @@ export async function GET(req: Request, res: Record<any, any>) {
         }
         return new Response(JSON.stringify(obj))
     }
+    await prisma.$disconnect()
     return new Response(JSON.stringify({error: "404 NOT FOUND", message: "Could not find the given players icon set."}), {
         status: 404
     })

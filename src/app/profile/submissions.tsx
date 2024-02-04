@@ -1,9 +1,10 @@
 'use client'
 
 import { CheckIcon, Cross1Icon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pencil1Icon, PersonIcon } from "@radix-ui/react-icons"
-import { Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, DialogClose, DialogContent, DialogDescription, DialogRoot, DialogTitle, DialogTrigger, Flex, Grid, IconButton, ScrollArea, Separator, Text, TextArea, TextFieldInput, TextFieldRoot, TextFieldSlot } from "@radix-ui/themes"
+import { Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, DialogClose, DialogContent, DialogDescription, DialogRoot, DialogTitle, DialogTrigger, Flex, Grid, IconButton, ScrollArea, Separator, Tabs, TabsList, TabsRoot, TabsTrigger, Text, TextArea, TextFieldInput, TextFieldRoot, TextFieldSlot } from "@radix-ui/themes"
 import { useEffect, useState } from "react"
 import styles from "../account.module.css"
+import cache from "../../../cache.json"
 
 interface info {
     data: Record<any, any>
@@ -21,6 +22,7 @@ export default function ProfileSubmissions({ data }: info) {
     let [filteredPlayers, setFilteredPlayers] = useState([])
     let [openLevels, setOpenLevels] = useState(false)
     let [openPlayers, setOpenPlayers] = useState(false)
+    let [type, setType] = useState("all")
     let [edits, setEdits] = useState({
         video: {
             valid: true,
@@ -83,8 +85,17 @@ export default function ProfileSubmissions({ data }: info) {
     }
 
     return (
+        <Grid style={{placeItems: "center"}}>
+            <TabsRoot defaultValue="all">
+  <TabsList size="2">
+    <TabsTrigger value="active" onClick={() => setType("active")}>Active</TabsTrigger>
+    <TabsTrigger value="all" onClick={() => setType("all")}>All</TabsTrigger>
+    <TabsTrigger value="archived" onClick={() => setType("archived")}>Archived</TabsTrigger>
+  </TabsList>
+</TabsRoot>
+<br></br>
         <ScrollArea style={{ height: "1000px" }}>
-            {allSubmissions?.length ? allSubmissions.map((e: any, i: number) => <DialogRoot>
+            {allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length ? allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e: any, i: number) => <DialogRoot>
                 <DialogTrigger className={styles.submission}>
                     <Card key={i} style={{ marginRight: "40px" }} onClick={() => {
                         setSubmission(e)
@@ -105,6 +116,8 @@ export default function ProfileSubmissions({ data }: info) {
                         <Text size="5" as="p">{e.level} by {e.publisher}</Text>
                         <br></br>
                         <Text size="3">By {e.player}</Text>
+                        <br></br>
+                        <Text size="1">Status: {cache.status[e.status]}</Text>
                     </Card>
                 </DialogTrigger>
                 <DialogContent>
@@ -193,6 +206,8 @@ export default function ProfileSubmissions({ data }: info) {
                     <Text size="1">Submitted at: {e.createdAt}</Text>
                     <br></br>
                     <Text size="1">Edited at: {e.editedAt}</Text>
+                    <br></br>
+                    <Text size="1">Status: {cache.status[e.status]}</Text>
                     <br></br>
                     <br></br>
                     <Grid style={{ placeItems: "center" }}>
@@ -332,7 +347,8 @@ export default function ProfileSubmissions({ data }: info) {
                     </Grid>
                     </>}
                 </DialogContent>
-            </DialogRoot>) : allSubmissions?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>You have not submitted any submissions yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
+            </DialogRoot>) : allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>There are no submissions in this section yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
         </ScrollArea>
+        </Grid>
     )
 }

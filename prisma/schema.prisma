@@ -32,6 +32,7 @@ model Record {
     player Player @relation(fields: [playerId], references: [id])
     verification     Boolean?
 
+    @@unique([levelId, playerId])
     @@map(name: "records")
 }
 
