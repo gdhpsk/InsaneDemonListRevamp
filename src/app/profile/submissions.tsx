@@ -95,7 +95,7 @@ export default function ProfileSubmissions({ data }: info) {
 </TabsRoot>
 <br></br>
         <ScrollArea style={{ height: "1000px" }}>
-            {allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length ? allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e: any, i: number) => <DialogRoot>
+            {allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length ? allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e: any, i: number) => <><DialogRoot key={i}>
                 <DialogTrigger className={styles.submission}>
                     <Card key={i} style={{ marginRight: "40px" }} onClick={() => {
                         setSubmission(e)
@@ -347,7 +347,7 @@ export default function ProfileSubmissions({ data }: info) {
                     </Grid>
                     </>}
                 </DialogContent>
-            </DialogRoot>) : allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>There are no submissions in this section yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
+            </DialogRoot><br></br></>) : allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>There are no submissions in this section yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
         </ScrollArea>
         </Grid>
     )

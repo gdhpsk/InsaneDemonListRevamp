@@ -14,7 +14,7 @@ interface info {
 export default function InfoCard({level, removeTn}: info) {
     return  <ContextMenuRoot>
     <ContextMenuTrigger  className={styles.levelCard}>
-    <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() + 604_800 ? "rgba(53, 53, 99, 0.5)" : ""}` }} variant="surface" onClick={() => {
+    <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() - 604_800_000 ? "rgba(53, 53, 99, 0.5)" : ""}` }} variant="surface" onClick={() => {
         window.location.href = `/level/${level.position}`
     }}>
     <Flex gap="5">
@@ -42,7 +42,7 @@ export default function InfoCard({level, removeTn}: info) {
                             }) : ""}
             </Flex>
             <br></br>
-            <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800).format("MMM D, YYYY")}` : "never"}</Text>
+            <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).format("MMM D, YYYY")}` : "never"}</Text>
       </Box>
     </Flex>
     <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {

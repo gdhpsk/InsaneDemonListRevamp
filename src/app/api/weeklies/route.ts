@@ -16,3 +16,5 @@ export async function GET(request: Request) {
     await prisma.$disconnect()
     return new Response(JSON.stringify(levels))
 }
+
+export const revalidate = 0

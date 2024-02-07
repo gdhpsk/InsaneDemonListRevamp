@@ -1,7 +1,7 @@
 
 import hexToRGB from '@/functions/hexToRGB'
 import calc_points from '@/functions/points'
-import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon } from '@radix-ui/react-icons'
+import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon, StarFilledIcon } from '@radix-ui/react-icons'
 import { Badge, Box, CalloutIcon, CalloutRoot, CalloutText, Flex, Grid, HoverCardContent, HoverCardRoot, HoverCardTrigger, IconButton, PopoverContent, PopoverRoot, PopoverTrigger, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import styles from "@/app/profile.module.css"
@@ -88,7 +88,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
             <TableBody>
                 {profile.records.filter((e:any) => e.verification).map((e:any) => <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.player.name}</a></TableRowHeaderCell> : ""}
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></TableRowHeaderCell> : ""}
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.level.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
@@ -125,7 +125,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a><br></br><br></br></div>)}</TableRowHeaderCell> : ""}
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br><br></br></div>)}</TableRowHeaderCell> : ""}
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.level.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
@@ -161,7 +161,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a><br></br><br></br></div>)}</TableRowHeaderCell> : ""}
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br><br></br></div>)}</TableRowHeaderCell> : ""}
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.level.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">

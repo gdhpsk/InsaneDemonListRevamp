@@ -1,5 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../prisma/prisma";
 import { ObjectId } from "bson";
+import { middleware } from "../../middleware";
 
 export async function GET(req: Request, res: Record<any, any>) {
     let isInt = !isNaN(res.params.id)
@@ -25,6 +27,9 @@ export async function GET(req: Request, res: Record<any, any>) {
                 }
             },
             packs: {
+                orderBy: {
+                    position: "asc"
+                },
                 select: {
                     id: true,
                     name: true,
@@ -47,4 +52,283 @@ export async function GET(req: Request, res: Record<any, any>) {
     return new Response(JSON.stringify(level), {
         status: level ? 200 : 404
     })
+}
+
+export async function PATCH(req: NextRequest) {
+    let auth = await middleware(req, "moderator")
+    if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
+    let body: Record<any, any> = {}
+
+    try {
+        body = await req.json()
+        if(typeof body.id !== 'string') throw new Error()
+    } catch(_) {
+        return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid JSON body."}, {status: 400})
+    }
+
+    let level = await prisma.level.findFirst({where: {id: body.id}, include: {
+        weekly: true,
+        packs: true
+    }})
+    if(!level) return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find level."}, {status: 400})
+    
+    if(body.deletedRecords) {
+        await prisma.record.deleteMany({
+            where: {
+                id: { in: body.deletedRecords }
+            }
+        })
+    }
+
+    if(body.editedRecords) {
+       try {
+            for(const item of body.editedRecords) {
+                await prisma.record.update({
+                    where: {
+                        id: item.id
+                    },
+                    data: {
+                        link: item.link,
+                        verification: item.verification,
+                        beaten_when_weekly: item.beaten_when_weekly
+                    }
+                })
+            }
+       } catch(_) {
+
+       }
+    }
+
+    if(body.position && body.position != level.position) {
+        let count = await prisma.level.count()
+        if(body.position < 1 || body.position > count+1) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid position range."}, {status: 400})
+        let obj: Record<any, any> = {
+            position: body.position
+        }
+        if(level.removalDate && body.position <= 150) {
+            obj = {
+                position: body.position,
+                removalDate: null,
+                removalReason: null,
+                formerRank: null
+            }
+        }
+        await prisma.$transaction([
+            prisma.level.updateMany({
+                where: {
+                    AND: [
+                        {position: {lte: body.position}},
+                        {position: {gte: level.position}}
+                    ]
+                },
+                data: {
+                    position: {
+                        decrement: 1
+                    }
+                }
+            }),
+            prisma.level.updateMany({
+                where: {
+                    AND: [
+                        {position: {gte: body.position}},
+                        {position: {lte: level.position}}
+                    ]
+                },
+                data: {
+                    position: {
+                        increment: 1
+                    }
+                }
+            }),
+            prisma.level.updateMany({
+                where: {
+                    id: level.id
+                },
+                data: obj
+            })
+        ])
+    }
+
+    if(body.weekly) {
+        await prisma.weekly.upsert({
+            where: {
+                levelId: level.id
+            },
+            update: {
+                date: new Date(body.weekly?.date || level.weekly?.date).getTime(),
+                color: body.weekly?.color || level.weekly?.date
+            },
+            create: {
+                date: new Date(body.weekly?.date || Date.now()).getTime(),
+                color: body.weekly?.color || "#000000",
+                levelId: level.id
+            }
+        })
+    }
+
+    if(body.packs) {
+        try {
+            let data = body.packs.filter((x:any) => !level?.packs.find((y: any) => y.id == x.id)).map((x:any) => {
+                return {
+                    name: x.name,
+                    levelId: level?.id,
+                    color: x.color,
+                    position: x.position
+                }
+            })
+           if(data.length) {
+            await prisma.$transaction([
+                prisma.pack.deleteMany({
+                    where: {
+                        id: { in: level?.packs.filter((x:any) => !body?.packs.find((y: any) => y.id == x.id)).map((x:any) => x.id)}
+                    }
+                }),
+                prisma.pack.createMany({
+                    data
+                })
+            ])
+           } else {
+            await prisma.$transaction([
+                prisma.pack.deleteMany({
+                    where: {
+                        id: { in: level?.packs.filter((x:any) => !body?.packs.find((y: any) => y.id == x.id)).map((x:any) => x.id)}
+                    }
+                })
+            ])
+           }
+        } catch(e: any) {
+            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+        }
+    }
+
+    await prisma.level.updateMany({
+        where: {
+            id: level.id
+        },
+        data: {
+            name: body.name || level.name,
+            publisher: body.publisher || level.publisher,
+            ytcode: body.ytcode || level.ytcode,
+            removalReason: body.removalReason || level.removalReason
+        }
+    })
+    return new Response(null, {status: 204})
+}
+
+export async function DELETE(req: NextRequest) {
+    let auth = await middleware(req, "moderator")
+    if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
+    let body: Record<any, any> = {}
+
+    try {
+        body = await req.json()
+        if(typeof body.id !== 'string' && body.removalReason !== 'string') throw new Error()
+    } catch(_) {
+        return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid JSON body."}, {status: 400})
+    }
+
+    let level = await prisma.level.findFirst({where: {id: body.id}})
+    if(!level) return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find level."}, {status: 400})
+    let count =  await prisma.level.count()
+    
+    if(body.removalReason) {
+        try {
+            await prisma.$transaction([
+                prisma.level.updateMany({
+                    where: {
+                        AND: [
+                            {position: {lte: count}},
+                            {position: {gte: level.position}}
+                        ]
+                    },
+                    data: {
+                        position: {
+                            decrement: 1
+                        }
+                    }
+                }),
+                prisma.level.updateMany({
+                    where: {
+                        AND: [
+                            {position: {gte: count}},
+                            {position: {lte: level.position}}
+                        ]
+                    },
+                    data: {
+                        position: {
+                            increment: 1
+                        }
+                    }
+                }),
+                prisma.level.updateMany({
+                    where: {
+                        id: level.id
+                    },
+                    data: {
+                        position: count,
+                        removalDate: new Date(Date.now()).toDateString(),
+                        removalReason: body.removalReason,
+                        formerRank: level.position
+                    }
+                })
+            ])
+        } catch(e: any) {
+            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+        }
+    } else {
+        try {
+            await prisma.$transaction([
+                prisma.level.updateMany({
+                    where: {
+                        AND: [
+                            {position: {lte: count}},
+                            {position: {gte: level.position}}
+                        ]
+                    },
+                    data: {
+                        position: {
+                            decrement: 1
+                        }
+                    }
+                }),
+                prisma.level.updateMany({
+                    where: {
+                        AND: [
+                            {position: {gte: count}},
+                            {position: {lte: level.position}}
+                        ]
+                    },
+                    data: {
+                        position: {
+                            increment: 1
+                        }
+                    }
+                }),
+                prisma.record.deleteMany({
+                    where: {
+                        levelId: level.id
+                    }
+                }),
+                prisma.pack.deleteMany({
+                    where: {
+                        levelId: level.id
+                    }
+                }),
+                prisma.weekly.delete({
+                    where: {
+                        levelId: level.id
+                    }
+                }),
+                prisma.level.delete({
+                    where: {
+                        id: level.id
+                    }
+                })
+            ])
+        } catch(e: any) {
+            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+        }
+    }
+    await prisma.$disconnect()
+    return new Response(null, {status: 204})
 }

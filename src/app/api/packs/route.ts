@@ -8,3 +8,5 @@ export async function GET(request: Request) {
     await prisma.$disconnect()
     return new Response(JSON.stringify(packs))
 }
+
+export const revalidate = 0

@@ -29,6 +29,10 @@ export default function AdminPanel({part, selectPart}: info) {
                     <Button onClick={() => window.location.href = "/submissions"} size="3">Submission Editor</Button>
                 </Grid>
                 <br></br>
+                <Grid style={{placeItems: "center"}}>
+                    <Button onClick={() => window.location.href = "/editlevels"} size="3">Level Editor</Button>
+                </Grid>
+                <br></br>
                 <br></br>
                 <Grid style={{placeItems: "center"}}>
                     <DialogClose>

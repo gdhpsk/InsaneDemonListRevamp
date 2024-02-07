@@ -1,7 +1,7 @@
 'use client';
 import hexToRGB from '@/functions/hexToRGB'
 import calc_points from '@/functions/points'
-import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon } from '@radix-ui/react-icons'
+import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon, StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
 import { Badge, Box, CalloutIcon, CalloutRoot, CalloutText, Flex, Grid, HoverCardContent, HoverCardRoot, HoverCardTrigger, IconButton, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import styles from "@/app/level.module.css"
@@ -98,7 +98,7 @@ export default function Level({level, count}: info) {
                 <TableRow>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points(level.position)}</TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
-                        {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800).format("MMM D, YYYY")}` : "never"}    
+                        {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).format("MMM D, YYYY")}` : "never"}    
                     </TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{level.list.length}</TableRowHeaderCell>
                 </TableRow>
@@ -142,7 +142,7 @@ export default function Level({level, count}: info) {
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.player.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.player.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
                             window.location.href = e.player.nationality ? `/nationality/${e.player.abbr}` : "#"
                     }}></img></TableRowHeaderCell>
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.player.name}</a></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue"}}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
                         <IconButton color="violet">

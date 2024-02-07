@@ -103,7 +103,7 @@ export default function Submissions({submissions, authData, levels, leaderboards
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    {allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e:any, i: number) => <DropdownMenuItem className={styles.option} onClick={() => setSubmission(e)}>Submission #{i+1} by {e.player}: {e.level} by {e.publisher}</DropdownMenuItem>)}
+                    {allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e:any, i: number) => <DropdownMenuItem key={i} className={styles.option} onClick={() => setSubmission(e)}>Submission #{i+1} by {e.player}: {e.level} by {e.publisher}</DropdownMenuItem>)}
                 </DropdownMenuContent>
             </DropdownMenuRoot>
             </Grid>

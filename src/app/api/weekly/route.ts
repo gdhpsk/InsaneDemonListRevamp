@@ -23,3 +23,5 @@ export async function GET(request: Request) {
         status: level ? 200 : 404
     })
 }
+
+export const revalidate = 0
