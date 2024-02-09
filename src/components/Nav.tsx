@@ -37,6 +37,7 @@ export default function Nav({authData}: info) {
             <Link href="/extended" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/extended" ? "active" : ""}>Extended List</Text></Link>
             <Link href="/legacy" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/legacy" ? "active" : ""}>Legacy List</Text></Link>
             <Link href="/leaderboards" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/leaderboards" ? "active" : ""}>Leaderboards</Text></Link>
+            <Link href="/packs" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/packs" ? "active" : ""}>Packs</Text></Link>
             {data.user ? <Link href="/submit" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/submit" ? "active" : ""}>Submit</Text></Link> : ""}
             {!data.user ? <Login></Login> : <Link href="/profile" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/profile" ? "active" : ""}><GearIcon></GearIcon></Text></Link>}
         </Flex>

@@ -33,6 +33,14 @@ export default function AdminPanel({part, selectPart}: info) {
                     <Button onClick={() => window.location.href = "/editlevels"} size="3">Level Editor</Button>
                 </Grid>
                 <br></br>
+                <Grid style={{placeItems: "center"}}>
+                    <Button onClick={() => window.location.href = "/editpacks"} size="3">Pack Editor</Button>
+                </Grid>
+                <br></br>
+                <Grid style={{placeItems: "center"}}>
+                    <Button onClick={() => window.location.href = "/editprofiles"} size="3">Leaderboard Editor</Button>
+                </Grid>
+                <br></br>
                 <br></br>
                 <Grid style={{placeItems: "center"}}>
                     <DialogClose>

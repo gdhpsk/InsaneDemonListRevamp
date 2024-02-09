@@ -2,7 +2,7 @@ export default function createPipeline(id: string) {
     return[
         {
             '$match': {
-                '_id': {'$oid': id}
+                'name': id
             }
         },
         {
@@ -38,6 +38,7 @@ export default function createPipeline(id: string) {
                 }
               }, {
                 '$project': {
+                  'position': 1,
                   'name': 1, 
                   'ytcode': 1, 
                   'publisher': 1, 
@@ -56,7 +57,12 @@ export default function createPipeline(id: string) {
               '$toString': '$packId'
             }, 
             'name': 1, 
-            'levels': 1, 
+            'levels': {
+              '$sortArray': {
+                'input': '$levels',
+              'sortBy': {'position': 1}
+              }
+            }, 
             'color': 1, 
             'position': '$_id', 
             '_id': 0

@@ -212,6 +212,7 @@ export async function PATCH(req: NextRequest) {
             removalReason: body.removalReason || level.removalReason
         }
     })
+    await prisma.$disconnect()
     return new Response(null, {status: 204})
 }
 

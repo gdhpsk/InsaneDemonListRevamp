@@ -40,3 +40,5 @@ export async function GET(req: Request, res: Record<any, any>) {
     await prisma.$disconnect()
     return new Response(JSON.stringify(profiles))
 }
+
+export const revalidate = 0
