@@ -637,7 +637,6 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                                             setError({color: "red", message: ""})
                                          }, 3000)
                                      }
-                            console.log(obj)
                         }} id="submit">Submit</Button>
                         <DialogRoot>
                             <DialogTrigger>
@@ -687,7 +686,6 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                                             setError({color: "red", message: ""})
                                          }, 3000)
                                      }
-                                            console.log(obj)
                                         }}>Continue</Button>
                                         <Button color='red' onClick={_ => setLevel({...level, removalReason: null})} size='3'>Close</Button>
                                     </Flex>

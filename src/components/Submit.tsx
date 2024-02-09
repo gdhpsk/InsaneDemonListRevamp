@@ -123,7 +123,6 @@ export default function Submit({levels, leaderboards, authData}: info) {
                 <TextFieldSlot style={{paddingRight: "8px"}}><Link1Icon></Link1Icon></TextFieldSlot>
                 <TextFieldInput placeholder="YouTube Link..." onChange={(e) => {
                     let valid = getYoutubeVideoId(e.target.value)
-                    console.log(valid)
                     setSubmission({
                         ...submission,
                         video: {

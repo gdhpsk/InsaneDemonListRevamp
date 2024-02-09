@@ -277,7 +277,6 @@ export default function ProfileSubmissions({ data }: info) {
                 <TextFieldSlot style={{paddingRight: "8px"}}><Link1Icon></Link1Icon></TextFieldSlot>
                 <TextFieldInput defaultValue={edits.video.text} placeholder="YouTube Link..." onChange={(e) => {
                     let valid = getYoutubeVideoId(e.target.value)
-                    console.log(valid)
                     setEdits({...edits,
                         video: {
                             valid: valid.videoId?.length == 11,

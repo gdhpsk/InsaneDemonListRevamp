@@ -43,12 +43,6 @@ export default function Nav({authData, routes}: info) {
     {width > 1100 ? <Flex className="nav-content" gap="1">
             {routes.filter(x => !x.auth).map(e => <Link key={e.route} href={e.route} style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == e.route ? "active" : ""}>{e.name}</Text></Link>)}
             {data.user ? routes.filter(x => x.auth).map(e => <Link key={e.route} href={e.route} style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == e.route ? "active" : ""}>{e.name}</Text></Link>) : ""}
-            {/* <Link href="/main" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/main" ? "active" : ""}>Main List</Text></Link>
-            <Link href="/extended" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/extended" ? "active" : ""}>Extended List</Text></Link>
-            <Link href="/legacy" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/legacy" ? "active" : ""}>Legacy List</Text></Link>
-            <Link href="/leaderboards" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/leaderboards" ? "active" : ""}>Leaderboards</Text></Link>
-            <Link href="/packs" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/packs" ? "active" : ""}>Packs</Text></Link>
-            {data.user ? <Link href="/submit" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/submit" ? "active" : ""}>Submit</Text></Link> : ""} */}
             {!data.user ? <Login></Login> : <Link href="/profile" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/profile" ? "active" : ""}><GearIcon></GearIcon></Text></Link>}
         </Flex> : width == 0 ? "" : <Flex className="nav-content" gap="1"><PopoverRoot>
             <PopoverTrigger><Text size="3" style={{padding: "20px", marginTop: "15px"}}><HamburgerMenuIcon></HamburgerMenuIcon></Text></PopoverTrigger>
