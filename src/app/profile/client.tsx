@@ -1,8 +1,8 @@
 'use client'
-import { Box, CalloutIcon, CalloutRoot, CalloutText, Card, Flex, Grid, IconButton, Separator, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes';
+import { Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, Flex, Grid, IconButton, Separator, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes';
 import styles from "../account.module.css"
 import { ChatBubbleIcon, CheckIcon, Cross1Icon, CrossCircledIcon, EnvelopeClosedIcon, ExitIcon, HomeIcon, InfoCircledIcon, Pencil1Icon, ReaderIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProfileHome from './home';
 import ProfileSubmissions from './submissions';
 import AdminPanel from './adminpanel';
@@ -16,12 +16,20 @@ export default function ProfileClient({account}: info) {
 
     let [authData, setAuthData] = useState(account)
     let [part, selectPart] = useState("home")
+
+    let [width, setWidth] = useState(0)
+
+    let getWidth = () => typeof window === 'undefined' ? 0 : window.innerWidth
+  
+    useEffect(() => {
+      setWidth(getWidth())
+    })
     
 
   return (
     <Grid style={{placeItems: "center"}}>
         <Flex gap="9" style={{width: "min(1600px, 100%)"}}>
-            <Box style={{width: "300px"}}>
+        {width > 700 || !(part == 'home' || part == 'submissions') ? <Box style={{width: "300px"}}>
                 <Grid style={{placeItems: "center"}}>
                 <Text size="8" weight="bold" as="p" align={'center'}>Logged in as:</Text>
                 <br></br>
@@ -52,16 +60,17 @@ export default function ProfileClient({account}: info) {
                 <Text size="4" as='p'>Log Out</Text>
                 </Flex>
                 </Grid>
-            </Box>
+            </Box> : ""}
             <Separator orientation="vertical" style={{height: "93vh"}} />
-            <Box width={"100%"}>
+            {width > 700 || (part == 'home' || part == 'submissions') ? <Box width={"100%"}>
+                {width <= 700 ? <Button onClick={() => selectPart('')}>Back</Button> : ""}
                 {part == "home" ? <ProfileHome
                     authData={authData}
                     setAuthData={setAuthData}
                 ></ProfileHome> : part == "submissions" ? <ProfileSubmissions
                     data={authData}
                 ></ProfileSubmissions> : ""}
-            </Box>
+            </Box> : ""}
         </Flex>
     </Grid>
   )

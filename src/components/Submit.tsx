@@ -140,7 +140,7 @@ export default function Submit({levels, leaderboards, authData}: info) {
                </Flex> : ""}
                <br></br>
                <Grid style={{placeItems: "center"}}>
-                    <iframe width="560" height="315" src={`https://www.youtube.com/embed/${submission.video.ytcode}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+                    <iframe src={`https://www.youtube.com/embed/${submission.video.ytcode}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                </Grid>
         </Card>
         <br></br>

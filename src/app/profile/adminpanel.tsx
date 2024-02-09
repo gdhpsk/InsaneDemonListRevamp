@@ -13,7 +13,7 @@ export default function AdminPanel({part, selectPart}: info) {
     return (
         <DialogRoot>
             <DialogTrigger>
-            <Flex gap="3" align={'center'}className={`${styles.option}`} onClick={() => selectPart("home")}>
+            <Flex gap="3" align={'center'}className={`${styles.option}`}>
                 <RocketIcon style={{scale: 1.4}}></RocketIcon>
                 <Text size="4" as='p'>Admin Panel</Text>
                 </Flex>

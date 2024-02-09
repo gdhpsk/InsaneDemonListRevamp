@@ -4,6 +4,7 @@ import { Theme } from '@radix-ui/themes';
 import Nav from '@/components/Nav';
 import { getServerSession } from 'next-auth';
 import jwt from "jsonwebtoken"
+import { GearIcon } from '@radix-ui/react-icons';
 
 export default async function RootLayout({
   children,
@@ -26,6 +27,14 @@ export default async function RootLayout({
         <Theme accentColor="blue" appearance="dark">
           <Nav
             authData={data || {}}
+            routes={[
+              {route: "/main", name: "Main List"},
+              {route: "/extended", name: "Extended List"},
+              {route: "/legacy", name: "Legacy List"},
+              {route: "/leaderboards", name: "Leaderboards"},
+              {route: "/packs", name: "Packs"},
+              {route: "/submit", name: "Submit", auth: true}
+            ]}
           ></Nav>
           {children}
         </Theme>

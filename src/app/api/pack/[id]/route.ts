@@ -74,7 +74,7 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
                 })
             ])
         } catch(e: any) {
-            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
         }
     await prisma.$disconnect()
     return new Response(null, {status: 204})

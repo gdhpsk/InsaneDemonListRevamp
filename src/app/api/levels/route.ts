@@ -96,8 +96,10 @@ export async function PATCH(request: NextRequest) {
             })
         ])
        }
+       await prisma.$disconnect()
     } catch(e: any) {
-        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+        await prisma.$disconnect()
+        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
     }
     return new Response(null, {status: 204})
 }
@@ -139,6 +141,6 @@ export async function POST(request: NextRequest) {
         ])
             return NextResponse.json(level, {status: 201})
 } catch(e: any) {
-    return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+    return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
 }
 }

@@ -18,7 +18,7 @@ export default function LeaderboardClient({profiles}: info) {
     let [nationality, setNationality] = useState(["International", "International"])
 
   return (
-    <Box style={{opacity: loading ? 0.5 : 1}}>
+    <Box style={{opacity: loading ? 0.5 : 1, overflowX: "hidden"}}>
       <Flex gap="4" style={{placeItems: "center", justifyContent: "center"}}>
         <Image src="/favicon.ico" height={70} width={70} alt={"idl"}></Image>
         <Text size="9" className="header" style={{display: "contents"}}>Leaderboards</Text>

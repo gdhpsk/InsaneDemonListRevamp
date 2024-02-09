@@ -3,7 +3,7 @@ import hexToRGB from "@/functions/hexToRGB";
 import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon, ColorWheelIcon, FileIcon } from "@radix-ui/react-icons";
 import { Badge, Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, DialogClose, DialogContent, DialogDescription, DialogRoot, DialogTitle, DialogTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, IconButton, SelectContent, SelectGroup, SelectItem, SelectRoot, SelectTrigger, Separator, TableBody, TableCell, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from "@radix-ui/themes"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styles from "../../app/submit.module.css"
 import dayjs from "dayjs";
 
@@ -24,6 +24,14 @@ export default function Packs({ packs, authData, levels }: info) {
     let [addedLevels, setAddedLevels] = useState<Array<Record<any, any>>>([])
     let [removedLevels, setRemovedLevels] = useState<Array<Record<any, any>>>([])
     let [openLevels, setOpenLevels] = useState(false)
+
+    let [width, setWidth] = useState(0)
+
+    let getWidth = () => typeof window === 'undefined' ? 0 : window.innerWidth
+  
+    useEffect(() => {
+      setWidth(getWidth())
+    })
 
     function allowDrop(ev: any) {
         ev.preventDefault();
@@ -233,7 +241,7 @@ export default function Packs({ packs, authData, levels }: info) {
             </Grid>
             <br></br>
             <Grid style={{placeItems: "center"}}>
-            <Grid columns="6" gap="4" style={{width: "min(2500px, 100%)"}}>
+            <Grid columns={width > 1200 ? "6" : width > 1000 ? "5" : width > 800 ? "4" : width > 600 ? "3" : width > 400 ? "2" : "1"} gap="4" style={{width: "min(2500px, 100%)"}}>
                 {filteredPacks.map((e: any) => <DialogRoot key={e.id} onOpenChange={async open => {
                     if(open) {
                         let req = await fetch(`/api/pack/${e.id}`)

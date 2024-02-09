@@ -77,7 +77,7 @@ export default function EditAdmins({ authData, users }: info) {
                             <CalloutText size="3" ml="-1">{error.message}</CalloutText>
                         </CalloutRoot><br></br></> : ""}
                         <Flex gap="4" align="center" justify={'center'}>
-                            <Button size="3" disabled={!edits.id || !edits.perms} onClick={async () => {
+                            <Button size="3" disabled={!edits.id || !edits.perms || authData.perms.idl < 2} onClick={async () => {
                                 setError({ color: "blue", message: "Loading..." })
                                 let req = await fetch("/api/admins/site", {
                                     method: "POST",

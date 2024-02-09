@@ -31,7 +31,7 @@ export async function POST(req: NextRequest, res: Record<any, any>) {
             })
         ])
     } catch(e: any) {
-        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
     }
     return new Response(null, {status: 204})
 }
@@ -84,8 +84,10 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                 }
             })
         ])
+        await prisma.$disconnect()
     } catch(e: any) {
-        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+        await prisma.$disconnect()
+        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
     }
     return new Response(null, {status: 204})
 }
@@ -113,7 +115,7 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
             prisma.submission.delete({where:{id: body.id}})
         ])
     } catch(e: any) {
-        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+        return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
     }
     return new Response(null, {status: 204})
 }

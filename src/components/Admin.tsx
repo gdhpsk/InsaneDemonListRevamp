@@ -83,7 +83,7 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
                 <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
             <Flex gap="4" align="center" justify={'center'}>
-                <Button size="3" disabled={authData.perms.idl < 2 || objectEquals(admin, edits)} onClick={async () => {
+                <Button size="3" disabled={authData.perms.idl < 2 || objectEquals(admin, edits) || authData.perms.idl < 2} onClick={async () => {
                     setError({color: "blue", message: "Loading..."})
                     let obj = {
                         admin: admin._id,
@@ -107,7 +107,7 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
                         setTimeout(() => setError({color: "red", message: ""}), 3000)
                     }
                 }}><CheckIcon></CheckIcon></Button>
-                <Button size="3" color="red" disabled={authData.perms.idl < 2 || !objectEquals(admin, edits)} onClick={async () => {
+                <Button size="3" color="red" disabled={authData.perms.idl < 2 || !objectEquals(admin, edits) || authData.perms.idl < 2} onClick={async () => {
                     setError({color: "blue", message: "Loading..."})
                     let obj = {
                         admin: admin._id
@@ -128,7 +128,7 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
                         setTimeout(() => stateFunc([...users.filter((e:any) => e._id != admin._id), {...admin, perms: {...admin.perms, idl: 0}}].sort((a:any, b:any) => b?.perms?.idl - a?.perms?.idl)), 3000)
                     }
                 }}>Delete</Button>
-                <Button size="3" color="red" disabled={authData.perms.idl < 2 || objectEquals(admin, edits)} onClick={() => setEdits(admin)}><Cross1Icon></Cross1Icon></Button>
+                <Button size="3" color="red" disabled={authData.perms.idl < 2 || objectEquals(admin, edits) || authData.perms.idl < 2} onClick={() => setEdits(admin)}><Cross1Icon></Cross1Icon></Button>
             </Flex>
             <br></br>
             <br></br>

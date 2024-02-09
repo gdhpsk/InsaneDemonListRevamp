@@ -55,7 +55,7 @@ export async function GET(req: Request, res: Record<any, any>) {
 }
 
 export async function PATCH(req: NextRequest) {
-    let auth = await middleware(req, "moderator")
+    let auth = await middleware(req, "helper")
     if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
     let body: Record<any, any> = {}
 
@@ -99,7 +99,7 @@ export async function PATCH(req: NextRequest) {
        }
     }
 
-    if(body.position && body.position != level.position) {
+    if(body.position && body.position != level.position && JSON.parse(req.headers.get("full_user") || "{}").perms?.idl > 1) {
         let count = await prisma.level.count()
         if(body.position < 1 || body.position > count+1) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid position range."}, {status: 400})
         let obj: Record<any, any> = {
@@ -197,7 +197,7 @@ export async function PATCH(req: NextRequest) {
             ])
            }
         } catch(e: any) {
-            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
         }
     }
 
@@ -274,7 +274,7 @@ export async function DELETE(req: NextRequest) {
                 })
             ])
         } catch(e: any) {
-            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
         }
     } else {
         try {
@@ -327,7 +327,8 @@ export async function DELETE(req: NextRequest) {
                 })
             ])
         } catch(e: any) {
-            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 400})
+            await prisma.$disconnect()
+            return NextResponse.json({error: "500 INTERNAL SERVER ERROR", message: `Operation failed due to: ${e.message}.`}, {status: 500})
         }
     }
     await prisma.$disconnect()

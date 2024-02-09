@@ -23,6 +23,14 @@
   background-color:rgba(117, 118, 179, 0.5);
 }
 
+.entry {
+  padding: 20px
+}
+
+.entry:hover {
+  background-color:rgba(117, 118, 179, 0.5);
+}
+
 .active {
   background-color: rgba(117, 118, 179, 0.5);;
 }

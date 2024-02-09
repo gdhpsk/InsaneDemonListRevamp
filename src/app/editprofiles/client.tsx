@@ -105,7 +105,7 @@ export default function LeaderboardClient({profiles, authData}: info) {
                }, 3000)
            }
         }}>Save</Button>
-        <Button color='red' size='4' onClick={async () => {
+        <Button disabled={authData.perms.idl < 2} color='red' size='4' onClick={async () => {
            setError({color: "blue", message: "Loading..."})
            let req = await fetch("/api/leaderboard/"+profile?.id, {
                method: "DELETE",
