@@ -309,8 +309,7 @@ export default function ProfileSubmissions({ data }: info) {
                 <CalloutText size="3" ml="-1">{error.message}</CalloutText>
             </CalloutRoot><br></br></> : ""}
             <Grid style={{ placeItems: "center" }}>
-                        <DialogClose>
-                            <Button size="3" color='red' onClick={async () => {
+                            <Button size="3" color='red' onClick={async (e) => {
                                      setError({color: "blue", message: "Loading..."})
                                      let req = await fetch("/api/user/submissions", {
                                          method: "DELETE",
@@ -335,14 +334,19 @@ export default function ProfileSubmissions({ data }: info) {
                                         let submissions = await req.json()
                                          setError({color: "green", message: `Successfully deleted submission`})
                                          setTimeout(() =>{
+                                            document.getElementById("close")?.click()
                                             setError({color: "red", message: ""})
                                             setAllSubmissions(submissions)
-                                            setEditing(false)
-                                            setSubmission(null)
                                          }, 3000)
                                      }
                                 }}>Delete</Button>
-                        </DialogClose>
+                                <br></br>
+                                <DialogClose>
+                                    <Button id='close' color='red' onClick={() => {
+                                        setEditing(false)
+                                        setSubmission(null)
+                                    }}>Close</Button>
+                                </DialogClose>
                     </Grid>
                     </>}
                 </DialogContent>
