@@ -254,7 +254,7 @@ export default function Packs({ packs, authData, levels }: info) {
                     }
                 }}>
                     <DialogTrigger>
-                        <Card draggable="true" onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id} key={e.id} style={{backgroundColor: `rgba(${hexToRGB(e.color) as any ? Object.values(hexToRGB(e.color) as any).join(", ") : "0, 0, 0"}, 0.5)`}} onClick={e => {
+                        <Card draggable="true" onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id} key={e.id} style={{backgroundColor: `rgba(${hexToRGB(e.color) as any ? Object.values(hexToRGB(e.color) as any).join(", ") : "0, 0, 0"}, 0.5)`}}  className="infoCard" onClick={e => {
                             if(!!filteredPacks.find(e => e.difference)) e.preventDefault()
                         }}><Text size="4"><b>#{e.position}: </b>{e.name} {!e.difference ? "" : <Text size="4" color={e.difference < 0 ? "red" : "green"}>{e.difference < 0 ? "-" : "+"}{Math.abs(e.difference)}</Text>}</Text></Card>
                     </DialogTrigger>

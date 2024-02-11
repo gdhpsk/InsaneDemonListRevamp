@@ -43,7 +43,7 @@ export default function Packs({ packs }: info) {
                     }
                 }}>
                     <DialogTrigger>
-                        <Card id={e.id} key={e.id} style={{backgroundColor: `rgba(${Object.values(hexToRGB(e.color) as any).join(", ")}, 0.5)`}}><Text size="4"><b>#{e.position}: </b>{e.name}</Text></Card>
+                        <Card id={e.id} key={e.id} style={{backgroundColor: `rgba(${Object.values(hexToRGB(e.color) as any).join(", ")}, 0.5)`}} className="infoCard"><Text size="4"><b>#{e.position}: </b>{e.name}</Text></Card>
                     </DialogTrigger>
                     <DialogContent>
                         {pack ? <>

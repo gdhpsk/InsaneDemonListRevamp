@@ -325,7 +325,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                     }
                 }}>
                     <DialogTrigger>
-                        <Card draggable={authData.perms.idl > 1} onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id} key={e.id} onClick={e => {
+                        <Card draggable={authData.perms.idl > 1} onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id}  className="infoCard" key={e.id} onClick={e => {
                             if(!!filteredLevels.find(e => e.difference)) e.preventDefault()
                         }}><Text size="4"><b>#{e.position}: </b>{e.name} by {e.publisher} {!e.difference ? "" : <Text size="4" color={e.difference < 0 ? "red" : "green"}>{e.difference < 0 ? "-" : "+"}{Math.abs(e.difference)}</Text>}</Text></Card>
                     </DialogTrigger>

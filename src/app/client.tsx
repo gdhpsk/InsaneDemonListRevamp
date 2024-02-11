@@ -26,7 +26,7 @@ export default function HomePage({admins}: info) {
       </Flex>
       <br></br>
       <Text size="5" className="header">The Official Demonlist that has insane demons ranked based on difficulty!</Text>
-      <Grid columns={width > 1200 ? "2" : "1"} gap="9" style={{marginTop: "60px", [width < 700 ? "padding-top" : "padding"]: "50px", maxWidth: "1800px", margin: "auto"}}>
+      <Grid columns={width > 1200 ? "2" : "1"} gap="9" style={{marginTop: "60px", [width < 700 ? "paddingTop" : "padding"]: "50px", maxWidth: "1800px", margin: "auto"}}>
         <Box>
           <Text className='header' size="8" align="left" style={{textAlign: "left !important" as any}}>Rules</Text>
 

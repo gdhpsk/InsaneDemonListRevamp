@@ -12,7 +12,10 @@ interface info {
 export default async function LeaderboardClient() {
     const session = await getServerSession()
     if(!session?.user) {
-        return <NotFound></NotFound>
+        return <Box>
+          <br></br>
+          <Text size="8" weight='bold' align='center' as='p'>You must login in order to submit!</Text>
+        </Box>
     }
     let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/me`, {
         headers: {

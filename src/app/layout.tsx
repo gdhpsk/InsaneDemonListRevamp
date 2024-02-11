@@ -43,7 +43,7 @@ export default async function RootLayout({
               {route: "/legacy", name: "Legacy List"},
               {route: "/leaderboards", name: "Leaderboards"},
               {route: "/packs", name: "Packs"},
-              {route: "/submit", name: "Submit", auth: true}
+              {route: "/submit", name: "Submit"}
             ]}
           ></Nav>
           {children}
