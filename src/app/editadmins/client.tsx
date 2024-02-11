@@ -51,7 +51,7 @@ export default function EditAdmins({ authData, users }: info) {
                                 </Flex>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                {accounts.filter((e: any) => !e.perms.idl).map((e: any) => <DropdownMenuItem style={{ fontSize: "15px" }} key={e._id} onClick={() => setEdits({ ...edits, id: e._id, name: e.name, email: e.email })}>{e.email} ({e.name})</DropdownMenuItem>)}
+                                {accounts.filter((e: any) => !e.perms?.idl).map((e: any) => <DropdownMenuItem style={{ fontSize: "15px" }} key={e._id} onClick={() => setEdits({ ...edits, id: e._id, name: e.name, email: e.email })}>{e.email} ({e.name})</DropdownMenuItem>)}
                             </DropdownMenuContent>
                         </DropdownMenuRoot>
                         <br></br>
@@ -77,7 +77,7 @@ export default function EditAdmins({ authData, users }: info) {
                             <CalloutText size="3" ml="-1">{error.message}</CalloutText>
                         </CalloutRoot><br></br></> : ""}
                         <Flex gap="4" align="center" justify={'center'}>
-                            <Button size="3" disabled={!edits.id || !edits.perms || authData.perms.idl < 2} onClick={async () => {
+                            <Button size="3" disabled={!edits.id || !edits.perms || authData.user.perms.idl < 2} onClick={async () => {
                                 setError({ color: "blue", message: "Loading..." })
                                 let req = await fetch("/api/admins/site", {
                                     method: "POST",

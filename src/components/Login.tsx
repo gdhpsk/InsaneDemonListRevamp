@@ -6,7 +6,11 @@ import Link from "next/link";
 import { useState } from "react";
 import ResetPassword from "./ResetPassword";
 
-export default function Login() {
+interface info {
+    small?: boolean
+}
+
+export default function Login({small}: info) {
     let [login, setLogin] = useState({
         email: {
             valid: true,
@@ -36,7 +40,7 @@ export default function Login() {
   return (
     <DialogRoot>
         <DialogTrigger>
-            <Link href="#" style={{textDecoration: "none", color: "white"}}><Text size="3"><EnterIcon style={{scale: 1.3}}></EnterIcon></Text></Link>
+            <Link href="#" style={{textDecoration: "none", color: "white"}} className={small ? "entry" : ""}><Text size="3"><EnterIcon style={{scale: 1.3}}></EnterIcon></Text></Link>
         </DialogTrigger>
         <DialogContent style={{padding: "30px"}}>
             <Flex gap="4" justify={'center'} align={'center'} >

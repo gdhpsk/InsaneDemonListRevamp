@@ -1,7 +1,7 @@
 'use client';
 import LeaderboardCard from '@/components/LeaderboardCard'
 import { CaretDownIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Box, Button, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes'
+import { Box, Button, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, SelectContent, SelectItem, SelectRoot, SelectTrigger, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes'
 import { useState } from 'react';
 import Image from "next/image"
 import cache from "../../../cache.json"
@@ -37,23 +37,19 @@ export default function LeaderboardClient({profiles}: info) {
         </Grid>
         <br></br>
         <Grid style={{placeItems: "center"}}>
-            <DropdownMenuRoot >
-                <DropdownMenuTrigger>
-                    <Button style={{width: "min(100%, 400px)"}} color="cyan">
-            <Image src={nationality[0] != "International" ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${nationality[1]}.svg` : "/international.png"} width={24} height={18} alt={nationality[1]}></Image>
-                            <Text size="5" align="left" as="p" style={{width: "100%"}}>{nationality[0]}</Text>
-                            <Text style={{textAlign: "end", width: "100%"}} as="p"><CaretDownIcon style={{scale: 2.5}}></CaretDownIcon></Text>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent  style={{width: "min(100%, 400px)"}}>
-                    {Object.entries(cache.nationalities).map(e => <DropdownMenuItem key={e[1]} onClick={() => setNationality(e)}>
-        <Flex gap="3">
+            <SelectRoot defaultValue={JSON.stringify(nationality)} onValueChange={(e) => {
+                 setNationality(JSON.parse(e))
+            }}>
+                <SelectTrigger style={{width: "min(100%, 400px)", fontSize: "20px"}} color="cyan"></SelectTrigger>
+                <SelectContent>
+                    {Object.entries(cache.nationalities).map(e => <SelectItem key={e[1]} value={JSON.stringify(e)}>
+                    <Flex gap="3">
             <Image alt={e[1]} src={e[0] != "International" ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e[1]}.svg` : "/international.png"} width={24} height={18}></Image>
             <Text size="3">{e[0]}</Text>
         </Flex>
-    </DropdownMenuItem>)}
-                </DropdownMenuContent>
-            </DropdownMenuRoot>
+                    </SelectItem>)}
+                </SelectContent>
+            </SelectRoot>
         </Grid>
         <br></br>
         <Grid style={{placeItems: "center"}}>

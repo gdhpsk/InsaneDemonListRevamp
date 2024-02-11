@@ -26,13 +26,13 @@ export default function HomePage({admins}: info) {
       </Flex>
       <br></br>
       <Text size="5" className="header">The Official Demonlist that has insane demons ranked based on difficulty!</Text>
-      <Grid columns={width > 1200 ? "2" : "1"} gap="9" style={{marginTop: "60px", padding: "50px", maxWidth: "1800px", margin: "auto"}}>
+      <Grid columns={width > 1200 ? "2" : "1"} gap="9" style={{marginTop: "60px", [width < 700 ? "padding-top" : "padding"]: "50px", maxWidth: "1800px", margin: "auto"}}>
         <Box>
-          <Text className='header' size="8" align="left">Rules</Text>
+          <Text className='header' size="8" align="left" style={{textAlign: "left !important" as any}}>Rules</Text>
 
           <Text size="4">
             <p>
-              We have officially adopted most of the <a href="https://pointercrate.com/guidelines/index" target="_blank">Pointercrate Demonlist&apos;s guidelines</a>. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to <abbr>IDL</abbr>, as well as some leniency changes:
+              We have officially adopted most of the <a href="https://pointercrate.com/guidelines/index" target="_blank" style={{color: "skyblue"}}>Pointercrate Demonlist&apos;s guidelines</a>. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to <abbr>IDL</abbr>, as well as some leniency changes:
             </p>
             <ul>
               <li>
@@ -53,11 +53,11 @@ export default function HomePage({admins}: info) {
             </ul>
           </Text>
 <Box style={{marginTop: "40px"}}>
-<Text className='header' size="8" align="left">Discord Server</Text>
+<Text className='header' size="8" align="left" style={{textAlign: "left !important" as any}}>Discord Server</Text>
 <br></br>
 <Card style={{ marginTop: "15px", width: "fit-content", padding: "20px" }}>
   <Grid>
-  <Text size="7" as="p" align="center"><a href="https://discord.gg/AyDPzBQc" target="_blank" style={{textDecoration: "none"}}>Insane Demon List Discord</a></Text>
+  <Text size="7" as="p" align="center"><a href="https://discord.gg/AyDPzBQc" target="_blank" style={{textDecoration: "none", color: "skyblue"}}>Insane Demon List Discord</a></Text>
   <br></br>
 <iframe src="https://discord.com/widget?id=820784322456977438&theme=dark" width="350" height="500" frameBorder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style={{borderRadius: "20px"}}></iframe>
 <br></br>
@@ -67,7 +67,7 @@ export default function HomePage({admins}: info) {
 </Box>
         </Box>
         <Box>
-        <Text className='header' size="7" align="left">List Leaders</Text>
+        <Text className='header' size="7" align="left" style={{textAlign: "left !important" as any}}>List Leaders</Text>
         <Flex wrap="wrap" gap="3">
         {admins.leaders.map((e: Record<any, any>) => <InfoCard
               name={e.name}
@@ -78,7 +78,7 @@ export default function HomePage({admins}: info) {
               id={e.id}
             ></InfoCard>)}
         </Flex>
-        <Text className='header' size="7" align="left" style={{marginTop: "30px"}}>List Moderators</Text>
+        <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>List Moderators</Text>
         <Flex wrap="wrap" gap="3">
         {admins.moderators.map((e: Record<any, any>) => <InfoCard
               name={e.name}
@@ -89,7 +89,7 @@ export default function HomePage({admins}: info) {
               id={e.id}
             ></InfoCard>)}
           </Flex>
-          <Text className='header' size="7" align="left" style={{marginTop: "30px"}}>List Helpers</Text>
+          <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>List Helpers</Text>
           <Flex wrap="wrap" gap="3">
           {admins.helpers.map((e: Record<any, any>) => <InfoCard
               name={e.name}
@@ -100,7 +100,7 @@ export default function HomePage({admins}: info) {
               id={e.id}
             ></InfoCard>)}
           </Flex>
-          <Text className='header' size="7" align="left" style={{marginTop: "30px"}}>Server Moderators</Text>
+          <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>Server Moderators</Text>
           <Flex wrap="wrap" gap="3">
           {admins.server_mods.map((e: Record<any, any>) => <InfoCard
               name={e.name}
@@ -111,7 +111,7 @@ export default function HomePage({admins}: info) {
               id={e.id}
             ></InfoCard>)}
           </Flex>
-          <Text className='header' size="7" align="left" style={{marginTop: "30px"}}>Developers</Text>
+          <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>Developers</Text>
           <Flex wrap="wrap" gap="3">
           {admins.developers.map((e: Record<any, any>) => <InfoCard
               name={e.name}

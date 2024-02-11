@@ -57,6 +57,7 @@ export const authOptions: NextAuthOptions = {
                         token,
                         userId: create.insertedId,
                         createdAt: new Date(),
+                        perms: {},
                         type: "verify"
                     })
                     await sendVerificationRequest({

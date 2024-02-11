@@ -38,7 +38,7 @@ export default function Nav({authData, routes}: info) {
 
   return (
     <>
-    <Link href="/" style={{textDecoration: "none", color: "lightblue", display: "contents"}}><Text size="6" className="header" style={{display: "flex", padding: "10px", width: "fit-content", gap: "10px"}}><img src="/favicon.ico" height="30px"></img> Insane Demon List</Text></Link>
+    <a href="/" style={{textDecoration: "none", color: "lightblue", display: "contents"}}><Text size="6" className="header" style={{display: "flex", padding: "10px", width: "fit-content", gap: "10px"}}><img src="/favicon.ico" height="30px"></img> Insane Demon List</Text></a>
    <Grid style={{placeItems: "end", marginTop: "-15px"}}>
     {width > 1100 ? <Flex className="nav-content" gap="1">
             {routes.filter(x => !x.auth).map(e => <Link key={e.route} href={e.route} style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == e.route ? "active" : ""}>{e.name}</Text></Link>)}
@@ -49,7 +49,7 @@ export default function Nav({authData, routes}: info) {
             <PopoverContent>
             {routes.filter(x => !x.auth).map(e => <><Link href={e.route} style={{textDecoration: "none", color: "white"}} className={search == e.route ? "active entry" : "entry"}><Text size="3">{e.name}</Text></Link><br></br><br></br><br></br></>)}
             {data.user ? routes.filter(x => x.auth).map(e => <><Link href={e.route} style={{textDecoration: "none", color: "white"}} className={search == e.route ? "active entry" : "entry"}><Text size="3">{e.name}</Text></Link><br></br><br></br><br></br></>) : ""}
-            {!data.user ? <Login></Login> : <Link href="/profile" style={{textDecoration: "none", color: "white"}} className={search == "/profile" ? "active entry" : "entry"}><Text size="3">Settings</Text></Link>}
+            {!data.user ? <Login small={true}></Login> : <Link href="/profile" style={{textDecoration: "none", color: "white"}} className={search == "/profile" ? "active entry" : "entry"}><Text size="3">Settings</Text></Link>}
             </PopoverContent>
           </PopoverRoot></Flex>}
    </Grid>

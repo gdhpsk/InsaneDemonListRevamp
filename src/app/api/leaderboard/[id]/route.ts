@@ -39,7 +39,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
     await prisma.player.update({
         where: {id: res.params.id},
         data: {
-            name: body.name ?? exists.name,
+            name: body.name || exists.name,
             nationality: body.nationality ?? exists.nationality,
             abbr: body.abbr ?? exists.abbr,
             accountId: body.accountId ?? exists.accountId

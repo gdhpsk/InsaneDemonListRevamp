@@ -39,7 +39,7 @@ export default function Level({level, count}: info) {
         </> : ""}
        <Flex justify={"center"} align="center" gap="9">
             {level.position != 1 ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position - 1}`}></ChevronLeftIcon> : ""}
-            <Text as="p" align="center" size="9" weight="bold"><a href={`https://youtu.be/${level.ytcode}`} target="_blank" style={{textDecoration: "none"}}>{level.position < 151 ? `${level.position}. ` : ""}{level.name}</a></Text>
+            <Text as="p" align="center" size="9" weight="bold"><a href={`https://youtu.be/${level.ytcode}`} target="_blank" style={{textDecoration: "none", color: "skyblue"}}>{level.position < 151 ? `${level.position}. ` : ""}{level.name}</a></Text>
             {level.position != count ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position + 1}`}></ChevronRightIcon> : ""}
         </Flex>
         <Text as="p" align="center" size="6" weight="bold" color="gray">by {level.publisher}</Text>

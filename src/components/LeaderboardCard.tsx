@@ -43,7 +43,7 @@ export default function LeaderboardCard({profile,nationalities}: info) {
             {profile.records} points
         </Text>
         {profile.nationality ? <><br></br><Flex align='center' gap='2'>
-                <Text as="p" align="center" size="5" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
+                <Text as="p" align="center" size="5" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none", color: "skyblue"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="24" onClick={() => {
                             window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
                     }}></img>

@@ -21,7 +21,7 @@ export default function Submissions({submissions, authData, levels, leaderboards
     let [filteredPlayers, setFilteredPlayers] = useState(leaderboards)
     let [openLevels, setOpenLevels] = useState(false)
     let [openPlayers, setOpenPlayers] = useState(false)
-    let [type, setType] = useState("all")
+    let [type, setType] = useState("active")
     let [edits, setEdits] = useState({
         video: {
             valid: true,
@@ -78,7 +78,7 @@ export default function Submissions({submissions, authData, levels, leaderboards
     <Grid style={{placeItems: "center"}}>
         <Card style={{width: "min(900px, 100%)", padding: "10px"}}>
         <Grid style={{placeItems: "center"}}>
-        <TabsRoot defaultValue="all">
+        <TabsRoot defaultValue="active">
   <TabsList size="2">
     <TabsTrigger value="active" onClick={() =>{ 
         setType("active")

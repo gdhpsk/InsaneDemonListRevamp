@@ -22,7 +22,7 @@ export default function InfoCard({avatar, name, tag, channel, id}: info) {
       />
       <Box>
         <Text as="div" size="2" weight="bold">
-          <a href={channel} target={channel == "#" ? "_self" : "_blank"} style={{textDecoration: "none"}}>{name}</a>
+          <a href={channel} target={channel == "#" ? "_self" : "_blank"} style={{textDecoration: "none", color: "skyblue"}}>{name}</a>
         </Text>
         <Text as="div" size="2" color="gray">
         {tag}

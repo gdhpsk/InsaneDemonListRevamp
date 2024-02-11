@@ -81,7 +81,7 @@ export default function LeaderboardClient({profiles, authData}: info) {
       <br></br>
      <TextFieldRoot>
         <TextFieldSlot>Account ID</TextFieldSlot>
-        <TextFieldInput defaultValue={profile.accountId} onChange={e => setProfile({...profile, accountId: e.target.value})}></TextFieldInput>
+        <TextFieldInput defaultValue={profile.accountId} onChange={e => setProfile({...profile, accountId: e.target.value || null})}></TextFieldInput>
       </TextFieldRoot>
       <br></br>
       <Flex gap="9" justify={'center'}>

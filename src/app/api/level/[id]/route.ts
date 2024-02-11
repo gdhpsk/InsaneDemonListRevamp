@@ -83,12 +83,32 @@ export async function PATCH(req: NextRequest) {
     if(body.editedRecords) {
        try {
             for(const item of body.editedRecords) {
+                if(!item.name) continue;
+                let player = await prisma.player.findFirst({
+                    where: {
+                        name: item.name
+                    },
+                    select: {
+                        id: true
+                    }
+                })
+                if(!player)  {
+                    player = await prisma.player.create({
+                        data: {
+                            name: item.name
+                        },
+                        select: {
+                            id: true
+                        }
+                    })
+                }
                 await prisma.record.update({
                     where: {
                         id: item.id
                     },
                     data: {
                         link: item.link,
+                        playerId: player.id,
                         verification: item.verification,
                         beaten_when_weekly: item.beaten_when_weekly
                     }

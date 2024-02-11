@@ -23,6 +23,16 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+      <meta charSet="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Insane Demon List</title>
+    <meta property="og:title" content="Geometry Dash Insane Demonlist" />
+    <meta property="og:description" content="A demon list with insane demons instead of extreme demons." />
+    <meta name="author" content="hpsk" />
+    <meta name="keywords" content="hpsk,gdhpsk,insane,demon,list,demonlist,hardest,levels,geometry dash, gd" />
+    <meta name="description" content="A demon list with insane demons instead of extreme demons."></meta>
+      </head>
       <body>
         <Theme accentColor="blue" appearance="dark">
           <Nav
