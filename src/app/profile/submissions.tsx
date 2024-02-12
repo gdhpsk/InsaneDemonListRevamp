@@ -123,7 +123,7 @@ export default function ProfileSubmissions({ data }: info) {
                 <DialogContent>
                     <Flex justify={'end'}> 
                     {!editing ? 
-                                <IconButton onClick={() => {
+                                <IconButton disabled={e.status != 0} onClick={() => {
                                     setEditing(true)
                                     setEdits({
                                         video: {
