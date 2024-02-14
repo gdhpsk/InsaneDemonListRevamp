@@ -50,6 +50,7 @@ export const authOptions: NextAuthOptions = {
                         email: credentials.email,
                         name: credentials.username,
                         password: await bcrypt.hash(credentials.password, 10),
+                        perms: {},
                         sentVerification: new Date()
                     })
                     let token = crypto.randomUUID()
@@ -57,7 +58,6 @@ export const authOptions: NextAuthOptions = {
                         token,
                         userId: create.insertedId,
                         createdAt: new Date(),
-                        perms: {},
                         type: "verify"
                     })
                     await sendVerificationRequest({
