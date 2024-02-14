@@ -102,9 +102,9 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
     return (
         <Box>
             <Flex gap="4" style={{ placeItems: "center", justifyContent: "center" }}>
-                <Image src="/favicon.ico" height={70} width={70} alt={"idl"}></Image>
+            <img src="/favicon.ico" height="70px"></img>
                 <Text size="9" className="header" style={{ display: "contents" }}>Level Editor</Text>
-                <Image src="/favicon.ico" height={70} width={70} alt={"idl"}></Image>
+                <img src="/favicon.ico" height="70px"></img>
             </Flex>
             <br></br>
             <Flex justify="center" gap="9">
