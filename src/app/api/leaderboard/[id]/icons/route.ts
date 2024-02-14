@@ -1,10 +1,18 @@
 import prisma from "../../../../../../prisma/prisma"
 import cache from "../../../../../../cache.json"
+import { ObjectId } from "bson"
 
 export async function GET(req: Request, res: Record<any, any>) {
     if((cache.icons as any)[res.params.id]?.invalidate_at > Date.now()) {
         return new Response(JSON.stringify((cache.icons as any)[res.params.id].icons))
     } 
+    try {
+        new ObjectId(res.params.id)
+    } catch(_) {
+        return new Response(JSON.stringify({error: "404 NOT FOUND", message: "Could not find the given players icon set."}), {
+            status: 404
+        })
+    }
     let profile = await prisma.player.findFirst({
         where: {
             AND: [
