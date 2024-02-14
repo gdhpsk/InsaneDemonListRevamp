@@ -32,6 +32,9 @@ export default async function RootLayout({
     <meta name="author" content="hpsk" />
     <meta name="keywords" content="hpsk,gdhpsk,insane,demon,list,demonlist,hardest,levels,geometry dash, gd" />
     <meta name="description" content="A demon list with insane demons instead of extreme demons."></meta>
+    <meta name="google-adsense-account" content="ca-pub-4543250064393866"></meta>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
+     crossOrigin="anonymous"></script>
       </head>
       <body>
         <Theme accentColor="blue" appearance="dark">
