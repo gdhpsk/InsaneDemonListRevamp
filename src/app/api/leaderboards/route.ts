@@ -20,7 +20,7 @@ export async function GET(req: Request, res: Record<any, any>) {
     })
     let profiles = leaderboards.map((e:any) => {
         e.records = e.records.map((x:any) => calc_points(x.level.position))
-        e.records = e.records.reduce((acc: any, cur: any) => acc + cur).toFixed(2)
+        e.records = e.records.reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2)
         return e
     })
     profiles.sort((a: any, b: any) => b.records - a.records)

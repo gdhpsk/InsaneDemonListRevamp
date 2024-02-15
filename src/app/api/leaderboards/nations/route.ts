@@ -32,7 +32,7 @@ export async function GET(req: Request, res: Record<any, any>) {
     let profiles = obj.map((e:any) => {
         let c = 0
         e.records = Array.from(new Set(e.records.map((x:any) => x.level.position)).values()).map((x:any) => calc_points(x))
-        e.records = parseFloat(e.records.reduce((acc: any, cur: any) => acc + cur).toFixed(2))
+        e.records = parseFloat(e.records.reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2))
         return e
     })
     profiles.sort((a: any, b: any) => b.records - a.records)

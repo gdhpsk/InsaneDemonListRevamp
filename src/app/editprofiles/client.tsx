@@ -1,8 +1,8 @@
 'use client';
-import LeaderboardCard from '@/components/LeaderboardCard'
-import { CaretDownIcon, CheckIcon, CrossCircledIcon, InfoCircledIcon, LetterCaseCapitalizeIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, SelectContent, SelectGroup, SelectItem, SelectRoot, SelectTrigger, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes'
-import { useState } from 'react';
+import styles from "../../app/submit.module.css"
+import { CaretDownIcon, CheckIcon, CrossCircledIcon, InfoCircledIcon, LetterCaseCapitalizeIcon, MagnifyingGlassIcon, PersonIcon } from '@radix-ui/react-icons';
+import { Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, SelectContent, SelectGroup, SelectItem, SelectRoot, SelectTrigger, Separator, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes'
+import { useEffect, useState } from 'react';
 import Image from "next/image"
 import cache from "../../../cache.json"
 
@@ -16,6 +16,15 @@ export default function LeaderboardClient({profiles, authData}: info) {
     let [profile, setProfile] = useState<Record<any, any> | null>(null)
     let [loading, setLoading] = useState(false)
     let [error, setError] = useState({color: "red", message: ""})
+    let [openPlayers, setOpenPlayers] = useState(false)
+
+    useEffect(() => {
+      document.addEventListener("click", (e) => {
+          if((e.target as any)?.classList?.contains?.("rt-TextFieldInput")) return;
+          setOpenPlayers(false)
+      })
+  })
+
 
   return (
     <Box style={{opacity: loading ? 0.5 : 1}}>
@@ -35,20 +44,25 @@ export default function LeaderboardClient({profiles, authData}: info) {
             </Grid>
             <br></br>
     <Grid style={{placeItems: "center"}}>
-    <SelectRoot size="3" defaultValue='lol' onValueChange={e => {
-      if(e == "lol") return setProfile(null);
-        let p = filteredLeaderboards.find((x:any) => x.id == e)
-        setProfile(null)
-        setTimeout(() => setProfile(p), 0)
-    }}>
-        <SelectTrigger></SelectTrigger>
-        <SelectContent>
-            <SelectGroup>
-                <SelectItem value="lol">Select Item</SelectItem>
-                {filteredLeaderboards.map((e:any) => <SelectItem key={e.id} value={e.id}>{e.name} ({e.records} points)</SelectItem>)}
-            </SelectGroup>
-        </SelectContent>
-    </SelectRoot>
+    <Box style={{width: "min(600px, 100%)"}}>
+    <TextFieldRoot mt="4">
+                <TextFieldSlot style={{paddingRight: "8px"}}><PersonIcon></PersonIcon></TextFieldSlot>
+                <TextFieldInput placeholder="Player Name..." id="player" onClick={(e) => {
+                    setFilteredLeaderboards(profiles.filter((x:any) => x.name.toLowerCase().includes(profile?.name.toLowerCase() || "")))
+                    setOpenPlayers(true)
+                }} onChange={(e) => {
+                    setFilteredLeaderboards(profiles.filter((x:any) => x.name.toLowerCase().includes(e.target.value.toLowerCase())))
+                }}></TextFieldInput>
+            </TextFieldRoot>
+            <Card style={{display: openPlayers ? "block" : "none", maxHeight: "300px", overflowY: "scroll", overflowX: "hidden", animation: "ease-in-out 1s"}}>
+            <div style={{marginBottom: "10px"}}></div>
+            {filteredLeaderboards.map((e:any, i: number) => <Box key={i}>{i ? <Separator my="3" size="4" /> : ""}<Text className={styles.option} size="3" as="p" style={{margin: "-8px"}} onClick={() => {
+                  setProfile(e);
+                (document.getElementById("player") as any).value = e.name
+                setOpenPlayers(false)
+            }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records} points)</Text></Box>)}
+            </Card>
+    </Box>
     </Grid>
     <br></br>
     {profile ? <Grid style={{placeItems: "center"}}>

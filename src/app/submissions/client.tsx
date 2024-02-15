@@ -41,6 +41,14 @@ export default function Submissions({submissions, authData, levels, leaderboards
     }, [type])
 
     useEffect(() => {
+        document.addEventListener("click", (e) => {
+            if((e.target as any)?.classList?.contains?.("rt-TextFieldInput")) return;
+            setOpenLevels(false)
+            setOpenPlayers(false)
+        })
+    })
+
+    useEffect(() => {
         if(submission) {
             setEdits({
                 video: {

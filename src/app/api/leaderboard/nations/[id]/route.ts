@@ -52,7 +52,7 @@ export async function GET(req: Request, res: Record<any, any>) {
         e.missing = e.missing.filter((x:any) => x)
         e.records = e.records.sort((a: any, b: any) => a.level.position - b.level.position).sort((a: any, b: any) => b.verification - a.verification)
         e.packs = (packs as any).filter((x: any) => x.levels.every((y: any) => e.points.includes(y.position))).sort((a: any, b: any) => a.position - b.position)
-        e.points = parseFloat(e.records.map((x:any) => calc_points(x)).reduce((acc: any, cur: any) => acc + cur).toFixed(2))
+        e.points = parseFloat(e.records.map((x:any) => calc_points(x)).reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2))
         return e
     }))
     await prisma.$disconnect()
