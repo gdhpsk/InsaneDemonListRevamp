@@ -34,7 +34,7 @@ export default async function RootLayout({
     <meta name="description" content="A demon list with insane demons instead of extreme demons."></meta>
     <meta name="google-adsense-account" content="ca-pub-4543250064393866"></meta>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-     crossOrigin="anonymous"></script>
+     crossOrigin="anonymous" defer></script>
       </head>
       <body>
         <Theme accentColor="blue" appearance="dark">
