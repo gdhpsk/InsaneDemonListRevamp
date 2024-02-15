@@ -57,7 +57,8 @@ export default function LeaderboardClient({profiles, authData}: info) {
             <Card style={{display: openPlayers ? "block" : "none", maxHeight: "300px", overflowY: "scroll", overflowX: "hidden", animation: "ease-in-out 1s"}}>
             <div style={{marginBottom: "10px"}}></div>
             {filteredLeaderboards.map((e:any, i: number) => <Box key={i}>{i ? <Separator my="3" size="4" /> : ""}<Text className={styles.option} size="3" as="p" style={{margin: "-8px"}} onClick={() => {
-                  setProfile(e);
+                 setProfile(null)
+                setTimeout(() =>  setProfile(e), 0);
                 (document.getElementById("player") as any).value = e.name
                 setOpenPlayers(false)
             }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records} points)</Text></Box>)}
