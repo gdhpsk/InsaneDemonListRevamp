@@ -57,7 +57,7 @@ export default function HomePage({admins}: info) {
 <br></br>
 <Card style={{ marginTop: "15px", width: "fit-content", padding: "20px" }}>
   <Grid>
-  <Text size="7" as="p" align="center"><a href="https://discord.gg/AyDPzBQc" target="_blank" style={{textDecoration: "none", color: "skyblue"}}>Insane Demon List Discord</a></Text>
+  <Text size="7" as="p" align="center"><a href="https://discord.gg/7JbFjRqSQ4" target="_blank" style={{textDecoration: "none", color: "skyblue"}}>Insane Demon List Discord</a></Text>
   <br></br>
 <iframe src="https://discord.com/widget?id=820784322456977438&theme=dark" width="350" height="500" frameBorder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style={{borderRadius: "20px"}}></iframe>
 <br></br>
