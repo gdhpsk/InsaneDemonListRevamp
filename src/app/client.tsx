@@ -50,6 +50,9 @@ export default function HomePage({admins}: info) {
               <li>
                 Please do not submit multiple records of the same record (don&apos;t submit dupes)!
               </li>
+              <li>
+              Levels completed with the use of physics bypass and/or levels completed using the 2.1 GDPS (or other GDPS's) will not be accepted. An exception to the rule is if a level is completed prior to the release of 2.2.
+              </li>
             </ul>
           </Text>
 <Box style={{marginTop: "40px"}}>
