@@ -106,7 +106,7 @@ export default function Submissions({submissions, authData, levels, leaderboards
             <DropdownMenuRoot>
                 <DropdownMenuTrigger>
                 <Button style={{width: "min(100%, 600px)", height: "max-content"}} color="indigo">
-                            <Text size="5" align="left" as="p" style={{width: "100%"}}>{submission ? <span>Submission #{allSubmissions.findIndex(e => e.id == submission?.id)+1} by {submission.player}: {submission.level} by {submission.publisher}</span> : "No Submissions Available"}</Text>
+                            <Text size="5" align="left" as="p" style={{width: "100%"}}>{submission ? <span>Submission #{allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).findIndex(e => e.id == submission?.id)+1} by {submission.player}: {submission.level} by {submission.publisher}</span> : "No Submissions Available"}</Text>
                             {allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).length ? <Text style={{textAlign: "end", width: "100%"}} as="p"><CaretDownIcon style={{scale: 2.5}}></CaretDownIcon></Text> : ""}
                     </Button>
                 </DropdownMenuTrigger>
