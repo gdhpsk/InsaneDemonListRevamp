@@ -1,7 +1,7 @@
 'use client';
 import hexToRGB from '@/functions/hexToRGB'
 import calc_points from '@/functions/points'
-import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon, StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
+import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, DrawingPinFilledIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, RadiobuttonIcon, SpeakerLoudIcon, StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
 import { Badge, Box, CalloutIcon, CalloutRoot, CalloutText, Flex, Grid, HoverCardContent, HoverCardRoot, HoverCardTrigger, IconButton, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import styles from "@/app/level.module.css"
@@ -142,7 +142,7 @@ export default function Level({level, count}: info) {
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.player.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.player.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
                             window.location.href = e.player.nationality ? `/nationality/${e.player.abbr}` : "#"
                     }}></img></TableRowHeaderCell>
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}{e.verification ? <DrawingPinFilledIcon></DrawingPinFilledIcon> : ""}<a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.player.name}</a></Flex></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
                         <IconButton color="violet">

@@ -521,7 +521,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                             <TextFieldInput defaultValue={level.list[record].link} onChange={(e) => {
                                 setEditedRecords([...editedRecords.filter(x => x.id != level.list[record as any].id), {
                                     id: level.list[record as any].id,
-                                    name: level.list[record as any].name,
+                                    name: level.list[record as any].player.name,
                                     link: e.target.value,
                                     verification: level.list[record as any].verification,
                                     beaten_when_weekly: level.list[record as any].beaten_when_weekly
@@ -543,7 +543,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                             <SelectRoot defaultValue={JSON.stringify(!!level.list[record].verification)} onValueChange={(e) => {
                                 setEditedRecords([...editedRecords.filter(x => x.id != level.list[record as any].id), {
                                     id: level.list[record as any].id,
-                                    name: level.list[record as any].name,
+                                    name: level.list[record as any].player.name,
                                     link: level.list[record as any].link,
                                     verification: JSON.parse(e),
                                     beaten_when_weekly: level.list[record as any].beaten_when_weekly
@@ -569,7 +569,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                             <SelectRoot defaultValue={JSON.stringify(!!level.list[record].beaten_when_weekly)} onValueChange={(e) => {
                                 setEditedRecords([...editedRecords.filter(x => x.id != level.list[record as any].id), {
                                     id: level.list[record as any].id,
-                                    name: level.list[record as any].name,
+                                    name: level.list[record as any].player.name,
                                     link: level.list[record as any].link,
                                     verification: level.list[record as any].verification,
                                     beaten_when_weekly:JSON.parse(e)

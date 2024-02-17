@@ -38,6 +38,9 @@ export async function GET(req: Request, res: Record<any, any>) {
                 }
             },
             list: {
+                orderBy: {
+                    verification: "desc"
+                },
                 select: {
                     id: true,
                     player: true,
@@ -99,6 +102,17 @@ export async function PATCH(req: NextRequest) {
                         },
                         select: {
                             id: true
+                        }
+                    })
+                }
+                if(item.verification) {
+                    await prisma.record.updateMany({
+                        where: {
+                            levelId: level.id,
+                            verification: true
+                        },
+                        data: {
+                            verification: null
                         }
                     })
                 }
