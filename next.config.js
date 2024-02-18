@@ -5,6 +5,19 @@ const nextConfig = {
     },
     typescript: {
         ignoreBuildErrors: true
+    },
+    async headers() {
+        return [
+            {
+                source: "/api/:path*",
+                headers: [
+                    {
+                        key: "access-control-allow-origin",
+                        value: "*"
+                    }
+                ]
+            }
+        ]
     }
 }
 
