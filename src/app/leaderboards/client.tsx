@@ -67,7 +67,7 @@ export default function LeaderboardClient({profiles}: info) {
                     </Button>
         </Grid>
         <br></br>
-        {(type == "users" ? profiles : nations).filter((e: Record<any, any>) => e.name.toLowerCase().includes(filter) && (nationality[1] == "International" ? true : e.abbr == nationality[1])).map((e: Record<any, any>) => <Grid style={{placeItems: "center"}} key={e.id}><LeaderboardCard profile={e} nationalities={type == "nations"}></LeaderboardCard><br></br></Grid>)}
+        {(type == "users" ? profiles : nations).filter((e: Record<any, any>) => e.name.toLowerCase().includes(filter.toLowerCase()) && (nationality[1] == "International" ? true : e.abbr == nationality[1])).map((e: Record<any, any>) => <Grid style={{placeItems: "center"}} key={e.id}><LeaderboardCard profile={e} nationalities={type == "nations"}></LeaderboardCard><br></br></Grid>)}
     </Box>
   )
 }
