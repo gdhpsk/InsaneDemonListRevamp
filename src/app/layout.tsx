@@ -26,7 +26,7 @@ export default async function RootLayout({
     <html lang="en">
       <head>
       <meta charSet="utf-8" />
-    <meta name="viewport" content="width=1024" />
+    <meta name="viewport" content="width=900" />
     <title>Insane Demon List</title>
     <meta property="og:title" content="Geometry Dash Insane Demonlist" />
     <meta property="og:description" content="A demon list with insane demons instead of extreme demons." />
