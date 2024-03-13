@@ -40,11 +40,6 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                         select: {
                             date: true
                         }
-                    },
-                    list: {
-                        select: {
-                            id: true
-                        }
                     }
                 }
             })
@@ -82,12 +77,10 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                     },
                     update: {
                         link: body.link || submission.link,
-                        verification: level.list?.length ? undefined : true,
                         beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined
                     },
                     create: {
                         link: body.link || submission.link,
-                        verification: level.list?.length ? undefined : true,
                         beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined,
                         levelId: level.id,
                         playerId: player.id
