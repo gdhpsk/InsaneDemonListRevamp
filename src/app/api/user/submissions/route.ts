@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { middleware } from "../../middleware"
 import prisma from "../../../../../prisma/prisma";
+import dayjs from "dayjs";
 
 export async function POST(req: NextRequest, res: Record<any, any>) {
     let auth = await middleware(req)
@@ -14,8 +15,39 @@ export async function POST(req: NextRequest, res: Record<any, any>) {
     }
     let valid = /^(https?:\/\/)?(www\.)?(youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/.test(body.link)
     if(!valid) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid youtube link!"}, {status: 400})
+    let submitted = await prisma.submission.findFirst({
+        where: {
+            link: body.link
+        }
+    })
+    if(submitted) return NextResponse.json({error: "400 BAD REQUEST", message: "This submission already exists!"}, {status: 400})
+    let exists = await prisma.record.findFirst({
+        where: {
+            link: body.link
+        }
+    })
+    if(exists) return NextResponse.json({error: "400 BAD REQUEST", message: "This submission has already been added!"}, {status: 400})
+    let cooldown = await prisma.cooldown.findFirst({
+        where: {
+            userId: req.headers.get("user") || ""
+        }
+    })
+    if(cooldown && (cooldown?.req || 0) >= 10) return NextResponse.json({error: "400 BAD REQUEST", message: `You have officially been rate limited.`}, {status: 400})
     try {
         await prisma.$transaction([
+            prisma.cooldown.upsert({
+                where: {
+                    userId: req.headers.get("user") || ""
+                },
+                create: {
+                    userId: req.headers.get("user") || "",
+                    createdAt: new Date(),
+                    req: 1
+                },
+                update: {
+                    req: (cooldown?.req || 0)+1
+                }
+            }),
             prisma.submission.create({
                 data: {
                     level: body.level,

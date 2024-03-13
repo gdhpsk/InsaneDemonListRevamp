@@ -82,3 +82,12 @@ model Submission {
 
     @@map(name: "submissions")
 }
+
+model Cooldown {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    req Int
+    userId String @db.ObjectId @unique
+    createdAt DateTime
+
+    @@map(name: "cooldowns")
+}
