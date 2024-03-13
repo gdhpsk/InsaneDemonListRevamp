@@ -339,7 +339,7 @@ export default function Submissions({submissions, authData, levels, leaderboards
                     </Grid>
                     <br></br>
                     <br></br>
-                    <Text size="8" align="center" as="p" style={{width: "min(800px, 90%)"}}>{submission.comments || "No comments were provided."}</Text>
+                    <Text size="8" align="center" as="p" style={{maxWidth: "800px"}}>{submission.comments || "No comments were provided."}</Text>
                     <br></br>
                     <Text size="4">Submitted at: {submission.createdAt}</Text>
                     <br></br>
