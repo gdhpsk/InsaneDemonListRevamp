@@ -133,7 +133,7 @@ export async function PATCH(req: NextRequest) {
        }
     }
 
-    if(body.position && body.position != level.position && JSON.parse(req.headers.get("full_user") || "{}").perms?.idl > 1) {
+    if(body.position && body.position != level.position) {
         let count = await prisma.level.count()
         if(body.position < 1 || body.position > count+1) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid position range."}, {status: 400})
         let obj: Record<any, any> = {
@@ -251,7 +251,7 @@ export async function PATCH(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-    let auth = await middleware(req, "moderator")
+    let auth = await middleware(req, "helper")
     if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
     let body: Record<any, any> = {}
 

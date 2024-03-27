@@ -108,7 +108,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
             </Flex>
             <br></br>
             <Flex justify="center" gap="9">
-                <Button size="4" disabled={!filteredLevels.find(e => e.difference) || authData.perms.idl < 2} onClick={async () => {
+                <Button size="4" disabled={!filteredLevels.find(e => e.difference)} onClick={async () => {
                     setError({color: "blue", message: "Loading..."})
                                      let req = await fetch("/api/levels", {
                                          method: "PATCH",
@@ -157,7 +157,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                     }
                 }}>
                     <DialogTrigger>
-                        <IconButton size="4" disabled={!!filteredLevels.find(e => e.difference) || authData.perms.idl < 2}>+</IconButton>
+                        <IconButton size="4" disabled={!!filteredLevels.find(e => e.difference)}>+</IconButton>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogTitle as="h1" align='center' style={{fontSize: "30px"}}>Level Addition</DialogTitle>
@@ -293,7 +293,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                </DialogClose>
                     </DialogContent>
                 </DialogRoot>
-                <Button size="4" disabled={!filteredLevels.find(e => e.difference) || authData.perms.idl < 2} color='red' onClick={() => {
+                <Button size="4" disabled={!filteredLevels.find(e => e.difference)} color='red' onClick={() => {
                      setFilteredLevels(originalLevels)
                      setEdits([])
                 }}>Cancel</Button>
@@ -325,7 +325,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                     }
                 }}>
                     <DialogTrigger>
-                        <Card draggable={authData.perms.idl > 1} onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id}  className="infoCard" key={e.id} onClick={e => {
+                        <Card draggable={true} onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id}  className="infoCard" key={e.id} onClick={e => {
                             if(!!filteredLevels.find(e => e.difference)) e.preventDefault()
                         }}><Text size="4"><b>#{e.position}: </b>{e.name} by {e.publisher} {!e.difference ? "" : <Text size="4" color={e.difference < 0 ? "red" : "green"}>{e.difference < 0 ? "-" : "+"}{Math.abs(e.difference)}</Text>}</Text></Card>
                     </DialogTrigger>
@@ -401,7 +401,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                         <br></br>
                         <TextFieldRoot>
                             <TextFieldSlot>#</TextFieldSlot>
-                            <TextFieldInput defaultValue={level.position} disabled={authData.perms.idl < 2} type="number" onChange={e => {
+                            <TextFieldInput defaultValue={level.position} type="number" onChange={e => {
                                 let levPos = level.position
                                 let newLevPos = parseInt(e.target.value)
                                 if(!newLevPos || newLevPos < 1 || newLevPos > filteredLevels.length) {
@@ -640,7 +640,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                         }} id="submit">Submit</Button>
                         <DialogRoot>
                             <DialogTrigger>
-                            <Button size='4' color='red' disabled={authData.perms.idl < 2}>Delete</Button>
+                            <Button size='4' color='red'>Delete</Button>
                             </DialogTrigger>
                             <DialogContent>
                                 <DialogTitle style={{fontSize: "30px"}} weight='bold' as='h1' align='center'>Reason?</DialogTitle>

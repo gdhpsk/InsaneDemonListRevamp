@@ -40,7 +40,7 @@ export async function GET(request: Request) {
 }
 
 export async function PATCH(request: NextRequest) {
-    let auth = await middleware(request, "moderator")
+    let auth = await middleware(request, "helper")
     if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
     let body: Array<Record<any, any>> = []
     try {
@@ -105,7 +105,7 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-    let auth = await middleware(request, "moderator")
+    let auth = await middleware(request, "helper")
     if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
     let body: Record<any, any> = {}
     try {
