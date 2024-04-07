@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken"
 import { headers } from 'next/headers';
 import Script from 'next/script';
 
-export default async function RootTemplate({
+export default function RootTemplate({
   children,
 }: {
   children: React.ReactNode
@@ -17,8 +17,8 @@ export default async function RootTemplate({
   return (
         <>
             {children}
-            <Script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-     crossOrigin="anonymous" defer async></Script>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
+     crossOrigin="anonymous"></script>
         </>
   )
 }
