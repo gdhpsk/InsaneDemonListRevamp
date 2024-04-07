@@ -41,7 +41,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
         </Flex>
         <br></br></> : ""}
         <Flex gap="2" style={{maxWidth: "100%"}} wrap="wrap" justify="center">
-                            {profile.packs.length ? profile.packs.sort((a: any,b: any) => a.position - b.positon).map((e: any) => {
+                            {profile.packs.length ? profile.packs.map((e: any) => {
                                 let rgb = hexToRGB(e.color)
                                 return <PopoverRoot key={e.id}>
                                     <PopoverTrigger className={styles.pack}>
@@ -52,7 +52,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                                         <br></br>
                                         <br></br>
                                         {e.levels.map((x:any) => <div key={x.id}><Text size="5">
-                                            <a href={`/level/${x.id}`} style={{textDecoration: "none", lineBreak: "anywhere"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by {x.publisher}</a>
+                                            <a href={`/level/${x.id}`} style={{textDecoration: "none", lineBreak: "anywhere", color: "skyblue"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by {x.publisher}</a>
                                         </Text><br></br><br></br></div>)}
                                     </PopoverContent>
                                 </PopoverRoot>

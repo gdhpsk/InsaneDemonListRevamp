@@ -170,7 +170,12 @@ export default function createPipeline(id: string) {
             }, 
             'nationality': 1, 
             'abbr': 1, 
-            'packs': 1, 
+            'packs': {
+              '$sortArray': {
+                'input': '$packs',
+                'sortBy': { 'position': 1 }
+              }
+            }, 
             '_id': 0
           }
         }
