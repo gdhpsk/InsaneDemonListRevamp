@@ -44,7 +44,7 @@ export default function InfoCard({level, removeTn}: info) {
                             }) : ""}
             </Flex>
             <br></br>
-            <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).utc(true).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(true).format("MMM D, YYYY")}` : "never"}</Text>
+            <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).utc(false).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(false).format("MMM D, YYYY")}` : "never"}</Text>
       </Box>
     </Flex>
     <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {

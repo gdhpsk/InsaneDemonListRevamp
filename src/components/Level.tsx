@@ -100,7 +100,7 @@ export default function Level({level, count}: info) {
                 <TableRow>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points(level.position)}</TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
-                        {level.weekly ? `${dayjs(level.weekly.date).utc(true).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(true).format("MMM D, YYYY")}` : "never"}    
+                        {level.weekly ? `${dayjs(level.weekly.date).utc(false).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(false).format("MMM D, YYYY")}` : "never"}    
                     </TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{level.list.length}</TableRowHeaderCell>
                 </TableRow>
