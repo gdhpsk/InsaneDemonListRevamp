@@ -50,9 +50,6 @@ export default async function RootLayout({
           ></Nav>
           {children}
         </Theme>
-
-        <Script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-     crossOrigin="anonymous" defer></Script>
       </body>
     </html>
   )
