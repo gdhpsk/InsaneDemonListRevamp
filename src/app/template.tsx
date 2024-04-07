@@ -1,7 +1,7 @@
 'use client'
 import { Router } from "next/router"
 import Script from "next/script"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 export default function RootLayout({
   children,
@@ -9,16 +9,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
+    let [load, setLoad] = useState(true)
+
     useEffect(() => {
-        let script = document.createElement("script")
-        script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-        script.async = true
-        script.crossOrigin = "anonymous"
-
-        document.body.appendChild(script)
-
+        Router.events.on("routeChangeStart", () => {
+            setLoad(false)
+            return () => {
+                Router.events.off('routeChangeStart', () => {})
+            }
+        })
         Router.events.on("routeChangeComplete", () => {
-            document.body.removeChild(script)
+            setLoad(true)
             return () => {
                 Router.events.off('routeChangeComplete', () => {})
             }
@@ -27,6 +28,8 @@ export default function RootLayout({
 
   return (<>
 {children}
+{load ? <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
+     crossOrigin="anonymous"></script> : ""}
 </>
   )
 }
