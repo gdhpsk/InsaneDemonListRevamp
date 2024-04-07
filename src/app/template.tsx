@@ -18,7 +18,7 @@ export default async function RootTemplate({
         <>
             {children}
             <Script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-     crossOrigin="anonymous" defer></Script>
+     crossOrigin="anonymous" defer async></Script>
         </>
   )
 }
