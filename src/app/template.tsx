@@ -1,7 +1,4 @@
-'use client';
 import Script from 'next/script';
-import './globals.css'
-import '@radix-ui/themes/styles.css';
 
 export default function RootTemplate({
   children,
