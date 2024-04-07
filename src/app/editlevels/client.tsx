@@ -6,6 +6,10 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import styles from "../../app/submit.module.css"
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"
+
+
+dayjs.extend(utc)
 
 interface info {
     authData: Record<any, any>,
@@ -338,7 +342,7 @@ export default function EditLevels({ authData, levels, leaderboards, packs }: in
                         <br></br>
                         <Text size="5" weight={'bold'} as='p' align='center'>Weekly</Text>
                         <Flex gap="2" align='center' justify={'center'}>
-                            <TextFieldRoot><TextFieldInput defaultValue={level.weekly ? dayjs(level.weekly.date).format("YYYY-MM-DDTHH:mm:ss") : ""} type="datetime-local" onChange={e => {
+                            <TextFieldRoot><TextFieldInput defaultValue={level.weekly ? dayjs(level.weekly.date).utc(true).format("YYYY-MM-DDTHH:mm:ss") : ""} type="datetime-local" onChange={e => {
                                 setLevel({...level, weekly: level.weekly ? {...level.weekly, date: new Date(e.target.value).toISOString()} : { color: "#000000", date: new Date(e.target.value).toISOString()}})
                             }}></TextFieldInput></TextFieldRoot>
                             <TextFieldRoot><TextFieldInput defaultValue={level.weekly?.color} type="color" style={{width: "revert"}} onChange={e => {

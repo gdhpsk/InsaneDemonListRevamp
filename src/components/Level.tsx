@@ -4,12 +4,14 @@ import calc_points from '@/functions/points'
 import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, DrawingPinFilledIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, RadiobuttonIcon, SpeakerLoudIcon, StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
 import { Badge, Box, CalloutIcon, CalloutRoot, CalloutText, Flex, Grid, HoverCardContent, HoverCardRoot, HoverCardTrigger, IconButton, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
+import utc from "dayjs/plugin/utc"
 import styles from "@/app/level.module.css"
 
 interface info {
     level: Record<any, any>
     count: number
 }
+dayjs.extend(utc)
 
 export default function Level({level, count}: info) {
   return (
@@ -98,7 +100,7 @@ export default function Level({level, count}: info) {
                 <TableRow>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points(level.position)}</TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
-                        {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).format("MMM D, YYYY")}` : "never"}    
+                        {level.weekly ? `${dayjs(level.weekly.date).utc(true).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(true).format("MMM D, YYYY")}` : "never"}    
                     </TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{level.list.length}</TableRowHeaderCell>
                 </TableRow>

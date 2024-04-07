@@ -5,11 +5,13 @@ import points from "../functions/points"
 import hexToRGB from "../functions/hexToRGB"
 import { DotFilledIcon, DotsHorizontalIcon, SpeakerLoudIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc"
 
 interface info {
     level: Record<any, any>,
     removeTn?: boolean
 }
+dayjs.extend(utc)
 
 export default function InfoCard({level, removeTn}: info) {
     return  <ContextMenuRoot>
@@ -42,7 +44,7 @@ export default function InfoCard({level, removeTn}: info) {
                             }) : ""}
             </Flex>
             <br></br>
-            <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).format("MMM D, YYYY")}` : "never"}</Text>
+            <Text size="4" weight={"bold"}>Weekly: {level.weekly ? `${dayjs(level.weekly.date).utc(true).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(true).format("MMM D, YYYY")}` : "never"}</Text>
       </Box>
     </Flex>
     <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {
