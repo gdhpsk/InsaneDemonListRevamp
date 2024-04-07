@@ -1,3 +1,4 @@
+'use client';
 import './globals.css'
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
@@ -17,7 +18,7 @@ export default async function RootTemplate({
         <>
             {children}
             <Script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-     crossOrigin="anonymous" defer async></Script>
+     crossOrigin="anonymous" defer></Script>
         </>
   )
 }
