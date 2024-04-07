@@ -8,9 +8,6 @@ import styles from "../../app/submit.module.css"
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc"
 
-
-dayjs.extend(utc)
-
 interface info {
     authData: Record<any, any>,
     levels: Array<Record<any, any>>,
@@ -19,6 +16,7 @@ interface info {
 }
 
 export default function EditLevels({ authData, levels, leaderboards, packs }: info) {
+    dayjs.extend(utc)
     let [originalLevels, setOriginalLevels] = useState(levels)
     let [filteredLevels, setFilteredLevels] = useState(levels)
     let [level, setLevel] = useState<Record<any, any>>({})

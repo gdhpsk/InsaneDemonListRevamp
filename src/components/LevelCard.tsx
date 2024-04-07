@@ -11,9 +11,9 @@ interface info {
     level: Record<any, any>,
     removeTn?: boolean
 }
-dayjs.extend(utc)
 
 export default function InfoCard({level, removeTn}: info) {
+  dayjs.extend(utc)
     return  <ContextMenuRoot>
     <ContextMenuTrigger  className={styles.levelCard}>
     <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() - 604_800_000 ? "rgba(53, 53, 99, 0.5)" : ""}` }} variant="surface" onClick={() => {

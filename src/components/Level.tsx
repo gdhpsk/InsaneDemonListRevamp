@@ -11,9 +11,9 @@ interface info {
     level: Record<any, any>
     count: number
 }
-dayjs.extend(utc)
 
 export default function Level({level, count}: info) {
+    dayjs.extend(utc)
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
