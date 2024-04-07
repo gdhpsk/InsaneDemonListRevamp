@@ -51,8 +51,8 @@ export default async function RootLayout({
           {children}
         </Theme>
 
-        <Script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-     crossOrigin="anonymous" defer></Script>
+        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
+     crossOrigin="anonymous" strategy='beforeInteractive' id='Adsense-id'></Script>
       </body>
     </html>
   )
