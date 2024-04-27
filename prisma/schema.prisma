@@ -79,6 +79,7 @@ model Submission {
     editedAt DateTime
     userId String @db.ObjectId
     status Int
+    reason String?
 
     @@map(name: "submissions")
 }

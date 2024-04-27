@@ -1,8 +1,8 @@
 'use client'
 
 import styles from "../../app/submit.module.css"
-import { CaretDownIcon, CheckIcon, Cross1Icon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pencil1Icon, PersonIcon } from "@radix-ui/react-icons"
-import { Card, Grid, Box, Text, Flex, IconButton, TextFieldRoot, TextFieldSlot, TextFieldInput, Separator, TextArea, CalloutRoot, CalloutText, CalloutIcon, Button, DropdownMenuRoot, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DialogClose, TabsRoot, TabsTrigger, TabsList, DialogTrigger, DialogContent, DialogRoot } from "@radix-ui/themes"
+import { CaretDownIcon, ChatBubbleIcon, CheckIcon, Cross1Icon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pencil1Icon, PersonIcon } from "@radix-ui/react-icons"
+import { Card, Grid, Box, Text, Flex, IconButton, TextFieldRoot, TextFieldSlot, TextFieldInput, Separator, TextArea, CalloutRoot, CalloutText, CalloutIcon, Button, DropdownMenuRoot, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DialogClose, TabsRoot, TabsTrigger, TabsList, DialogTrigger, DialogContent, DialogRoot, DialogTitle, DialogDescription } from "@radix-ui/themes"
 import { useEffect, useState } from "react"
 import cache from "../../../cache.json"
 
@@ -292,7 +292,22 @@ export default function Submissions({submissions, authData, levels, leaderboards
                                          }, 1000)
                                      }
                                 }}>Pend</Button> : ""}
-                {submission.status != 2 ? <Button color='red' size="4" onClick={async () => {
+                {submission.status != 2 ? <DialogRoot>
+                    <DialogTrigger>
+                        <Button color='red' size="4">Reject</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogTitle style={{fontSize: "40px"}} align='center'>Reason?</DialogTitle>
+                        <br></br>
+                        <TextFieldRoot>
+                            <TextFieldSlot><ChatBubbleIcon></ChatBubbleIcon></TextFieldSlot>
+                            <TextArea style={{width: "100%"}} id="reason"></TextArea>
+                        </TextFieldRoot>
+                        <br></br><br></br>
+                        <Grid style={{placeItems: "center"}}>
+                        <DialogClose>
+                       <Flex gap="6">
+                       <Button color='red' size="4" onClick={async () => {
                                      setError({color: "blue", message: "Loading..."})
                                      let req = await fetch("/api/admins/submissions", {
                                          method: "PATCH",
@@ -302,7 +317,8 @@ export default function Submissions({submissions, authData, levels, leaderboards
                                          },
                                          body: JSON.stringify({
                                              ...edits,
-                                             status: 2
+                                             status: 2,
+                                             reason: (document.getElementById("reason") as any).value
                                          })
                                      })
                                      try {
@@ -326,7 +342,13 @@ export default function Submissions({submissions, authData, levels, leaderboards
                                             setError({color: "red", message: ""})
                                          }, 1000)
                                      }
-                                }}>Reject</Button> : ""}
+                                }}>Reject</Button>
+                                <Button color='blue' size='4'>Cancel</Button>
+                       </Flex>
+                        </DialogClose>
+                        </Grid>
+                    </DialogContent>
+                </DialogRoot> : ""}
 
             </Flex>
             <br></br>
@@ -347,6 +369,8 @@ export default function Submissions({submissions, authData, levels, leaderboards
                     <br></br>
                     <Text size="3">Status: {cache.status[submission.status]}</Text>
                     <br></br>
+                    {submission.status == 2 ? <><Text size="3">Rejection reason: {submission.reason}</Text>
+                    <br></br></> : ""}
                 </Box> : <Text size="5" weight={'bold'} as='p' align={'center'}>No submission selected</Text>}
             </Grid>
         </Card>

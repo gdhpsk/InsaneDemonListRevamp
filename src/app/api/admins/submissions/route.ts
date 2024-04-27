@@ -87,6 +87,19 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                     }
                 })
             ])
+        } else if(body.status == 2) {
+            if(!body.reason || typeof body.reason !== 'string') return NextResponse.json({error: "400 BAD REQUEST", message: `You must provide a valid reason when rejecting submissions!`}, {status: 400})
+                await prisma.$transaction([
+                    prisma.submission.update({
+                        where: {
+                            id: body.id
+                        },
+                        data: {
+                            status: body.status,
+                            reason: body.reason
+                        }
+                    })
+                ])
         } else {
             await prisma.$transaction([
                 prisma.submission.update({
@@ -94,7 +107,8 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                         id: body.id
                     },
                     data: {
-                        status: body.status
+                        status: body.status,
+                        reason: null
                     }
                 })
             ])

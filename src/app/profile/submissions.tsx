@@ -118,6 +118,8 @@ export default function ProfileSubmissions({ data }: info) {
                         <Text size="3">By {e.player}</Text>
                         <br></br>
                         <Text size="1">Status: {cache.status[e.status]}</Text>
+                        {e.status == 2 ? <><br></br>
+                        <Text size="1">Rejection reason: {e.reason}</Text></> : ""}
                     </Card>
                 </DialogTrigger>
                 <DialogContent>
@@ -208,6 +210,8 @@ export default function ProfileSubmissions({ data }: info) {
                     <Text size="1">Edited at: {e.editedAt}</Text>
                     <br></br>
                     <Text size="1">Status: {cache.status[e.status]}</Text>
+                    {e.status == 2 ? <><br></br>
+                        <Text size="1">Rejection reason: {e.reason}</Text></> : ""}
                     <br></br>
                     <br></br>
                     <Grid style={{ placeItems: "center" }}>
