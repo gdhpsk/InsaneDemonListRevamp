@@ -299,11 +299,11 @@ export default function ProfileSubmissions({ data }: info) {
                     <iframe src={`https://www.youtube.com/embed/${edits.video.ytcode}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                </Grid>
                <br></br>
-               <Text size="7" weight="bold" defaultValue={edits.comments}>Comments?</Text>
+               <Text size="7" weight="bold">Comments?</Text>
             <br></br>
             <Text size="2" style={{lineHeight: "20px"}}>Input your nationality / account ID here if you want</Text>
             <TextFieldRoot mt="4">
-                <TextArea placeholder="Comments..." style={{width: "100%"}} onChange={(e) =>  setEdits({...edits, comments: e.target.value})}></TextArea>
+                <TextArea defaultValue={edits.comments} placeholder="Comments..." style={{width: "100%"}} onChange={(e) =>  setEdits({...edits, comments: e.target.value})}></TextArea>
             </TextFieldRoot>
             <br></br>
             {error.message ? <><CalloutRoot color={error.color as any}>
