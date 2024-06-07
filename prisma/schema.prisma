@@ -19,6 +19,8 @@ model Level {
     ytcode      String
     packs Pack[]
     weekly Weekly?
+    levelId String?
+    AREDL_POS Int?
     @@map(name: "levels")
 }
 

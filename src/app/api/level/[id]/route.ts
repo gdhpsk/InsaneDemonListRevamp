@@ -52,6 +52,11 @@ export async function GET(req: Request, res: Record<any, any>) {
         }
     })
     await prisma.$disconnect()
+    if(level?.formerRank) {
+        let aredl = await fetch(`https://api.aredl.net/api/aredl/levels/${level.levelId}`)
+        let json = await aredl.json()
+        level.AREDL_POS = json.position
+    }
     return new Response(JSON.stringify(level), {
         status: level ? 200 : 404
     })
@@ -267,6 +272,7 @@ export async function DELETE(req: NextRequest) {
     let count =  await prisma.level.count()
     
     if(body.removalReason) {
+        if(typeof body.levelId !== 'string') return NextResponse.json({error: "400 BAD REQUEST", message: "The level ID must be a string!"}, {status: 400})
         try {
             await prisma.$transaction([
                 prisma.level.updateMany({
@@ -301,6 +307,7 @@ export async function DELETE(req: NextRequest) {
                     },
                     data: {
                         position: count,
+                        levelId: body.levelId,
                         removalDate: new Date(Date.now()).toDateString(),
                         removalReason: body.removalReason,
                         formerRank: level.position
