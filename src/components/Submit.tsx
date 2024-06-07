@@ -146,7 +146,7 @@ export default function Submit({levels, leaderboards, authData}: info) {
         <Card style={{padding: "10px", width: "min(100%, 600px)"}}>
             <Text size="7" weight="bold">Comments?</Text>
             <br></br>
-            <Text size="2" style={{lineHeight: "20px"}}>Input your nationality / account ID here if you want</Text>
+            <Text size="2" style={{lineHeight: "20px"}}>Input your nationality / account ID (or GD username) here if you want</Text>
             <TextFieldRoot mt="4">
                 <TextArea placeholder="Comments..." style={{width: "100%"}} onChange={(e) => setSubmission({...submission, comments: e.target.value})}></TextArea>
             </TextFieldRoot>

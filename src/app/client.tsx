@@ -103,6 +103,17 @@ export default function HomePage({admins}: info) {
               id={e.id}
             ></InfoCard>)}
           </Flex>
+          <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>Server Administrators</Text>
+          <Flex wrap="wrap" gap="3">
+          {admins.server_admins.map((e: Record<any, any>) => <InfoCard
+              name={e.name}
+              tag={e.tag}
+              channel={e.channel}
+              avatar={e.avatar}
+              key={e.id}
+              id={e.id}
+            ></InfoCard>)}
+          </Flex>
           <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>Server Moderators</Text>
           <Flex wrap="wrap" gap="3">
           {admins.server_mods.map((e: Record<any, any>) => <InfoCard

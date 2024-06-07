@@ -15,6 +15,7 @@ export async function GET(request: Request) {
         leaders: [],
         moderators: [],
         helpers: [],
+        server_admins: [],
         server_mods: [],
         developers: []
     }
@@ -23,6 +24,7 @@ export async function GET(request: Request) {
             '904477213712318475': 'leaders',
             '904477493229137961': "moderators",
             '904477700067037204': "helpers",
+            "904477746745442365": "server_admins",
             '904477889439887371': "server_mods",
             '904507760236978186': 'developers',
         }
