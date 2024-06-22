@@ -15,9 +15,9 @@ interface info {
 
 export default function Profile({profile, metadata, nationality, icons}: info) {
 
-    let main = profile.records.filter((e:any, i: number, a: any) => e.level.position < 76 && a[i-1]?.level?.position != e.level.position).length
-    let extended = profile.records.filter((e:any, i: number, a: any) => e.level.position > 75 && e.level.position < 151 && a[i-1]?.level?.position != e.level.position).length
-    let legacy = profile.records.filter((e:any, i: number, a: any) => e.level.position > 150 && a[i-1]?.level?.position != e.level.position).length
+    let main = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position < 76 && a[i-1]?.level?.position != e.level.position).length
+    let extended = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position > 75 && e.level.position < 151 && a[i-1]?.level?.position != e.level.position).length
+    let legacy = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position > 150 && a[i-1]?.level?.position != e.level.position).length
 
   return (
     <div className={styles.content}>
