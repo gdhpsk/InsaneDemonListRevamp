@@ -73,7 +73,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
     }}>
           <DotsHorizontalIcon></DotsHorizontalIcon>
           </IconButton>
-          <Text as='p' align='center' weight='bold'>{main} mainlists, {extended} extended lists, {legacy} legacy lists, {main+extended+legacy} total</Text>
+          <Text as='p' align='center' weight='bold'>{main} mainlists, {extended} extended lists, {legacy} legacy lists, {main+extended} list levels, {main+extended+legacy} total</Text>
       </Box>
       </Grid>
       <br></br><br></br>
