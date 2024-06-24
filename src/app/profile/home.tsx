@@ -20,7 +20,7 @@ export default function ProfileHome({authData, setAuthData}: info) {
                 <CalloutIcon>
                     <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>
                 </CalloutIcon>
-                <CalloutText size="3" ml="-1">Verify your email address by checking your inbox! If you didn&apos;t receive it, <span style={{color: "skyblue", textDecoration: "underline"}} onClick={async () => {
+                <CalloutText size="3" ml="-1">Verify your email address by checking your inbox! If you didn&apos;t receive it, <span style={{textDecoration: "underline"}} onClick={async () => {
                     setError({
                         color: "blue",
                         message: "Loading...",

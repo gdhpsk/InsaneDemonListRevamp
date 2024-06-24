@@ -1,7 +1,37 @@
+:root {
+  --link-color: #87ceeb;
+  --link-color-hover: #abe7ff;
+  --hover-back: rgba(50, 49, 102, 0.5);
+  --text-color: var(--gray-12);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --link-color: #12a9c4;
+    --link-color-hover: #58bfd1;
+    --hover-back: rgba(117, 159, 179, 0.5);
+  }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 * {
   font-family: 'Varela Round', sans-serif !important;
+}
+
+a {
+  color: var(--link-color);
+  transition: 0.1s color;
+}
+a:hover {
+  color: var(--link-color-hover);
+}
+a.bright {
+  color: var(--link-color-hover);
+}
+@media (prefers-color-scheme: light) {
+  a.bright {
+    color: var(--text-color);
+  }
 }
 
 .header {
@@ -9,6 +39,14 @@
   text-align: center;
   display: inline-block;
   font-weight: bold;
+}
+
+.logo {
+  color: var(--link-color-hover);
+}
+
+.nav-content a {
+  color: var(--text-color);
 }
 
 .nav-content {
@@ -20,7 +58,7 @@
 }
 
 .nav-content span:hover {
-  background-color:rgba(117, 118, 179, 0.5);
+  background-color: var(--hover-back);
 }
 
 .entry {
@@ -28,11 +66,11 @@
 }
 
 .entry:hover {
-  background-color:rgba(117, 118, 179, 0.5);
+  background-color: var(--hover-back);
 }
 
 .active {
-  background-color: rgba(117, 118, 179, 0.5);;
+  background-color: var(--hover-back);
 }
 
 .infoCard:hover {

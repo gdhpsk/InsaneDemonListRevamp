@@ -176,7 +176,7 @@ export default function Packs({ packs, authData, levels }: info) {
                             <TableBody>
                                 {pack?.levels.map((x:any) => <TableRow key={x.id}>
                                     <TableRowHeaderCell><Text size="3">{x.position}</Text></TableRowHeaderCell>
-                                    <TableCell><Text size="3"><a href={`/level/${x.id}`} style={{textDecoration: "none", color: "skyblue"}}>{x.name}</a></Text></TableCell>
+                                    <TableCell><Text size="3"><a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.name}</a></Text></TableCell>
                                     <TableCell><Text size="3">{x.publisher}</Text></TableCell>
                                     <TableCell><IconButton color='red' onClick={() => {
                                         setPack({...pack, levels: pack?.levels.filter((y:any) => y.id != x.id)})
@@ -306,7 +306,7 @@ export default function Packs({ packs, authData, levels }: info) {
                             <TableBody>
                                 {pack.levels.map((x:any) => <TableRow key={x.id}>
                                     <TableRowHeaderCell><Text size="3">{x.position}</Text></TableRowHeaderCell>
-                                    <TableCell><Text size="3"><a href={`/level/${x.id}`} style={{textDecoration: "none", color: "skyblue"}}>{x.name}</a></Text></TableCell>
+                                    <TableCell><Text size="3"><a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.name}</a></Text></TableCell>
                                     <TableCell><Text size="3">{x.publisher}</Text></TableCell>
                                     <TableCell><IconButton color='red' onClick={() => {
                                         setPack({...pack, levels: pack?.levels.filter((y:any) => y.id != x.id)})

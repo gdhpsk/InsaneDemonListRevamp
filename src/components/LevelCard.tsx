@@ -21,7 +21,7 @@ export default function InfoCard({level, removeTn}: info) {
     }}>
     <Flex gap="5">
     <Inset side="left" clip="padding-box" style={{overflow: "visible", display: removeTn ? "none" : "block"}}>
-      <a href={`https://youtu.be/${level.ytcode}`} target="_blank" onClick={(e) =>  e.stopPropagation()}>
+      <a className="bright" href={`https://youtu.be/${level.ytcode}`} target="_blank" onClick={(e) =>  e.stopPropagation()}>
       <img
             src={`https://i.ytimg.com/vi/${level.ytcode}/mqdefault.jpg`}
             className={styles.ytImage}
@@ -31,7 +31,7 @@ export default function InfoCard({level, removeTn}: info) {
   </Inset>
       <Box p={"3"}>
         <Text as="p" size="8" weight="bold">
-        <a href={`https://youtu.be/${level.ytcode}`} target="_blank" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}} onClick={(e) =>  e.stopPropagation()}>{ level.position < 151 ? `${level.position}. ` : ""}{level.name} by {level.publisher}</a>
+        <a href={`https://youtu.be/${level.ytcode}`} target="_blank" className="bright" style={{textDecoration: "none", lineBreak: "anywhere"}} onClick={(e) =>  e.stopPropagation()}>{ level.position < 151 ? `${level.position}. ` : ""}{level.name} by {level.publisher}</a>
         </Text>
         <Text as="p" size="5" weight="bold">
           {points(level.position)} points

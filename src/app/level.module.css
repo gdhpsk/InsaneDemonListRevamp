@@ -2,12 +2,26 @@
     border-radius: 10px
 }
 
+
+.back {
+  background-color: var(--hover-back);
+}
+
+.hover {
+  background-color: var(--hover-back);
+  scale: 1;
+  transition-duration: 0.5s;
+  will-change: transform;
+}
+
 .hover:hover {
-    scale: 1.01;
-    transition-duration: 0.5s;
+  scale: 1.01;
+  transition-duration: 0.5s;
+}
+
+
+@media (prefers-color-scheme: light) {
+  .player, .player:hover {
+    color: var(--text-color);
   }
-  
-  .hover:not(:hover) {
-    scale: 1;
-    transition-duration: 0.5s;
-  }
+}

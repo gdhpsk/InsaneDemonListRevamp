@@ -38,18 +38,18 @@ export default function Nav({authData, routes}: info) {
 
   return (
     <>
-    <a href="/" style={{textDecoration: "none", color: "lightblue", display: "contents"}}><Text size="6" className="header" style={{display: "flex", padding: "10px", width: "fit-content", gap: "10px"}}><img src="/favicon.ico" height="30px"></img> Insane Demon List</Text></a>
+    <a href="/" className="logo" style={{textDecoration: "none", display: "contents"}}><Text size="6" className="header" style={{display: "flex", padding: "10px", width: "fit-content", gap: "10px"}}><img src="/favicon.ico" height="30px"></img> Insane Demon List</Text></a>
    <Grid style={{placeItems: "end", marginTop: "-15px"}}>
     {width > 1100 ? <Flex className="nav-content" gap="1">
-            {routes.filter(x => !x.auth).map(e => <Link key={e.route} href={e.route} style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == e.route ? "active" : ""}>{e.name}</Text></Link>)}
-            {data.user ? routes.filter(x => x.auth).map(e => <Link key={e.route} href={e.route} style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == e.route ? "active" : ""}>{e.name}</Text></Link>) : ""}
-            {!data.user ? <Login></Login> : <Link href="/profile" style={{textDecoration: "none", color: "white"}}><Text size="3" className={search == "/profile" ? "active" : ""}><GearIcon></GearIcon></Text></Link>}
+            {routes.filter(x => !x.auth).map(e => <Link key={e.route} href={e.route} style={{textDecoration: "none"}}><Text size="3" className={search == e.route ? "active" : ""}>{e.name}</Text></Link>)}
+            {data.user ? routes.filter(x => x.auth).map(e => <Link key={e.route} href={e.route} style={{textDecoration: "none"}}><Text size="3" className={search == e.route ? "active" : ""}>{e.name}</Text></Link>) : ""}
+            {!data.user ? <Login></Login> : <Link href="/profile" style={{textDecoration: "none"}}><Text size="3" className={search == "/profile" ? "active" : ""}><GearIcon></GearIcon></Text></Link>}
         </Flex> : width == 0 ? "" : <Flex className="nav-content" gap="1"><PopoverRoot>
             <PopoverTrigger><Text size="3" style={{padding: "20px", marginTop: "15px"}}><HamburgerMenuIcon></HamburgerMenuIcon></Text></PopoverTrigger>
             <PopoverContent>
-            {routes.filter(x => !x.auth).map(e => <><Link href={e.route} style={{textDecoration: "none", color: "white"}} className={search == e.route ? "active entry" : "entry"}><Text size="3">{e.name}</Text></Link><br></br><br></br><br></br></>)}
-            {data.user ? routes.filter(x => x.auth).map(e => <><Link href={e.route} style={{textDecoration: "none", color: "white"}} className={search == e.route ? "active entry" : "entry"}><Text size="3">{e.name}</Text></Link><br></br><br></br><br></br></>) : ""}
-            {!data.user ? <Login small={true}></Login> : <Link href="/profile" style={{textDecoration: "none", color: "white"}} className={search == "/profile" ? "active entry" : "entry"}><Text size="3">Settings</Text></Link>}
+            {routes.filter(x => !x.auth).map(e => <><Link href={e.route} style={{textDecoration: "none"}} className={search == e.route ? "active entry" : "entry"}><Text size="3">{e.name}</Text></Link><br></br><br></br><br></br></>)}
+            {data.user ? routes.filter(x => x.auth).map(e => <><Link href={e.route} style={{textDecoration: "none"}} className={search == e.route ? "active entry" : "entry"}><Text size="3">{e.name}</Text></Link><br></br><br></br><br></br></>) : ""}
+            {!data.user ? <Login small={true}></Login> : <Link href="/profile" style={{textDecoration: "none"}} className={search == "/profile" ? "active entry" : "entry"}><Text size="3">Settings</Text></Link>}
             </PopoverContent>
           </PopoverRoot></Flex>}
    </Grid>

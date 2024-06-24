@@ -32,7 +32,7 @@ export default function HomePage({admins}: info) {
 
           <Text size="4">
             <p>
-              We have officially adopted most of the <a href="https://pointercrate.com/guidelines/index" target="_blank" style={{color: "skyblue"}}>Pointercrate Demonlist&apos;s guidelines</a>. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to <abbr>IDL</abbr>, as well as some leniency changes:
+              We have officially adopted most of the <a href="https://pointercrate.com/guidelines/index" target="_blank">Pointercrate Demonlist&apos;s guidelines</a>. This means that your record must be acceptable on Pointercrate for it to be acceptable on this list! However, we also have some extra rules, specific to <abbr>IDL</abbr>, as well as some leniency changes:
             </p>
             <ul>
               <li>
@@ -60,7 +60,7 @@ export default function HomePage({admins}: info) {
 <br></br>
 <Card style={{ marginTop: "15px", width: "fit-content", padding: "20px" }}>
   <Grid>
-  <Text size="7" as="p" align="center"><a href="https://discord.gg/7JbFjRqSQ4" target="_blank" style={{textDecoration: "none", color: "skyblue"}}>Insane Demon List Discord</a></Text>
+  <Text size="7" as="p" align="center"><a href="https://discord.gg/7JbFjRqSQ4" target="_blank" style={{textDecoration: "none"}}>Insane Demon List Discord</a></Text>
   <br></br>
 <iframe src="https://discord.com/widget?id=820784322456977438&theme=dark" width="350" height="500" frameBorder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style={{borderRadius: "20px"}}></iframe>
 <br></br>

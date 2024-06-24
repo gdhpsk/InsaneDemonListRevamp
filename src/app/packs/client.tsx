@@ -60,7 +60,7 @@ export default function Packs({ packs }: info) {
                             <TableBody>
                                 {pack.levels.map((x:any) => <TableRow key={x.id}>
                                     <TableRowHeaderCell><Text size="3">{x.position}</Text></TableRowHeaderCell>
-                                    <TableCell><Text size="3"><a href={`/level/${x.id}`} style={{textDecoration: "none", color: "skyblue"}}>{x.name}</a></Text></TableCell>
+                                    <TableCell><Text size="3"><a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.name}</a></Text></TableCell>
                                     <TableCell><Text size="3">{x.publisher}</Text></TableCell>
                                 </TableRow>)}
                             </TableBody>

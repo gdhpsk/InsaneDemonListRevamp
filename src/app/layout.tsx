@@ -1,6 +1,7 @@
 import './globals.css'
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
+import { ThemeProvider } from 'next-themes';
 import Nav from '@/components/Nav';
 import { getServerSession } from 'next-auth';
 import jwt from "jsonwebtoken"
@@ -36,20 +37,22 @@ export default async function RootLayout({
     <meta name="google-adsense-account" content="ca-pub-4543250064393866"></meta>
       </head>
       <body>
-        <Theme accentColor="blue" appearance="dark">
-          <Nav
-            authData={data || {}}
-            routes={[
-              {route: "/main", name: "Main List"},
-              {route: "/extended", name: "Extended List"},
-              {route: "/legacy", name: "Legacy List"},
-              {route: "/leaderboards", name: "Leaderboards"},
-              {route: "/packs", name: "Packs"},
-              {route: "/submit", name: "Submit"}
-            ]}
-          ></Nav>
-          {children}
-        </Theme>
+        <ThemeProvider attribute="class">
+          <Theme accentColor="sky" appearance="dark">
+            <Nav
+              authData={data || {}}
+              routes={[
+                {route: "/main", name: "Main List"},
+                {route: "/extended", name: "Extended List"},
+                {route: "/legacy", name: "Legacy List"},
+                {route: "/leaderboards", name: "Leaderboards"},
+                {route: "/packs", name: "Packs"},
+                {route: "/submit", name: "Submit"}
+              ]}
+            ></Nav>
+            {children}
+          </Theme>
+        </ThemeProvider>
       </body>
     </html>
   )

@@ -17,7 +17,7 @@ export default function Level({level, count}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
-      <Box style={{padding: "30px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}} className={styles.hover}>
+      <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
       {level.removalReason ? <>
             <CalloutRoot color="green">
                 <CalloutIcon style={{height: "25px"}}><InfoCircledIcon style={{scale: 2}} /></CalloutIcon>
@@ -41,7 +41,7 @@ export default function Level({level, count}: info) {
         </> : ""}
        <Flex justify={"center"} align="center" gap="9">
             {level.position != 1 ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position - 1}`}></ChevronLeftIcon> : ""}
-            <Text as="p" align="center" size="9" weight="bold"><a href={`https://youtu.be/${level.ytcode}`} target="_blank" style={{textDecoration: "none", color: "skyblue"}}>{level.position < 151 ? `${level.position}. ` : ""}{level.name}</a></Text>
+            <Text as="p" align="center" size="9" weight="bold"><a href={`https://youtu.be/${level.ytcode}`} className="bright" target="_blank" style={{textDecoration: "none"}}>{level.position < 151 ? `${level.position}. ` : ""}{level.name}</a></Text>
             {level.position != count ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position + 1}`}></ChevronRightIcon> : ""}
         </Flex>
         <Text as="p" align="center" size="6" weight="bold" color="gray">by {level.publisher}</Text>
@@ -86,7 +86,7 @@ export default function Level({level, count}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}} className={styles.hover}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)"}} className={styles.hover}>
         <Grid style={{placeItems: "center"}}>
         <TableRoot size="3" m="2" style={{width: "90%"}}>
             <TableHeader>
@@ -129,7 +129,7 @@ export default function Level({level, count}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)"}} className={styles.back}>
         <Grid style={{placeItems: "center"}}>
         <TableRoot size="3" m="2" style={{width: "90%"}}>
             <TableHeader>
@@ -144,7 +144,7 @@ export default function Level({level, count}: info) {
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.player.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.player.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
                             window.location.href = e.player.nationality ? `/nationality/${e.player.abbr}` : "#"
                     }}></img></TableRowHeaderCell>
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}{e.verification ? <DrawingPinFilledIcon></DrawingPinFilledIcon> : ""}<a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.player.name}</a></Flex></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}{e.verification ? <DrawingPinFilledIcon></DrawingPinFilledIcon> : ""}<a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a></Flex></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
                         <IconButton color="violet">

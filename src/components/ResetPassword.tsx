@@ -22,7 +22,7 @@ export default function Nav() {
     return (
         <DialogRoot>
             <DialogTrigger>
-                <Text size="2" style={{ color: "skyblue", textDecoration: "none" }}>Forgot your password?</Text>
+                <Text size="2" style={{ textDecoration: "none" }}>Forgot your password?</Text>
             </DialogTrigger>
             <DialogContent style={{ padding: "30px" }}>
                 <DialogTitle as="h1" weight="bold" align="center" style={{ fontSize: "30px" }}>

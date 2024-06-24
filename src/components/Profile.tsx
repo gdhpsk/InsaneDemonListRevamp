@@ -22,7 +22,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
-      <Box style={{padding: "30px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}} className={styles.hover}>
+      <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
        <Flex justify={"center"} align="center" gap="9">
             {metadata.last ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last}`}></ChevronLeftIcon> : ""}
             <Flex align='center' gap='3'>
@@ -34,7 +34,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
             {metadata.next ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.next}`}></ChevronRightIcon> : ""}
         </Flex>
         {profile.nationality ? <><br></br><Flex align='center' gap='2' justify={'center'}>
-                <Text as="p" align="center" size="6" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none", color: "skyblue"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
+                <Text as="p" align="center" size="6" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
                             window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
                     }}></img>
@@ -57,7 +57,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                                         <br></br>
                                         <br></br>
                                         {e.levels.map((x:any) => <div key={x.id}><Text size="5">
-                                            <a href={`/level/${x.id}`} style={{textDecoration: "none", color: "skyblue"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by {x.publisher}</a>
+                                            <a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by {x.publisher}</a>
                                         </Text><br></br><br></br></div>)}
                                     </PopoverContent>
                                 </PopoverRoot>
@@ -78,7 +78,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--hover-back)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Verifications</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
@@ -94,8 +94,8 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
             <TableBody>
                 {profile.records.filter((e:any) => e.verification).map((e:any) => <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></TableRowHeaderCell> : ""}
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.level.name}</a></TableRowHeaderCell>
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></TableRowHeaderCell> : ""}
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.level.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
                         <IconButton color="violet">
@@ -111,7 +111,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--hover-back)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>List Completions</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
@@ -131,8 +131,8 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</TableRowHeaderCell> : ""}
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.level.name}</a></TableRowHeaderCell>
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</TableRowHeaderCell> : ""}
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.level.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
@@ -147,7 +147,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--hover-back)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Legacy Completions</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
@@ -167,8 +167,8 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</TableRowHeaderCell>
-                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</TableRowHeaderCell> : ""}
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.level.name}</a></TableRowHeaderCell>
+                    {nationality ? <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</TableRowHeaderCell> : ""}
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.level.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
@@ -184,7 +184,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       {nationality ? <>
         <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", backgroundColor: "rgba(50, 49, 102, 0.5)", width: "min(1000px, 100%)"}}>
+        <Box style={{padding: "20px", backgroundColor: "var(--hover-back)", width: "min(1000px, 100%)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Missing Levels</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
@@ -199,7 +199,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
             <TableBody>
                 {profile.missing.map((e:any) => <TableRow key={e.id}>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{e.position > 150 ? "" : e.position}</TableRowHeaderCell>
-                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.position}`} target="_self" style={{textDecoration: "none", color: "skyblue", lineBreak: "anywhere"}}>{e.name}</a></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.name}</a></TableRowHeaderCell>
                     <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`https://youtu.be/${e.ytcode}`} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>

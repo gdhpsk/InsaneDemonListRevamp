@@ -40,7 +40,7 @@ export default function Login({small}: info) {
   return (
     <DialogRoot>
         <DialogTrigger>
-            <Link href="#" style={{textDecoration: "none", color: "white"}} className={small ? "entry" : ""}><Text size="3"><EnterIcon style={{scale: 1.3}}></EnterIcon></Text></Link>
+            <Link href="#" style={{textDecoration: "none", color: "var(--text-color)"}} className={small ? "entry" : ""}><Text size="3"><EnterIcon style={{scale: 1.3}}></EnterIcon></Text></Link>
         </DialogTrigger>
         <DialogContent style={{padding: "30px"}}>
             <Flex gap="4" justify={'center'} align={'center'} >
