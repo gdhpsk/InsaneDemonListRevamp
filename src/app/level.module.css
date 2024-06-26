@@ -4,11 +4,11 @@
 
 
 .back {
-  background-color: var(--hover-back);
+  background-color: var(--light-blue);
 }
 
 .hover {
-  background-color: var(--hover-back);
+  background-color: var(--light-blue);
   scale: 1;
   transition-duration: 0.5s;
   will-change: transform;

@@ -78,7 +78,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--hover-back)"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Verifications</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
@@ -111,7 +111,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--hover-back)"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>List Completions</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
@@ -147,7 +147,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       </Grid>
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--hover-back)"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Legacy Completions</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
@@ -184,7 +184,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
       {nationality ? <>
         <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
-        <Box style={{padding: "20px", backgroundColor: "var(--hover-back)", width: "min(1000px, 100%)"}}>
+        <Box style={{padding: "20px", backgroundColor: "var(--light-blue)", width: "min(1000px, 100%)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Missing Levels</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
