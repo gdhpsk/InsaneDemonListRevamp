@@ -51,7 +51,7 @@ export default function HomePage({admins}: info) {
                 Please do not submit multiple records of the same record (don&apos;t submit dupes)!
               </li>
               <li>
-              Levels completed with the use of Physics Bypass, Click Between Frames, or levels completed using the 2.1 GDPS (or other GDPS's) will not be accepted. An exception to the rule is if a level is completed prior to the release of 2.2.
+              Levels completed with the use of Physics Bypass, Click Between Frames, or levels completed using the 2.1 GDPS (or other GDPS&apos;s) will not be accepted. An exception to the rule is if a level is completed prior to the release of 2.2.
               </li>
             </ul>
           </Text>
