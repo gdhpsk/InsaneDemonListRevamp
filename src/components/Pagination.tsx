@@ -42,7 +42,7 @@ export default function Pagination(props: IProps) {
                 <TextFieldInput type='number' style={{width: "40px"}} onChange={(e) => setTypingPage({type: "trailing", page: parseInt(e.target.value as any)})} onKeyDown={e => {
                     if(e.key == 'Enter') {
                         setTyping(false)
-                        if(typingPage.page < 1 || typingPage.page > 1 + half) { 
+                        if(typingPage.page < 1 || typingPage.page > page-3) { 
                             onChange(1)
                         } else {
                             onChange(typingPage.page)
@@ -52,7 +52,7 @@ export default function Pagination(props: IProps) {
                 }}></TextFieldInput>
                 <Button variant="solid" onClick={() => {
                     setTyping(false)
-                    if(typingPage.page < 1 || typingPage.page > 1 + half) { 
+                    if(typingPage.page < 1 || typingPage.page > page-3) { 
                         onChange(1)
                     } else {
                         onChange(typingPage.page)
@@ -71,7 +71,7 @@ export default function Pagination(props: IProps) {
                 <TextFieldInput type='number' style={{width: "40px"}} onChange={(e) => setTypingPage({type: "leading", page: parseInt(e.target.value as any)})} onKeyDown={e => {
                     if(e.key == 'Enter') {
                         setTyping(false)
-                        if(typingPage.page < count - half || typingPage.page > count) {
+                        if(typingPage.page < page+3 || typingPage.page > count) {
                             onChange(count)
                         } else {
                             onChange(typingPage.page)
@@ -81,7 +81,7 @@ export default function Pagination(props: IProps) {
                 }}></TextFieldInput>
                 <Button variant="solid" onClick={() => {
                     setTyping(false)
-                    if(typingPage.page < count - half || typingPage.page > count) {
+                    if(typingPage.page < page+3 || typingPage.page > count) {
                         onChange(count)
                     } else {
                         onChange(typingPage.page)
