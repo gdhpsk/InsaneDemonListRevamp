@@ -97,18 +97,18 @@ export default function LeaderboardClient({ profs, p }: info) {
                 <Flex gap="2" align='center'>
                 <Text size="3">{type == 'users' ? "Profiles" : "Nationalities"} per page:</Text><TextFieldInput style={{width: "5ch"}} type='number' defaultValue={max} onChange={(e) => {
                     let value = parseInt(e.target.value)
-                    if(value > 100) {
-                        e.target.value = "100"
-                        value = 100
-                    }
-                    if(value < 10) {
-                        e.target.value = "10"
-                        value = 10
-                    }
                     let key = crypto.randomUUID()
                     sliderQueue = key
                     setTimeout(() => {
                         if (sliderQueue != key) return;
+                        if(value > 100) {
+                            e.target.value = "100"
+                            value = 100
+                        }
+                        if(value < 10) {
+                            e.target.value = "10"
+                            value = 10
+                        }
                         setMax(value)
                         changePage(1, undefined, true, undefined, undefined, value)
                     }, 1000)
