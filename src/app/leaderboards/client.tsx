@@ -60,8 +60,8 @@ export default function LeaderboardClient({ profs, p }: info) {
                         queue = key
                         setTimeout(() => {
                             if (queue != key) return;
-                            setFilter(e.target.value)
-                            changePage(1, e.target.value, true)
+                            setFilter(e.target.value.trim())
+                            changePage(1, e.target.value.trim(), true)
                         }, 1000)
                     }}></TextFieldInput>
                 </TextFieldRoot>
