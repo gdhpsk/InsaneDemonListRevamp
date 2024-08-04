@@ -6,13 +6,14 @@ import LeaderboardClient from './client'
 export default async function Home() {
 
   let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards`, {cache: "no-cache"})
-  let profiles = await req.json()
+  let {profiles, pages} = await req.json()
   
   return (
     <main>
       <br></br>
       <LeaderboardClient
-        profiles={profiles}
+        profs={profiles}
+        p={pages}
       ></LeaderboardClient>
     </main>
   )

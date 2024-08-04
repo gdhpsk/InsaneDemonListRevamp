@@ -134,7 +134,7 @@ export default function LeaderboardClient({profiles, authData}: info) {
                setError({color: "red", message: data.message})
            } catch(_) {
             setError({color: "blue", message: "Fetching new information..."})
-                                   let req = await fetch(`/api/leaderboards`, {
+                                   let req = await fetch(`/api/leaderboards?all=true`, {
                                        headers: {
                                            authorization: authData.token
                                        }

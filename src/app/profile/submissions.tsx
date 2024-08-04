@@ -44,7 +44,7 @@ export default function ProfileSubmissions({ data }: info) {
         (async () => {
             let [req1, req2, req3] = await Promise.all([
                 await fetch(`/api/levels?start=0&end=150`),
-                await fetch(`/api/leaderboards`),
+                await fetch(`/api/leaderboards?all=true`),
                 await fetch(`/api/user/submissions`, {
                     headers: {
                         authorization: data.token

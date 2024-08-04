@@ -20,7 +20,7 @@ export default async function RootLayout() {
 
   let [req1, req2, req3] = await Promise.all([
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/levels?start=0&end=150`),
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards`),
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`),
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/admins/submissions`, {
         headers: {
             authorization: data.user.token

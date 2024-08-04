@@ -17,7 +17,7 @@ export default async function Home() {
       return <NotFound></NotFound>
     }
 
-  let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards`, {cache: "no-cache"})
+  let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`, {cache: "no-cache"})
   let profiles = await req1.json()
   
   return (

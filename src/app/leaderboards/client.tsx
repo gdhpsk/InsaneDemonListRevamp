@@ -2,20 +2,40 @@
 import LeaderboardCard from '@/components/LeaderboardCard'
 import { CaretDownIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { Box, Button, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, SelectContent, SelectItem, SelectRoot, SelectTrigger, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from "next/image"
 import cache from "../../../cache.json"
+import Pagination from '@/components/Pagination';
 
 interface info {
-    profiles: Record<any, any>
+    profs: Record<any, any>
+    p: number
 }
 
-export default function LeaderboardClient({profiles}: info) {
+export default function LeaderboardClient({profs, p}: info) {
+    let [pages, setPages] = useState(p)
+    let [profiles, setProfiles] = useState(profs)
     let [nations, setNations] = useState([])
+    let [page, setPage] = useState(1)
     let [type, setType] = useState<"users" | "nations">("users")
     let [loading, setLoading] = useState(false)
     let [filter, setFilter] = useState("")
     let [nationality, setNationality] = useState(["International", "International"])
+    let queue = ""
+
+    async function changePage(e: number, f: string = filter, reset: boolean = false, n: string = nationality[1], getNations: typeof type = type) {
+        setLoading(true)
+                    let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards${getNations == "nations" ? '/nations' : ""}?page=${e}${f ? `&name=${encodeURIComponent(f)}` : ""}${n != "International" ?  `&nationality=${n}` : ""}`, {cache: "no-cache"})
+                    let profs = await req.json()
+                    if(getNations == "nations") {
+                        setNations(profs.profiles)
+                    } else {
+                        setProfiles(profs.profiles)
+                    }
+                    setPage(e)
+                    if(reset) setPages(profs.pages)
+                    setLoading(false)
+    }
 
   return (
     <Box style={{opacity: loading ? 0.5 : 1, overflowX: "hidden"}}>
@@ -28,17 +48,28 @@ export default function LeaderboardClient({profiles}: info) {
       <Text size="5" className="header">This part of the list shows the best {type == "users" ? "players" : "countries"} on the Insane Demon List!</Text>
         <br></br><br></br>
         <Grid style={{placeItems: "center"}}>
+            <br></br>
         <TextFieldRoot style={{width: "min(100%, 800px)"}}>
             <TextFieldSlot>
                 <MagnifyingGlassIcon style={{scale: 1.8, padding: "5px"}}></MagnifyingGlassIcon>
             </TextFieldSlot>
-            <TextFieldInput style={{fontSize: "20px", height: "40px"}} placeholder='Search...' onChange={(e) => setFilter(e.target.value)}></TextFieldInput>
+            <TextFieldInput style={{fontSize: "20px", height: "40px"}} placeholder='Search...' onChange={async (e) => {
+                let key = crypto.randomUUID()
+                queue = key
+                setTimeout(() => {
+                    if(queue != key) return;
+                    setFilter(e.target.value)
+                    changePage(1, e.target.value, true)
+                }, 1000)
+            }}></TextFieldInput>
         </TextFieldRoot>
         </Grid>
         <br></br>
         <Grid style={{placeItems: "center"}}>
             <SelectRoot defaultValue={JSON.stringify(nationality)} onValueChange={(e) => {
-                 setNationality(JSON.parse(e))
+                let value = JSON.parse(e)
+                 setNationality(value)
+                 changePage(1, undefined, true, value[1])
             }}>
                 <SelectTrigger style={{width: "min(100%, 400px)", fontSize: "20px"}} color="cyan"></SelectTrigger>
                 <SelectContent>
@@ -54,20 +85,22 @@ export default function LeaderboardClient({profiles}: info) {
         <br></br>
         <Grid style={{placeItems: "center"}}>
                     <Button color="cyan" style={{width: "min(100%, 350px)"}} onClick={async () => {
-                                setLoading(true)
-                                if(type == 'users' && !nations.length) {
-                                    let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards/nations`, {cache: "no-cache"})
-                                    let nations = await req.json()
-                                    setNations(nations)
-                                }
-                                setType(type == "nations" ? "users" : 'nations')
-                                setLoading(false)
+                                let t: typeof type = type == "nations" ? "users" : 'nations'
+                                setType(t)
+                                changePage(1, undefined, true, undefined, t)
                             }}>
                             <Text size="5" as="p" align='center'>Switch to {type == "users" ? "nationalities" : "players"} leaderboard</Text>
                     </Button>
+                    <br></br>
+                    <Pagination
+                page={page}
+                count={pages}
+                onChange={changePage}
+            ></Pagination>
+            <Text size={"1"} style={{marginTop: "5px", opacity: 0.5}} color={"gray"}>Click the "..." to specify a page!</Text>
         </Grid>
         <br></br>
-        {(type == "users" ? profiles : nations).filter((e: Record<any, any>) => e.name.toLowerCase().includes(filter.toLowerCase()) && (nationality[1] == "International" ? true : e.abbr == nationality[1])).map((e: Record<any, any>) => <Grid style={{placeItems: "center"}} key={e.id}><LeaderboardCard profile={e} nationalities={type == "nations"}></LeaderboardCard><br></br></Grid>)}
+        {(type == "users" ? profiles : nations).map((e: Record<any, any>, i: number) => <Grid style={{placeItems: "center"}} key={e.id}><LeaderboardCard profile={e} nationalities={type == "nations"}></LeaderboardCard><br></br></Grid>)}
     </Box>
   )
 }

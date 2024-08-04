@@ -54,11 +54,11 @@ export default function LeaderboardCard({profile,nationalities}: info) {
                 e.stopPropagation()
                 e.target.dispatchEvent(new MouseEvent("onmouseover"))
               }}>
-                <img src={icons[0]} width={"32"} style={{position: "absolute", right: "10px", bottom: "10px"}}></img>
+                <img src={icons[0]} width={"32"} style={{position: "absolute", right: "10px", bottom: "10px"}} loading='lazy'></img>
               </HoverCardTrigger>
               <HoverCardContent>
               <Flex gap={"5"} justify={'center'} align={'center'}>
-            {icons.map((e: string) => <img key={e} src={e} width={"40"}></img>)}
+            {icons.map((e: string) => <img key={e} src={e} width={"40"} loading='lazy'></img>)}
             </Flex>
               </HoverCardContent>
             </HoverCardRoot>
@@ -77,11 +77,11 @@ export default function LeaderboardCard({profile,nationalities}: info) {
             if(e[0] == "nationality") {e[1] = e[1].replaceAll("_", " ")}
             return `${e[0]}: ${e[1]}`
         }).join("\n"))
-      }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenuItem>
+      }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px" loading='lazy'></img>Copy Text Format</Flex></ContextMenuItem>
       <ContextMenuSeparator></ContextMenuSeparator>
-      <ContextMenuItem onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/${nationalities ? "nationality" : "player"}/${nationalities ? profile.abbr : profile.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Profile URL</Flex></ContextMenuItem>
-    {!nationalities ? <ContextMenuItem onClick={() => navigator.clipboard.writeText(profile.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenuItem> : ""}
-    <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(profile))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Profile JSON</Flex></ContextMenuItem>
+      <ContextMenuItem onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/${nationalities ? "nationality" : "player"}/${nationalities ? profile.abbr : profile.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px" loading='lazy'></img>Copy Profile URL</Flex></ContextMenuItem>
+    {!nationalities ? <ContextMenuItem onClick={() => navigator.clipboard.writeText(profile.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px" loading='lazy'></img>Copy Object ID</Flex></ContextMenuItem> : ""}
+    <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(profile))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px" loading='lazy'></img>Copy Profile JSON</Flex></ContextMenuItem>
     </ContextMenuContent>
   </ContextMenuRoot>
 }
