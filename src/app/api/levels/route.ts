@@ -91,7 +91,10 @@ export async function PATCH(request: NextRequest) {
                     id: level.id
                 },
                 data: {
-                    position: level.position
+                    position: level.position,
+                    removalDate: null,
+                    removalReason: null,
+                    formerRank: null
                 }
             })
         ])

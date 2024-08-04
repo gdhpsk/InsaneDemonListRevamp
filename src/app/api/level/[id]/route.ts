@@ -61,6 +61,7 @@ export async function PATCH(req: NextRequest) {
     let auth = await middleware(req, "helper")
     if(auth.error) return NextResponse.json({error: auth.error, message: auth.message}, {status: auth.status})
     let body: Record<any, any> = {}
+    let removeReason: boolean = false
 
     try {
         body = await req.json()
@@ -137,16 +138,12 @@ export async function PATCH(req: NextRequest) {
         let count = await prisma.level.count()
         if(body.position < 1 || body.position > count+1) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid position range."}, {status: 400})
         let obj: Record<any, any> = {
-            position: body.position
+            position: body.position,
+            removalDate: null,
+            removalReason: null,
+            formerRank: null
         }
-        if(level.removalDate && body.position <= 150) {
-            obj = {
-                position: body.position,
-                removalDate: null,
-                removalReason: null,
-                formerRank: null
-            }
-        }
+        removeReason = true
         await prisma.$transaction([
             prisma.level.updateMany({
                 where: {
@@ -243,7 +240,7 @@ export async function PATCH(req: NextRequest) {
             name: body.name || level.name,
             publisher: body.publisher || level.publisher,
             ytcode: body.ytcode || level.ytcode,
-            removalReason: body.removalReason || level.removalReason
+            removalReason: removeReason ? null : (body.removalReason || level.removalReason)
         }
     })
     await prisma.$disconnect()
