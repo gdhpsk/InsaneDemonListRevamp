@@ -48,6 +48,7 @@ export default function createPipeline(id: string) {
                   'beaten_when_weekly': 1, 
                   'level': {
                     'name': 1, 
+                    'extreme': {'$regexMatch': {'input': "$level.removalReason", 'regex': 'extreme', 'options': 'i'}},
                     'position': 1,
                     'ytcode': 1, 
                     'publisher': 1, 

@@ -1,9 +1,6 @@
 import cache from "../../../../cache.json"
 
 export async function GET(request: Request) {
-    if (cache.admins.invalidate_at > Date.now()) {
-        return new Response(JSON.stringify(cache.admins.data))
-    }
     let admins = await fetch(`https://discord.com/api/v10/guilds/${process.env.ADMIN_SERVER}/members?limit=1000`, {
         headers: {
             authorization: `Bot ${process.env.BOT_TOKEN}`
@@ -51,8 +48,6 @@ export async function GET(request: Request) {
                 channel: cache.channels.find(e => e.id == user.id)?.link || "#"
             })
         }
-        cache.admins.data = rankings
-        cache.admins.invalidate_at = Date.now() + 300_000
     } catch (_) {
 
     }

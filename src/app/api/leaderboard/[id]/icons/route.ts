@@ -1,11 +1,7 @@
 import prisma from "../../../../../../prisma/prisma"
-import cache from "../../../../../../cache.json"
 import { ObjectId } from "bson"
 
 export async function GET(req: Request, res: Record<any, any>) {
-    if((cache.icons as any)[res.params.id]?.invalidate_at > Date.now()) {
-        return new Response(JSON.stringify((cache.icons as any)[res.params.id].icons))
-    } 
     try {
         new ObjectId(res.params.id)
     } catch(_) {
@@ -73,10 +69,6 @@ export async function GET(req: Request, res: Record<any, any>) {
             jetpack: json.jetpack
         }
         let obj =Object.entries(metadata).filter(e => !["color1", "color2"].includes(e[0])).map(e => `https://gdicon.oat.zone/icon.png?type=${e[0]}&value=${e[1]}&color1=${metadata.color1}&color2=${metadata.color2}`);
-        (cache.icons as any)[res.params.id] = {
-            invalidate_at: Date.now() + 43_200_000,
-            icons: obj
-        }
         return new Response(JSON.stringify(obj))
     }
     await prisma.$disconnect()
