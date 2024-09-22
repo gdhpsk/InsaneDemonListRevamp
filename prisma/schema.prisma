@@ -22,15 +22,32 @@ model Level {
     @@map(name: "levels")
 }
 
+model Platformer {
+    id     String @id @default(auto()) @map("_id") @db.ObjectId
+    formerRank  Int?
+    list        Record[]
+    name        String
+    position    Int
+    publisher   String
+    removalDate String?
+    removalReason String?
+    ytcode      String
+    packs Pack[]
+    weekly Weekly?
+    @@map(name: "platformers")
+}
+
 model Record {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
     beaten_when_weekly Boolean?
     levelId String @db.ObjectId
-    level           Level  @relation(fields: [levelId], references: [id])
+    level           Level?  @relation(fields: [levelId], references: [id])
+    platformer           Platformer?  @relation(fields: [levelId], references: [id])
     link             String
     playerId String @db.ObjectId
     player Player @relation(fields: [playerId], references: [id])
     verification     Boolean?
+    time String?
 
     @@unique([levelId, playerId])
     @@map(name: "records")
@@ -51,7 +68,8 @@ model Pack {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
     name String
    levelId String @db.ObjectId
-    level Level @relation(fields: [levelId], references: [id])
+    level Level? @relation(fields: [levelId], references: [id])
+    platformer Platformer? @relation(fields: [levelId], references: [id])
     color String
     position Int
 
@@ -63,7 +81,8 @@ model Weekly {
     date Int
     color String
     levelId String @unique @db.ObjectId
-    level Level @relation(fields: [levelId], references: [id])
+    level Level? @relation(fields: [levelId], references: [id])
+    platformer Platformer? @relation(fields: [levelId], references: [id])
 
     @@map(name: "weekly")
 }
@@ -80,6 +99,8 @@ model Submission {
     userId String @db.ObjectId
     status Int
     reason String?
+    type String
+    time String?
 
     @@map(name: "submissions")
 }

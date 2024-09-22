@@ -29,64 +29,127 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
     if(!submission) return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find the given submission ID"}, {status: 400})
     try {
         if(body.status == 1) {
-            let level = await prisma.level.findFirst({
-                where: {
-                    name: body.level || submission.level,
-                    publisher: body.publisher || submission.publisher
-                },
-                select: {
-                    id: true,
-                    weekly: {
-                        select: {
-                            date: true
+            if(submission.type == "classic") {
+                let level = await prisma.level.findFirst({
+                    where: {
+                        name: body.level || submission.level,
+                        publisher: body.publisher || submission.publisher
+                    },
+                    select: {
+                        id: true,
+                        weekly: {
+                            select: {
+                                date: true
+                            }
                         }
                     }
-                }
-            })
-            if(!level)  return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find the given level"}, {status: 400})
-            let player = await prisma.player.findFirst({
-                where: {
-                    name: body.player || submission.player
-                },
-                select: {
-                    id: true
-                }
-            })
-            if(!player)  {
-                player = await prisma.player.create({
-                    data: {
+                })
+                if(!level)  return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find the given level"}, {status: 400})
+                let player = await prisma.player.findFirst({
+                    where: {
                         name: body.player || submission.player
+                    },
+                    select: {
+                        id: true
                     }
                 })
-            }
-            await prisma.$transaction([
-                prisma.submission.update({
-                    where: {
-                        id: body.id
-                    },
-                    data: {
-                        status: body.status
-                    }
-                }),
-                prisma.record.upsert({
-                    where: {
-                        levelId_playerId: {
+                if(!player)  {
+                    player = await prisma.player.create({
+                        data: {
+                            name: body.player || submission.player
+                        }
+                    })
+                }
+                await prisma.$transaction([
+                    prisma.submission.update({
+                        where: {
+                            id: body.id
+                        },
+                        data: {
+                            status: body.status
+                        }
+                    }),
+                    prisma.record.upsert({
+                        where: {
+                            levelId_playerId: {
+                                levelId: level.id,
+                                playerId: player.id
+                            }
+                        },
+                        update: {
+                            link: body.link || submission.link,
+                            beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined
+                        },
+                        create: {
+                            link: body.link || submission.link,
+                            beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined,
                             levelId: level.id,
                             playerId: player.id
                         }
+                    })
+                ])
+            } else {
+                let level = await prisma.platformer.findFirst({
+                    where: {
+                        name: body.level || submission.level,
+                        publisher: body.publisher || submission.publisher
                     },
-                    update: {
-                        link: body.link || submission.link,
-                        beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined
-                    },
-                    create: {
-                        link: body.link || submission.link,
-                        beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined,
-                        levelId: level.id,
-                        playerId: player.id
+                    select: {
+                        id: true,
+                        weekly: {
+                            select: {
+                                date: true
+                            }
+                        }
                     }
                 })
-            ])
+                if(!level)  return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find the given level"}, {status: 400})
+                let player = await prisma.player.findFirst({
+                    where: {
+                        name: body.player || submission.player
+                    },
+                    select: {
+                        id: true
+                    }
+                })
+                if(!player)  {
+                    player = await prisma.player.create({
+                        data: {
+                            name: body.player || submission.player
+                        }
+                    })
+                }
+                await prisma.$transaction([
+                    prisma.submission.update({
+                        where: {
+                            id: body.id
+                        },
+                        data: {
+                            status: body.status
+                        }
+                    }),
+                    prisma.record.upsert({
+                        where: {
+                            levelId_playerId: {
+                                levelId: level.id,
+                                playerId: player.id
+                            }
+                        },
+                        update: {
+                            link: body.link || submission.link,
+                            time: (body.time || submission.time).toString(),
+                            beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined
+                        },
+                        create: {
+                            link: body.link || submission.link,
+                            time: (body.time || submission.time).toString(),
+                            beaten_when_weekly: level.weekly?.date && level.weekly.date+604_800_000 > submission.editedAt.getTime() ? true : undefined,
+                            levelId: level.id,
+                            playerId: player.id
+                        }
+                    })
+                ])
+            }
         } else if(body.status == 2) {
             if(!body.reason || typeof body.reason !== 'string') return NextResponse.json({error: "400 BAD REQUEST", message: `You must provide a valid reason when rejecting submissions!`}, {status: 400})
                 await prisma.$transaction([

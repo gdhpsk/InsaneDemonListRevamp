@@ -1,6 +1,6 @@
 'use client';
 import hexToRGB from '@/functions/hexToRGB'
-import calc_points from '@/functions/points'
+import {calc_points_plat} from '@/functions/points'
 import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, DrawingPinFilledIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, RadiobuttonIcon, SpeakerLoudIcon, StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
 import { Badge, Box, Callout, Flex, Grid, HoverCard, IconButton, Table,Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
@@ -12,7 +12,13 @@ interface info {
     count: number
 }
 
-export default function Level({level, count}: info) {
+export default function Platformer({level, count}: info) {
+    function secondsToTime(seconds: number) {
+        let hours = (seconds - seconds % 3600) / 3600
+        let minutes = (seconds - hours*3600 - seconds % 60) / 60
+        let secs = (seconds - hours*3600 - minutes*60).toFixed(3)
+        return `${hours ? `${hours}:` : ""}${hours || minutes ? `${minutes ? minutes : "00"}:` : ""}${secs ? secs : "00"}`
+    }
     dayjs.extend(utc)
   return (
     <div className={styles.content}>
@@ -25,13 +31,13 @@ export default function Level({level, count}: info) {
             </Callout.Root>
             <br></br>
         </> : ""}
-      {level.position > 150 ? <>
+      {/* {level.position > 150 ? <>
             <Callout.Root color="yellow">
                 <Callout.Icon style={{height: "25px"}}><ExclamationTriangleIcon style={{scale: 2}} /></Callout.Icon>
                 <Callout.Text size="5" ml="1">Since this level is legacy, you CANNOT submit records for it.</Callout.Text>
             </Callout.Root>
             <br></br>
-        </> : ""}
+        </> : ""} */}
         {level.weekly?.date > Date.now() + 604_800 ? <>
             <Callout.Root>
                 <Callout.Icon style={{height: "25px"}}><InfoCircledIcon style={{scale: "2"}} /></Callout.Icon>
@@ -98,7 +104,7 @@ export default function Level({level, count}: info) {
             </Table.Header>
             <Table.Body>
                 <Table.Row>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points(level.position)}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points_plat(level.position)}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
                         {level.weekly ? `${dayjs(level.weekly.date).utc(false).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(false).format("MMM D, YYYY")}` : "never"}    
                     </Table.RowHeaderCell>
@@ -137,6 +143,7 @@ export default function Level({level, count}: info) {
                     <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center"><img src="https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true" width="32px"></img></Table.ColumnHeaderCell>
                     <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</Table.ColumnHeaderCell>
                     <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Link</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Time</Table.ColumnHeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -152,6 +159,7 @@ export default function Level({level, count}: info) {
                         </IconButton>
                         </a>
                     </Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{secondsToTime(parseFloat(e.time))}</Table.RowHeaderCell>
                 </Table.Row>)}
             </Table.Body>
         </Table.Root>

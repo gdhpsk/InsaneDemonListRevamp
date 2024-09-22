@@ -18,8 +18,7 @@ export default async function RootLayout() {
     return <NotFound></NotFound>
   }
 
-  let [req1, req2, req3] = await Promise.all([
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/levels?start=0&end=150`),
+  let [req1, req2] = await Promise.all([
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`),
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/admins/submissions`, {
         headers: {
@@ -28,10 +27,9 @@ export default async function RootLayout() {
       })
 ])
 
-let [levels, leaderboards, submissions] = await Promise.all([
+let [leaderboards, submissions] = await Promise.all([
     await req1.json(),
-    await req2.json(),
-    await req3.json()
+    await req2.json()
 ])
 
   return (
@@ -40,7 +38,6 @@ let [levels, leaderboards, submissions] = await Promise.all([
         <Submissions
         submissions={submissions}
         authData={data.user}
-        levels={levels}
         leaderboards={leaderboards}
     ></Submissions>
     </>

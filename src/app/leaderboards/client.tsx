@@ -1,7 +1,7 @@
 'use client';
 import LeaderboardCard from '@/components/LeaderboardCard'
 import { CaretDownIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Box, Button, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, SelectContent, SelectItem, SelectRoot, SelectTrigger, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from '@radix-ui/themes'
+import { Box, Button, Flex, Grid, Select, Text, TextField } from '@radix-ui/themes'
 import { useEffect, useState } from 'react';
 import Image from "next/image"
 import cache from "../../../cache.json"
@@ -51,11 +51,7 @@ export default function LeaderboardClient({ profs, p }: info) {
             <br></br><br></br>
             <Grid style={{ placeItems: "center" }}>
                 <br></br>
-                <TextFieldRoot style={{ width: "min(100%, 800px)" }}>
-                    <TextFieldSlot>
-                        <MagnifyingGlassIcon style={{ scale: 1.8, padding: "5px" }}></MagnifyingGlassIcon>
-                    </TextFieldSlot>
-                    <TextFieldInput style={{ fontSize: "20px", height: "40px" }} placeholder='Search...' onChange={async (e) => {
+                <TextField.Root style={{ width: "min(100%, 800px)", fontSize: "20px", height: "40px" }} placeholder='Search...' onChange={async (e) => {
                         let key = crypto.randomUUID()
                         queue = key
                         setTimeout(() => {
@@ -63,26 +59,29 @@ export default function LeaderboardClient({ profs, p }: info) {
                             setFilter(e.target.value.trim())
                             changePage(1, e.target.value.trim(), true)
                         }, 1000)
-                    }}></TextFieldInput>
-                </TextFieldRoot>
+                    }}>
+                    <TextField.Slot>
+                        <MagnifyingGlassIcon style={{ scale: 1.8, padding: "5px" }}></MagnifyingGlassIcon>
+                    </TextField.Slot>
+                </TextField.Root>
             </Grid>
             <br></br>
             <Grid style={{ placeItems: "center" }}>
-                <SelectRoot defaultValue={JSON.stringify(nationality)} onValueChange={(e) => {
+                <Select.Root defaultValue={JSON.stringify(nationality)} onValueChange={(e) => {
                     let value = JSON.parse(e)
                     setNationality(value)
                     changePage(1, undefined, true, value[1])
                 }}>
-                    <SelectTrigger style={{ width: "min(100%, 400px)", fontSize: "20px" }} color="cyan"></SelectTrigger>
-                    <SelectContent>
-                        {Object.entries(cache.nationalities).map(e => <SelectItem key={e[1]} value={JSON.stringify(e)}>
+                    <Select.Trigger style={{ width: "min(100%, 400px)", fontSize: "20px" }} color="cyan"></Select.Trigger>
+                    <Select.Content>
+                        {Object.entries(cache.nationalities).map(e => <Select.Item key={e[1]} value={JSON.stringify(e)}>
                             <Flex gap="3">
                                 <Image alt={e[1]} src={e[0] != "International" ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e[1]}.svg` : "/international.png"} width={24} height={18}></Image>
                                 <Text size="3">{e[0]}</Text>
                             </Flex>
-                        </SelectItem>)}
-                    </SelectContent>
-                </SelectRoot>
+                        </Select.Item>)}
+                    </Select.Content>
+                </Select.Root>
             </Grid>
             <br></br>
             <Grid style={{ placeItems: "center" }}>
@@ -95,7 +94,7 @@ export default function LeaderboardClient({ profs, p }: info) {
                 </Button>
                 <br></br>
                 <Flex gap="2" align='center'>
-                <Text size="3">{type == 'users' ? "Profiles" : "Nationalities"} per page:</Text><TextFieldInput style={{width: "5ch"}} type='number' defaultValue={max} onChange={(e) => {
+                <Text size="3">{type == 'users' ? "Profiles" : "Nationalities"} per page:</Text><TextField.Root style={{width: "5ch"}} type='number' defaultValue={max} onChange={(e) => {
                     let value = parseInt(e.target.value)
                     let key = crypto.randomUUID()
                     sliderQueue = key
@@ -112,7 +111,7 @@ export default function LeaderboardClient({ profs, p }: info) {
                         setMax(value)
                         changePage(1, undefined, true, undefined, undefined, value)
                     }, 1000)
-                }}></TextFieldInput>
+                }}></TextField.Root>
                 </Flex>
                 <br></br>
                 <Pagination
