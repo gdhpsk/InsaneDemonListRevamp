@@ -1,5 +1,5 @@
 'use client'
-import { Flex, Text, Box, Grid, IconButton, Dialog, Button, DropdownMenu, Callout } from '@radix-ui/themes';
+import { Flex, Text, Box, Grid, IconButton, DialogRoot, DialogTrigger, DialogClose, Button, DialogContent, DialogTitle, DropdownMenuRoot, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, CalloutIcon, CalloutRoot, CalloutText } from '@radix-ui/themes';
 import Image from "next/image"
 import Admin from '@/components/Admin';
 import { useState } from 'react';
@@ -31,17 +31,17 @@ export default function EditAdmins({ authData, users }: info) {
             </Flex>
             <br></br>
             <Grid style={{ placeItems: "center" }}>
-                <Dialog.Root>
-                    <Dialog.Trigger>
+                <DialogRoot>
+                    <DialogTrigger>
                         <IconButton disabled={authData.user.perms.idl < 2}>
                             <PlusIcon></PlusIcon>
                         </IconButton>
-                    </Dialog.Trigger>
-                    <Dialog.Content style={{ padding: "30px" }}>
-                        <Dialog.Title as="h1" align="center" style={{ fontSize: "30px" }}>Add Admin</Dialog.Title>
+                    </DialogTrigger>
+                    <DialogContent style={{ padding: "30px" }}>
+                        <DialogTitle as="h1" align="center" style={{ fontSize: "30px" }}>Add Admin</DialogTitle>
                         <br></br>
-                        <DropdownMenu.Root>
-                            <DropdownMenu.Trigger disabled={authData.user.perms.idl < 2}>
+                        <DropdownMenuRoot>
+                            <DropdownMenuTrigger disabled={authData.user.perms.idl < 2}>
                                 <Flex gap="2" justify={'center'}>
                                     <Text size="5">User:</Text>
                                     <Button style={{ width: "90%" }} color="purple">
@@ -49,14 +49,14 @@ export default function EditAdmins({ authData, users }: info) {
                                         <Text style={{ textAlign: "end" }} as="p"><CaretDownIcon style={{ scale: 2.5 }}></CaretDownIcon></Text>
                                     </Button>
                                 </Flex>
-                            </DropdownMenu.Trigger>
-                            <DropdownMenu.Content>
-                                {accounts.filter((e: any) => !e.perms?.idl).map((e: any) => <DropdownMenu.Item style={{ fontSize: "15px" }} key={e._id} onClick={() => setEdits({ ...edits, id: e._id, name: e.name, email: e.email })}>{e.email} ({e.name})</DropdownMenu.Item>)}
-                            </DropdownMenu.Content>
-                        </DropdownMenu.Root>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                {accounts.filter((e: any) => !e.perms?.idl).map((e: any) => <DropdownMenuItem style={{ fontSize: "15px" }} key={e._id} onClick={() => setEdits({ ...edits, id: e._id, name: e.name, email: e.email })}>{e.email} ({e.name})</DropdownMenuItem>)}
+                            </DropdownMenuContent>
+                        </DropdownMenuRoot>
                         <br></br>
-                        <DropdownMenu.Root>
-                            <DropdownMenu.Trigger disabled={authData.user.perms.idl < 2}>
+                        <DropdownMenuRoot>
+                            <DropdownMenuTrigger disabled={authData.user.perms.idl < 2}>
                                 <Flex gap="2" justify={'center'}>
                                     <Text size="5">Perms:</Text>
                                     <Button style={{ width: "87%" }} color="purple">
@@ -64,18 +64,18 @@ export default function EditAdmins({ authData, users }: info) {
                                         <Text style={{ textAlign: "end" }} as="p"><CaretDownIcon style={{ scale: 2.5 }}></CaretDownIcon></Text>
                                     </Button>
                                 </Flex>
-                            </DropdownMenu.Trigger>
-                            <DropdownMenu.Content>
-                                {cache.perms.map((e, i) => <DropdownMenu.Item style={{ fontSize: "15px" }} key={e} onClick={() => setEdits({ ...edits, perms: i + 1 })}>{e}</DropdownMenu.Item>)}
-                            </DropdownMenu.Content>
-                        </DropdownMenu.Root>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                {cache.perms.map((e, i) => <DropdownMenuItem style={{ fontSize: "15px" }} key={e} onClick={() => setEdits({ ...edits, perms: i + 1 })}>{e}</DropdownMenuItem>)}
+                            </DropdownMenuContent>
+                        </DropdownMenuRoot>
                         <br></br>
-                        {error.message ? <><Callout.Root color={error.color as any}>
-                            <Callout.Icon>
+                        {error.message ? <><CalloutRoot color={error.color as any}>
+                            <CalloutIcon>
                                 {error.color == "red" ? <CrossCircledIcon style={{ scale: 1.5 }}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{ scale: 1.5 }}></CheckIcon> : <InfoCircledIcon style={{ scale: 1.5 }}></InfoCircledIcon>}
-                            </Callout.Icon>
-                            <Callout.Text size="3" ml="-1">{error.message}</Callout.Text>
-                        </Callout.Root><br></br></> : ""}
+                            </CalloutIcon>
+                            <CalloutText size="3" ml="-1">{error.message}</CalloutText>
+                        </CalloutRoot><br></br></> : ""}
                         <Flex gap="4" align="center" justify={'center'}>
                             <Button size="3" disabled={!edits.id || !edits.perms || authData.user.perms.idl < 2} onClick={async () => {
                                 setError({ color: "blue", message: "Loading..." })
@@ -100,17 +100,17 @@ export default function EditAdmins({ authData, users }: info) {
                         <br></br>
                         <br></br>
                         <Grid style={{ placeItems: "center" }}>
-                            <Dialog.Close>
+                            <DialogClose>
                                 <Button color="red" size="3" id="add-close" onClick={() => setEdits({
                                     id: "",
                                     name: "",
                                     email: "",
                                     perms: 0
                                 })}>Close</Button>
-                            </Dialog.Close>
+                            </DialogClose>
                         </Grid>
-                    </Dialog.Content>
-                </Dialog.Root>
+                    </DialogContent>
+                </DialogRoot>
             </Grid>
             <br></br>
             {accounts.filter((e: any) => e.perms?.idl).map((e: any) => <Grid style={{ placeItems: "center" }} key={e._id}><Admin

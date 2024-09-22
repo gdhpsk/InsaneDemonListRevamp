@@ -1,7 +1,7 @@
 'use client';
 import hexToRGB from "@/functions/hexToRGB";
 import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-import { Badge, Box, Button, Callout, Card, Dialog, DropdownMenu, Flex, Grid, IconButton, SegmentedControl, Select, Separator, Table, Text, TextField } from "@radix-ui/themes"
+import { Badge, Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, DialogClose, DialogContent, DialogDescription, DialogRoot, DialogTitle, DialogTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, IconButton, SelectContent, SelectGroup, SelectItem, SelectRoot, SelectTrigger, Separator, TableBody, TableCell, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text, TextFieldInput, TextFieldRoot, TextFieldSlot } from "@radix-ui/themes"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import styles from "../../app/submit.module.css"
@@ -10,15 +10,15 @@ import utc from "dayjs/plugin/utc"
 
 interface info {
     authData: Record<any, any>,
+    levels: Array<Record<any, any>>,
     leaderboards: Array<Record<any, any>>,
     packs: Array<Record<any, any>>
 }
 
-export default function EditLevels({ authData, leaderboards, packs }: info) {
+export default function EditLevels({ authData, levels, leaderboards, packs }: info) {
     dayjs.extend(utc)
-
-    let [originalLevels, setOriginalLevels] = useState<Array<Record<any, any>>>([])
-    let [filteredLevels, setFilteredLevels] = useState<Array<Record<any, any>>>([])
+    let [originalLevels, setOriginalLevels] = useState(levels)
+    let [filteredLevels, setFilteredLevels] = useState(levels)
     let [level, setLevel] = useState<Record<any, any>>({})
     let [edits, setEdits] = useState<Array<Record<any, any>>>([])
     let [error, setError] = useState({color: "red", message: ""})
@@ -27,7 +27,6 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
     let [deletedRecords, setDeletedRecords] = useState<Array<Record<any, any>>>([])
     let [record, setRecord] = useState<number | null>(null)
     let [filteredPlayers, setFilteredPlayers] = useState<Array<Record<any, any>>>([])
-    let [type, setType] = useState<"level" | "platformer">("level")
     let [levelAddition, setLevelAddition] = useState<Record<any, any>>({})
     let [openPlayers, setOpenPlayers] = useState(false)
 
@@ -38,15 +37,6 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
     useEffect(() => {
       setWidth(getWidth())
     })
-
-    useEffect(() => {
-        (async () => {
-            let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${type}s?start=0`)
-            let json = await req.json()
-            setOriginalLevels(json)
-            setFilteredLevels(json)
-        })()
-    }, [type])
 
     function getYoutubeVideoId(link: string) {
         const text = link.trim()
@@ -119,17 +109,10 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                 <img src="/favicon.ico" height="70px"></img>
             </Flex>
             <br></br>
-            <Grid style={{placeItems: "center"}}>
-            <SegmentedControl.Root size="3" defaultValue="level" onValueChange={e => setType(e as any)}>
-                <SegmentedControl.Item value="level">Classic</SegmentedControl.Item>
-                <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
-            </SegmentedControl.Root>
-            </Grid>
-            <br></br>
             <Flex justify="center" gap="9">
                 <Button size="4" disabled={!filteredLevels.find(e => e.difference)} onClick={async () => {
                     setError({color: "blue", message: "Loading..."})
-                                     let req = await fetch(`/api/${type}s`, {
+                                     let req = await fetch("/api/levels", {
                                          method: "PATCH",
                                          headers: {
                                              'content-type': 'application/json',
@@ -142,7 +125,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                          setError({color: "red", message: data.message})
                                      } catch(_) {
                                         setError({color: "blue", message: "Fetching new information..."})
-                                        let req = await fetch(`/api/${type}s?start=0`, {
+                                        let req = await fetch(`/api/levels?start=0`, {
                                             headers: {
                                                 authorization: authData.token
                                             }
@@ -157,7 +140,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                          }, 3000)
                                      }
                 }}>Save</Button>
-                <Dialog.Root onOpenChange={_ => {
+                <DialogRoot onOpenChange={_ => {
                     let obj = {
                         id: "level_addition",
                         position: filteredLevels.length+1,
@@ -175,40 +158,42 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                         setFilteredLevels(originalLevels)
                     }
                 }}>
-                    <Dialog.Trigger>
+                    <DialogTrigger>
                         <IconButton size="4" disabled={!!filteredLevels.find(e => e.difference)}>+</IconButton>
-                    </Dialog.Trigger>
-                    <Dialog.Content>
-                        <Dialog.Title as="h1" align='center' style={{fontSize: "30px"}}>Level Addition</Dialog.Title>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogTitle as="h1" align='center' style={{fontSize: "30px"}}>Level Addition</DialogTitle>
                         <br></br>
-                        <Table.Root variant="surface">
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.ColumnHeaderCell>#</Table.ColumnHeaderCell>
-                                    <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-                                    <Table.ColumnHeaderCell>Publisher</Table.ColumnHeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            {!level.hide ? <Table.Body>
-                                <Table.Row>
-                                    <Table.RowHeaderCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{level.position == 1 ? 1 : filteredLevels.find((e:any) => level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.position}</Table.RowHeaderCell>
-                                    <Table.Cell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.name}</Table.Cell>
-                                    <Table.Cell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.publisher}</Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.RowHeaderCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{level.position != 1 && level.position != filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : e.position == level.position-1)?.position}</Table.RowHeaderCell>
-                                    <Table.Cell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.name}</Table.Cell>
-                                    <Table.Cell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.publisher}</Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.RowHeaderCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{level.position == filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : e.position == level.position+1)?.position}</Table.RowHeaderCell>
-                                    <Table.Cell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.name}</Table.Cell>
-                                    <Table.Cell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.publisher}</Table.Cell>
-                                </Table.Row>
-                            </Table.Body> : ""}
-                        </Table.Root>
+                        <TableRoot variant="surface">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableColumnHeaderCell>#</TableColumnHeaderCell>
+                                    <TableColumnHeaderCell>Name</TableColumnHeaderCell>
+                                    <TableColumnHeaderCell>Publisher</TableColumnHeaderCell>
+                                </TableRow>
+                            </TableHeader>
+                            {!level.hide ? <TableBody>
+                                <TableRow>
+                                    <TableRowHeaderCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{level.position == 1 ? 1 : filteredLevels.find((e:any) => level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.position}</TableRowHeaderCell>
+                                    <TableCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.name}</TableCell>
+                                    <TableCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.publisher}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableRowHeaderCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{level.position != 1 && level.position != filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : e.position == level.position-1)?.position}</TableRowHeaderCell>
+                                    <TableCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.name}</TableCell>
+                                    <TableCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.publisher}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableRowHeaderCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{level.position == filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : e.position == level.position+1)?.position}</TableRowHeaderCell>
+                                    <TableCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.name}</TableCell>
+                                    <TableCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.publisher}</TableCell>
+                                </TableRow>
+                            </TableBody> : ""}
+                        </TableRoot>
                         <br></br>
-                        <TextField.Root onChange={e => {
+                        <TextFieldRoot>
+                            <TextFieldSlot>Position</TextFieldSlot>
+                            <TextFieldInput onChange={e => {
                                 let levPos = level.position
                                 let newLevPos = parseInt(e.target.value)
                                 if(!newLevPos || newLevPos < 1 || newLevPos > filteredLevels.length) {
@@ -232,49 +217,51 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                 }
                                 setFilteredLevels(levels.sort((a,b) => a.position - b.position))
                                 setLevel({...level, position: parseInt(e.target.value), hide: false})
-                            }} type="number">
-                            <TextField.Slot>Position</TextField.Slot>
-                        </TextField.Root>
+                            }} type="number"></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
-                        <TextField.Root onChange={e => {
+                        <TextFieldRoot>
+                            <TextFieldSlot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextFieldSlot>
+                            <TextFieldInput onChange={e => {
                                 setLevel({...level, name: e.target.value})
                                 setFilteredLevels([
                                     ...filteredLevels.filter(x => x.id != "level_addition"),
                                     {...level, name: e.target.value}
                                 ].sort((a,b) => a.position - b.position))
-                            }} placeholder="Name...">
-                            <TextField.Slot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextField.Slot>
-                            </TextField.Root>
+                            }} placeholder="Name..."></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
-                        <TextField.Root onChange={e => {
+                        <TextFieldRoot>
+                            <TextFieldSlot><PersonIcon></PersonIcon></TextFieldSlot>
+                            <TextFieldInput onChange={e => {
                                 setLevel({...level, publisher: e.target.value})
                                 setFilteredLevels([
                                     ...filteredLevels.filter(x => x.id != "level_addition"),
                                     {...level, publisher: e.target.value}
                                 ].sort((a,b) => a.position - b.position))
-                            }} placeholder="Publisher...">
-                            <TextField.Slot><PersonIcon></PersonIcon></TextField.Slot>
-                        </TextField.Root>
+                            }} placeholder="Publisher..."></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
-                        <TextField.Root onChange={e => {
+                        <TextFieldRoot>
+                            <TextFieldSlot><VideoIcon></VideoIcon></TextFieldSlot>
+                            <TextFieldInput onChange={e => {
                                 setLevel({...level, ytcode: e.target.value})
                                 setFilteredLevels([
                                     ...filteredLevels.filter(x => x.id != "level_addition"),
                                     {...level, ytcode: e.target.value}
                                 ].sort((a,b) => a.position - b.position))
-                            }} placeholder="Ytcode...">
-                            <TextField.Slot><VideoIcon></VideoIcon></TextField.Slot>
-                        </TextField.Root>
+                            }} placeholder="Ytcode..."></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
                         <Grid style={{placeItems: "center"}}>
                     <iframe src={`https://www.youtube.com/embed/${level.ytcode}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                </Grid>
                <br></br>
-               <Dialog.Close>
+               <DialogClose>
                 <Flex gap="9" justify={'center'}>
                     <Button size='4' disabled={!level.name || !level.position || !level.publisher || level.ytcode.length < 11} onClick={async () => {
                         setError({color: "blue", message: "Loading..."})
-                        let req = await fetch(`/api/${type}s`, {
+                        let req = await fetch("/api/levels", {
                             method: "POST",
                             headers: {
                                 'content-type': 'application/json',
@@ -288,7 +275,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                             setError({color: "red", message: data.message})
                         } catch(_) {
                            setError({color: "blue", message: "Fetching new information..."})
-                           let req = await fetch(`/api/${type}s?start=0`, {
+                           let req = await fetch(`/api/levels?start=0`, {
                                headers: {
                                    authorization: authData.token
                                }
@@ -305,9 +292,9 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                     }}>Add</Button>
                     <Button size='4' color='red'>Cancel</Button>
                 </Flex>
-               </Dialog.Close>
-                    </Dialog.Content>
-                </Dialog.Root>
+               </DialogClose>
+                    </DialogContent>
+                </DialogRoot>
                 <Button size="4" disabled={!filteredLevels.find(e => e.difference)} color='red' onClick={() => {
                      setFilteredLevels(originalLevels)
                      setEdits([])
@@ -315,19 +302,19 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
             </Flex>
             <br></br>
             <Grid style={{placeItems: "center"}}>
-            {error.message ? <><Callout.Root color={error.color as any} style={{width: "min(600px, 100%)"}}>
-                <Callout.Icon>
+            {error.message ? <><CalloutRoot color={error.color as any} style={{width: "min(600px, 100%)"}}>
+                <CalloutIcon>
                     {error.color == "red" ? <CrossCircledIcon style={{scale: 1.5}}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{scale: 1.5}}></CheckIcon> : <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>}
-                </Callout.Icon>
-                <Callout.Text size="3" ml="-1">{error.message}</Callout.Text>
-            </Callout.Root><br></br></> : ""}
+                </CalloutIcon>
+                <CalloutText size="3" ml="-1">{error.message}</CalloutText>
+            </CalloutRoot><br></br></> : ""}
             </Grid>
             <br></br>
             <Grid style={{placeItems: "center"}}>
             <Grid columns={width > 1200 ? "6" : width > 1000 ? "5" : width > 800 ? "4" : width > 600 ? "3" : width > 400 ? "2" : "1"} gap="4" style={{width: "min(2500px, 100%)"}}>
-                {filteredLevels.map((e: any) => <Dialog.Root key={e.id} onOpenChange={async open => {
+                {filteredLevels.map((e: any) => <DialogRoot key={e.id} onOpenChange={async open => {
                     if(open) {
-                        let req = await fetch(`/api/${type}/${e.id}`)
+                        let req = await fetch(`/api/level/${e.id}`)
                         let level = await req.json()
                         setLevel(level)
                     } else {
@@ -339,40 +326,40 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                         setOpenPlayers(false)
                     }
                 }}>
-                    <Dialog.Trigger>
+                    <DialogTrigger>
                         <Card draggable={true} onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id}  className="infoCard" key={e.id} onClick={e => {
                             if(!!filteredLevels.find(e => e.difference)) e.preventDefault()
                         }}><Text size="4"><b>#{e.position}: </b>{e.name} by {e.publisher} {!e.difference ? "" : <Text size="4" color={e.difference < 0 ? "red" : "green"}>{e.difference < 0 ? "-" : "+"}{Math.abs(e.difference)}</Text>}</Text></Card>
-                    </Dialog.Trigger>
-                    <Dialog.Content>
+                    </DialogTrigger>
+                    <DialogContent>
                         {level.id ? <>
-                            <Dialog.Title as="h1" style={{fontSize: "30px"}} align={'center'}>
+                            <DialogTitle as="h1" style={{fontSize: "30px"}} align={'center'}>
                             #{level.position}: {level.name} by {level.publisher}
-                        </Dialog.Title>
-                        {level.formerRank ? <Dialog.Description align='center'>Formerly #{level.formerRank}, Removed on {new Date(level.removalDate).toDateString()}</Dialog.Description> : ""}
+                        </DialogTitle>
+                        {level.formerRank ? <DialogDescription align='center'>Formerly #{level.formerRank}, Removed on {new Date(level.removalDate).toDateString()}</DialogDescription> : ""}
                         <br></br>
                         <Text size="5" weight={'bold'} as='p' align='center'>Weekly</Text>
                         <Flex gap="2" align='center' justify={'center'}>
-                            <TextField.Root defaultValue={level.weekly ? dayjs(level.weekly.date).utc(false).format("YYYY-MM-DDTHH:mm:ss") : ""} type="datetime-local" onChange={e => {
+                            <TextFieldRoot><TextFieldInput defaultValue={level.weekly ? dayjs(level.weekly.date).utc(false).format("YYYY-MM-DDTHH:mm:ss") : ""} type="datetime-local" onChange={e => {
                                 setLevel({...level, weekly: level.weekly ? {...level.weekly, date: new Date(e.target.value).toISOString()} : { color: "#000000", date: new Date(e.target.value).toISOString()}})
-                            }}></TextField.Root>
-                            <input defaultValue={level.weekly?.color} type="color" style={{width: "revert"}} onChange={e => {
+                            }}></TextFieldInput></TextFieldRoot>
+                            <TextFieldRoot><TextFieldInput defaultValue={level.weekly?.color} type="color" style={{width: "revert"}} onChange={e => {
                                 setLevel({...level, weekly: level.weekly ? {...level.weekly, color: e.target.value} : { color: e.target.value, date: new Date(Date.now()).toISOString()}})
-                            }}></input>
+                            }}></TextFieldInput></TextFieldRoot>
                         </Flex>
                         <br></br>
                         <Flex gap="2" align='center' justify={'center'}>
                         <Text size="5" weight={'bold'}>Packs</Text>
-                        <DropdownMenu.Root>
-                                <DropdownMenu.Trigger>
+                        <DropdownMenuRoot>
+                                <DropdownMenuTrigger>
                                     <IconButton size="1"><PlusIcon></PlusIcon></IconButton>
-                                </DropdownMenu.Trigger>
-                                <DropdownMenu.Content>
-                                    {packs.filter(x => !level.packs.find((y:any) => y.id == x.id)).map((x:any) => <DropdownMenu.Item key={x.id} onClick={_ => {
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent>
+                                    {packs.filter(x => !level.packs.find((y:any) => y.id == x.id)).map((x:any) => <DropdownMenuItem key={x.id} onClick={_ => {
                                         setLevel({...level, packs: [...level.packs, x].sort((a,b) => a.position - b.position)})
-                                    }}>{x.name}</DropdownMenu.Item>)}
-                                </DropdownMenu.Content>
-                            </DropdownMenu.Root>
+                                    }}>{x.name}</DropdownMenuItem>)}
+                                </DropdownMenuContent>
+                            </DropdownMenuRoot>
                         </Flex>
                         <br></br>
                         <Flex gap="2" style={{maxWidth: "100%"}} wrap="wrap" justify="center">
@@ -387,34 +374,36 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                             }) : ""}
             </Flex>
                         <br></br>
-                        <Table.Root variant="surface">
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.ColumnHeaderCell>#</Table.ColumnHeaderCell>
-                                    <Table.ColumnHeaderCell>Name</Table.ColumnHeaderCell>
-                                    <Table.ColumnHeaderCell>Publisher</Table.ColumnHeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            {!level.hide ? <Table.Body>
-                                <Table.Row>
-                                    <Table.RowHeaderCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{level.position == 1 ? 1 : filteredLevels.find((e:any) => level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.position}</Table.RowHeaderCell>
-                                    <Table.Cell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.name}</Table.Cell>
-                                    <Table.Cell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.publisher}</Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.RowHeaderCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{level.position != 1 && level.position != filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : e.position == level.position-1)?.position}</Table.RowHeaderCell>
-                                    <Table.Cell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.name}</Table.Cell>
-                                    <Table.Cell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.publisher}</Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
-                                    <Table.RowHeaderCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{level.position == filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : e.position == level.position+1)?.position}</Table.RowHeaderCell>
-                                    <Table.Cell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.name}</Table.Cell>
-                                    <Table.Cell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.publisher}</Table.Cell>
-                                </Table.Row>
-                            </Table.Body> : ""}
-                        </Table.Root>
+                        <TableRoot variant="surface">
+                            <TableHeader>
+                                <TableRow>
+                                    <TableColumnHeaderCell>#</TableColumnHeaderCell>
+                                    <TableColumnHeaderCell>Name</TableColumnHeaderCell>
+                                    <TableColumnHeaderCell>Publisher</TableColumnHeaderCell>
+                                </TableRow>
+                            </TableHeader>
+                            {!level.hide ? <TableBody>
+                                <TableRow>
+                                    <TableRowHeaderCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{level.position == 1 ? 1 : filteredLevels.find((e:any) => level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.position}</TableRowHeaderCell>
+                                    <TableCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.name}</TableCell>
+                                    <TableCell style={{fontWeight: level.position == 1 ? "bold" : "initial"}}>{filteredLevels.find((e:any) => level.position == 1 ? e.id == level.id : level.position == filteredLevels.length ? e.position == level.position-2 : e.position == level.position-1)?.publisher}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableRowHeaderCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{level.position != 1 && level.position != filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : e.position == level.position-1)?.position}</TableRowHeaderCell>
+                                    <TableCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.name}</TableCell>
+                                    <TableCell style={{fontWeight: level.position != 1 && level.position != filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 2 : level.position == filteredLevels.length ? e.position == level.position-1 : e.id == level.id)?.publisher}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableRowHeaderCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{level.position == filteredLevels.length ? level.position : filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : e.position == level.position+1)?.position}</TableRowHeaderCell>
+                                    <TableCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.name}</TableCell>
+                                    <TableCell style={{fontWeight: level.position == filteredLevels.length ? "bold" : "initial"}}>{filteredLevels.find((e:any) =>  level.position == 1 ? e.position == 3 : level.position == filteredLevels.length ? e.id == level.id : e.position == level.position+1)?.publisher}</TableCell>
+                                </TableRow>
+                            </TableBody> : ""}
+                        </TableRoot>
                         <br></br>
-                        <TextField.Root defaultValue={level.position} type="number" onChange={e => {
+                        <TextFieldRoot>
+                            <TextFieldSlot>#</TextFieldSlot>
+                            <TextFieldInput defaultValue={level.position} type="number" onChange={e => {
                                 let levPos = level.position
                                 let newLevPos = parseInt(e.target.value)
                                 if(!newLevPos || newLevPos < 1 || newLevPos > filteredLevels.length) {
@@ -438,35 +427,38 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                 }
                                 setFilteredLevels(levels.sort((a,b) => a.position - b.position))
                                 setLevel({...level, position: parseInt(e.target.value), hide: false})
-                            }}>
-                            <TextField.Slot>#</TextField.Slot>
-                        </TextField.Root>
+                            }}></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
-                        <TextField.Root defaultValue={level.name} onChange={e => setLevel({...level, name: e.target.value})}>
-                            <TextField.Slot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextField.Slot>
-                        </TextField.Root>
+                        <TextFieldRoot>
+                            <TextFieldSlot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextFieldSlot>
+                            <TextFieldInput defaultValue={level.name} onChange={e => setLevel({...level, name: e.target.value})}></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
-                        <TextField.Root defaultValue={level.publisher} onChange={e => setLevel({...level, publisher: e.target.value})}>
-                            <TextField.Slot><PersonIcon></PersonIcon></TextField.Slot>
-                        </TextField.Root>
+                        <TextFieldRoot>
+                            <TextFieldSlot><PersonIcon></PersonIcon></TextFieldSlot>
+                            <TextFieldInput defaultValue={level.publisher} onChange={e => setLevel({...level, publisher: e.target.value})}></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
-                        <TextField.Root defaultValue={level.ytcode} onChange={e => setLevel({...level, ytcode: e.target.value})}>
-                            <TextField.Slot><VideoIcon></VideoIcon></TextField.Slot>
-                        </TextField.Root>
+                        <TextFieldRoot>
+                            <TextFieldSlot><VideoIcon></VideoIcon></TextFieldSlot>
+                            <TextFieldInput defaultValue={level.ytcode} onChange={e => setLevel({...level, ytcode: e.target.value})}></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
                         <Grid style={{placeItems: "center"}}>
                     <iframe src={`https://www.youtube.com/embed/${level.ytcode}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                </Grid>
                <br></br>
               {level.formerRank ? <>
-                <TextField.Root defaultValue={level.removalReason} onChange={e => setLevel({...level, removalReason: e.target.value})}>
-                            <TextField.Slot>Removal Reason</TextField.Slot>
-                        </TextField.Root>
+                <TextFieldRoot>
+                            <TextFieldSlot>Removal Reason</TextFieldSlot>
+                            <TextFieldInput defaultValue={level.removalReason} onChange={e => setLevel({...level, removalReason: e.target.value})}></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
               </> : ""}
                <Flex gap="2" align='center' justify={'center'}>
                     <Text size="6" as="p" weight='bold' align='center'>Records</Text>
-                    <Select.Root defaultValue="lol" onValueChange={e => {
+                    <SelectRoot defaultValue="lol" onValueChange={e => {
                         if(e == "lol") return setRecord(null)
                         setRecord(null)
                         setOpenPlayers(false)
@@ -474,18 +466,20 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                             setRecord(parseInt(e))
                         }, 0)
                     }}>
-                        <Select.Trigger></Select.Trigger>
-                        <Select.Content>
-                            <Select.Group>
-                                <Select.Item value={"lol"}>Select Record</Select.Item>
-                                {level.list.map((x:any, i: number) => <Select.Item key={i} value={i.toString()}>{x.player.name}</Select.Item>)}
-                            </Select.Group>
-                        </Select.Content>
-                    </Select.Root>
+                        <SelectTrigger></SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value={"lol"}>Select Record</SelectItem>
+                                {level.list.map((x:any, i: number) => <SelectItem key={i} value={i.toString()}>{x.player.name}</SelectItem>)}
+                            </SelectGroup>
+                        </SelectContent>
+                    </SelectRoot>
                     </Flex>
                <br></br>
                {record !== null ? <Box>
-                <TextField.Root mt="4" defaultValue={level.list[record].player.name} placeholder="Player Name..." id="player" onClick={(e) => {
+                <TextFieldRoot mt="4">
+                <TextFieldSlot style={{paddingRight: "8px"}}><PersonIcon></PersonIcon></TextFieldSlot>
+                <TextFieldInput defaultValue={level.list[record].player.name} placeholder="Player Name..." id="player" onClick={(e) => {
                     setFilteredPlayers(leaderboards.filter((x:any) => x.name.toLowerCase().includes(level.list[record as any].player.name.toLowerCase())))
                     setOpenPlayers(true)
                 }} onChange={(e) => {
@@ -502,9 +496,8 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                             return x
                         })})
                         setFilteredPlayers(leaderboards.filter((x:any) => x.name.toLowerCase().includes(e.target.value.toLowerCase())))
-                }}>
-                <TextField.Slot style={{paddingRight: "8px"}}><PersonIcon></PersonIcon></TextField.Slot>
-            </TextField.Root>
+                }}></TextFieldInput>
+            </TextFieldRoot>
             <Card style={{display: openPlayers ? "block" : "none", maxHeight: "300px", overflowY: "scroll", overflowX: "hidden", animation: "ease-in-out 1s"}}>
             <div style={{marginBottom: "10px"}}></div>
             {filteredPlayers.filter(x => !level.list.find((y:any, i: number) => y.player.id == x.id && record != i)).map((e:any, i: number) => <Box key={i}>{i ? <Separator my="3" size="4" /> : ""}<Text className={styles.option} size="3" as="p" style={{margin: "-8px"}} onClick={() => {
@@ -525,7 +518,9 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
             }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records} points)</Text></Box>)}
             </Card>
                         <br></br>
-                        <TextField.Root defaultValue={level.list[record].link} onChange={(e) => {
+                        <TextFieldRoot>
+                            <TextFieldSlot><Link1Icon></Link1Icon></TextFieldSlot>
+                            <TextFieldInput defaultValue={level.list[record].link} onChange={(e) => {
                                 setEditedRecords([...editedRecords.filter(x => x.id != level.list[record as any].id), {
                                     id: level.list[record as any].id,
                                     name: level.list[record as any].player.name,
@@ -538,17 +533,16 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                     x.link = e.target.value
                                     return x
                                 })})
-                            }}>
-                            <TextField.Slot><Link1Icon></Link1Icon></TextField.Slot>
-                        </TextField.Root>
+                            }}></TextFieldInput>
+                        </TextFieldRoot>
                         <br></br>
                         <Grid style={{placeItems: "center"}}>
                     <iframe src={`https://www.youtube.com/embed/${getYoutubeVideoId(level.list[record as any].link).videoId}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                </Grid>
                <br></br>
-               <Flex gap="3">
-                            <TextField.Slot>Verification</TextField.Slot>
-                            <Select.Root defaultValue={JSON.stringify(!!level.list[record].verification)} onValueChange={(e) => {
+                        <TextFieldRoot>
+                            <TextFieldSlot>Verification</TextFieldSlot>
+                            <SelectRoot defaultValue={JSON.stringify(!!level.list[record].verification)} onValueChange={(e) => {
                                 setEditedRecords([...editedRecords.filter(x => x.id != level.list[record as any].id), {
                                     id: level.list[record as any].id,
                                     name: level.list[record as any].player.name,
@@ -562,19 +556,19 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                     return x
                                 })})
                             }}>
-                                <Select.Trigger></Select.Trigger>
-                                <Select.Content>
-                                    <Select.Group>
-                                        <Select.Item value={"true"}>true</Select.Item>
-                                        <Select.Item value={"false"}>false</Select.Item>
-                                    </Select.Group>
-                                </Select.Content>
-                            </Select.Root>
-                        </Flex>
+                                <SelectTrigger></SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value={"true"}>true</SelectItem>
+                                        <SelectItem value={"false"}>false</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </SelectRoot>
+                        </TextFieldRoot>
                         <br></br>
-                        <Flex gap="3">
-                        <TextField.Slot>Beaten When Weekly</TextField.Slot>
-                            <Select.Root defaultValue={JSON.stringify(!!level.list[record].beaten_when_weekly)} onValueChange={(e) => {
+                        <TextFieldRoot>
+                            <TextFieldSlot>Beaten When Weekly</TextFieldSlot>
+                            <SelectRoot defaultValue={JSON.stringify(!!level.list[record].beaten_when_weekly)} onValueChange={(e) => {
                                 setEditedRecords([...editedRecords.filter(x => x.id != level.list[record as any].id), {
                                     id: level.list[record as any].id,
                                     name: level.list[record as any].player.name,
@@ -588,15 +582,15 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                     return x
                                 })})
                             }}>
-                                <Select.Trigger></Select.Trigger>
-                                <Select.Content>
-                                    <Select.Group>
-                                        <Select.Item value={"true"}>true</Select.Item>
-                                        <Select.Item value={"false"}>false</Select.Item>
-                                    </Select.Group>
-                                </Select.Content>
-                            </Select.Root>
-                        </Flex>
+                                <SelectTrigger></SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value={"true"}>true</SelectItem>
+                                        <SelectItem value={"false"}>false</SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </SelectRoot>
+                        </TextFieldRoot>
                         <br></br>
                         <Grid style={{placeItems: "center"}}>
                             <Button color='red' onClick={() => {
@@ -619,7 +613,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                             delete obj.hide
                             delete obj.list
                             setError({color: "blue", message: "Loading..."})
-                                     let req = await fetch(`/api/${type}/`+level.id, {
+                                     let req = await fetch("/api/level/"+level.id, {
                                          method: "PATCH",
                                          headers: {
                                              'content-type': 'application/json',
@@ -632,7 +626,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                          setError({color: "red", message: data.message})
                                      } catch(_) {
                                         setError({color: "blue", message: "Fetching new information..."})
-                                        let req = await fetch(`/api/${type}s?start=0`, {
+                                        let req = await fetch(`/api/levels?start=0`, {
                                             headers: {
                                                 authorization: authData.token
                                             }
@@ -646,19 +640,20 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                          }, 3000)
                                      }
                         }} id="submit">Submit</Button>
-                        <Dialog.Root>
-                            <Dialog.Trigger>
+                        <DialogRoot>
+                            <DialogTrigger>
                             <Button size='4' color='red'>Delete</Button>
-                            </Dialog.Trigger>
-                            <Dialog.Content>
-                                <Dialog.Title style={{fontSize: "30px"}} weight='bold' as='h1' align='center'>Reason?</Dialog.Title>
-                                <Dialog.Description align='center'>Do <b>NOT</b> specify if you don&apos;t want this level to move to legacy</Dialog.Description>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogTitle style={{fontSize: "30px"}} weight='bold' as='h1' align='center'>Reason?</DialogTitle>
+                                <DialogDescription align='center'>Do <b>NOT</b> specify if you don&apos;t want this level to move to legacy</DialogDescription>
                                 <br></br>
-                                <TextField.Root id='reason'>
-                                    <TextField.Slot>Reason</TextField.Slot>
-                                </TextField.Root>
+                                <TextFieldRoot>
+                                    <TextFieldSlot>Reason</TextFieldSlot>
+                                    <TextFieldInput id='reason'></TextFieldInput>
+                                </TextFieldRoot>
                                 <br></br>
-                                <Dialog.Close>
+                                <DialogClose>
                                     <Flex gap="9" justify='center'>
                                         <Button color='red' size='3' onClick={async _ => {
                                             document.getElementById("close")?.click()
@@ -667,7 +662,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                                 removalReason: (document.getElementById('reason') as any).value
                                             }
                                             setError({color: "blue", message: "Loading..."})
-                                     let req = await fetch(`/api/${type}/`+level.id, {
+                                     let req = await fetch("/api/level/"+level.id, {
                                          method: "DELETE",
                                          headers: {
                                              'content-type': 'application/json',
@@ -680,7 +675,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                          setError({color: "red", message: data.message})
                                      } catch(_) {
                                         setError({color: "blue", message: "Fetching new information..."})
-                                        let req = await fetch(`/api/${type}s?start=0`, {
+                                        let req = await fetch(`/api/levels?start=0`, {
                                             headers: {
                                                 authorization: authData.token
                                             }
@@ -696,23 +691,23 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                         }}>Continue</Button>
                                         <Button color='red' onClick={_ => setLevel({...level, removalReason: null})} size='3'>Close</Button>
                                     </Flex>
-                                </Dialog.Close>
-                            </Dialog.Content>
-                        </Dialog.Root>
+                                </DialogClose>
+                            </DialogContent>
+                        </DialogRoot>
                     </Flex>
                     <br></br>
                     <br></br>
                     
-               <Dialog.Close>
+               <DialogClose>
                     <Flex justify={'center'} gap='9'>
                         <Button color='red' size='3' id='close'>Close</Button>
                     </Flex>
-                    </Dialog.Close>
-                        </> : <Dialog.Title as="h1" style={{fontSize: "30px"}}>
+                    </DialogClose>
+                        </> : <DialogTitle as="h1" style={{fontSize: "30px"}}>
                             Loading level...
-                        </Dialog.Title>}
-                    </Dialog.Content>
-                </Dialog.Root>)}
+                        </DialogTitle>}
+                    </DialogContent>
+                </DialogRoot>)}
             </Grid>
             </Grid>
         </Box>

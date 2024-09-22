@@ -2,7 +2,7 @@
 import hexToRGB from '@/functions/hexToRGB'
 import calc_points from '@/functions/points'
 import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, DrawingPinFilledIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, RadiobuttonIcon, SpeakerLoudIcon, StarFilledIcon, StarIcon } from '@radix-ui/react-icons'
-import { Badge, Box, Callout, Flex, Grid, HoverCard, IconButton, Table,Text } from '@radix-ui/themes'
+import { Badge, Box, CalloutIcon, CalloutRoot, CalloutText, Flex, Grid, HoverCardContent, HoverCardRoot, HoverCardTrigger, IconButton, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import utc from "dayjs/plugin/utc"
 import styles from "@/app/level.module.css"
@@ -19,24 +19,24 @@ export default function Level({level, count}: info) {
       <Grid style={{placeItems: "center"}}>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
       {level.removalReason ? <>
-            <Callout.Root color="green">
-                <Callout.Icon style={{height: "25px"}}><InfoCircledIcon style={{scale: 2}} /></Callout.Icon>
-                <Callout.Text size="5" ml="1">This level has since been removed off the list. Scroll down below to see why.</Callout.Text>
-            </Callout.Root>
+            <CalloutRoot color="green">
+                <CalloutIcon style={{height: "25px"}}><InfoCircledIcon style={{scale: 2}} /></CalloutIcon>
+                <CalloutText size="5" ml="1">This level has since been removed off the list. Scroll down below to see why.</CalloutText>
+            </CalloutRoot>
             <br></br>
         </> : ""}
       {level.position > 150 ? <>
-            <Callout.Root color="yellow">
-                <Callout.Icon style={{height: "25px"}}><ExclamationTriangleIcon style={{scale: 2}} /></Callout.Icon>
-                <Callout.Text size="5" ml="1">Since this level is legacy, you CANNOT submit records for it.</Callout.Text>
-            </Callout.Root>
+            <CalloutRoot color="yellow">
+                <CalloutIcon style={{height: "25px"}}><ExclamationTriangleIcon style={{scale: 2}} /></CalloutIcon>
+                <CalloutText size="5" ml="1">Since this level is legacy, you CANNOT submit records for it.</CalloutText>
+            </CalloutRoot>
             <br></br>
         </> : ""}
         {level.weekly?.date > Date.now() + 604_800 ? <>
-            <Callout.Root>
-                <Callout.Icon style={{height: "25px"}}><InfoCircledIcon style={{scale: "2"}} /></Callout.Icon>
-                <Callout.Text size="5" ml="1">This level is the current weekly level!</Callout.Text>
-            </Callout.Root>
+            <CalloutRoot>
+                <CalloutIcon style={{height: "25px"}}><InfoCircledIcon style={{scale: "2"}} /></CalloutIcon>
+                <CalloutText size="5" ml="1">This level is the current weekly level!</CalloutText>
+            </CalloutRoot>
             <br></br>
         </> : ""}
        <Flex justify={"center"} align="center" gap="9">
@@ -71,16 +71,16 @@ export default function Level({level, count}: info) {
           <DotsHorizontalIcon></DotsHorizontalIcon>
           </IconButton>
           <Box style={{position: "absolute", right: "10px", top: "50px"}}>
-          <HoverCard.Root>
-            <HoverCard.Trigger>
+          <HoverCardRoot>
+            <HoverCardTrigger>
             <IconButton radius="full" color="teal" disabled>
           <SpeakerLoudIcon></SpeakerLoudIcon>
           </IconButton>
-            </HoverCard.Trigger>
-            <HoverCard.Content>
+            </HoverCardTrigger>
+            <HoverCardContent>
                 <Text size="3">This feature is still in the works!</Text>
-            </HoverCard.Content>
-        </HoverCard.Root>
+            </HoverCardContent>
+        </HoverCardRoot>
         </Box>
       </Box>
       </Grid>
@@ -88,42 +88,42 @@ export default function Level({level, count}: info) {
       <Grid style={{placeItems: "center"}}>
         <Box style={{padding: "20px", width: "min(1000px, 100%)"}} className={styles.hover}>
         <Grid style={{placeItems: "center"}}>
-        <Table.Root size="3" m="2" style={{width: "90%"}}>
-            <Table.Header>
-                <Table.Row>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Points</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Weekly</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Records</Table.ColumnHeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                <Table.Row>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points(level.position)}</Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
+        <TableRoot size="3" m="2" style={{width: "90%"}}>
+            <TableHeader>
+                <TableRow>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Points</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Weekly</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Records</TableColumnHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{calc_points(level.position)}</TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         {level.weekly ? `${dayjs(level.weekly.date).utc(false).format("MMM D, YYYY")} - ${dayjs(level.weekly.date + 604_800_000).utc(false).format("MMM D, YYYY")}` : "never"}    
-                    </Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{level.list.length}</Table.RowHeaderCell>
-                </Table.Row>
-            </Table.Body>
-        </Table.Root>
-        {level.removalReason ? <><br></br><Table.Root size="3" m="2" style={{width: "90%"}}>
-            <Table.Header>
-                <Table.Row>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Formerly</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Removal Date</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Reason</Table.ColumnHeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                <Table.Row>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{level.formerRank}</Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
+                    </TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{level.list.length}</TableRowHeaderCell>
+                </TableRow>
+            </TableBody>
+        </TableRoot>
+        {level.removalReason ? <><br></br><TableRoot size="3" m="2" style={{width: "90%"}}>
+            <TableHeader>
+                <TableRow>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Formerly</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Removal Date</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Reason</TableColumnHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">{level.formerRank}</TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         {level.removalDate}
-                    </Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px", width: "33%"}} align="center">{level.removalReason}</Table.RowHeaderCell>
-                </Table.Row>
-            </Table.Body>
-        </Table.Root></> : ""}
+                    </TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px", width: "33%"}} align="center">{level.removalReason}</TableRowHeaderCell>
+                </TableRow>
+            </TableBody>
+        </TableRoot></> : ""}
         </Grid>
         </Box>
       </Grid>
@@ -131,30 +131,30 @@ export default function Level({level, count}: info) {
       <Grid style={{placeItems: "center"}}>
         <Box style={{padding: "20px", width: "min(1000px, 100%)"}} className={styles.back}>
         <Grid style={{placeItems: "center"}}>
-        <Table.Root size="3" m="2" style={{width: "90%"}}>
-            <Table.Header>
-                <Table.Row>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center"><img src="https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true" width="32px"></img></Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Link</Table.ColumnHeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {level.list.map((e:any) => <Table.Row key={e.id}>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.player.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.player.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
+        <TableRoot size="3" m="2" style={{width: "90%"}}>
+            <TableHeader>
+                <TableRow>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center"><img src="https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true" width="32px"></img></TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</TableColumnHeaderCell>
+                    <TableColumnHeaderCell style={{fontSize: "30px"}} align="center">Link</TableColumnHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {level.list.map((e:any) => <TableRow key={e.id}>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.player.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.player.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
                             window.location.href = e.player.nationality ? `/nationality/${e.player.abbr}` : "#"
-                    }}></img></Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}{e.verification ? <DrawingPinFilledIcon></DrawingPinFilledIcon> : ""}<a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a></Flex></Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
+                    }}></img></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}{e.verification ? <DrawingPinFilledIcon></DrawingPinFilledIcon> : ""}<a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a></Flex></TableRowHeaderCell>
+                    <TableRowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
                         </IconButton>
                         </a>
-                    </Table.RowHeaderCell>
-                </Table.Row>)}
-            </Table.Body>
-        </Table.Root>
+                    </TableRowHeaderCell>
+                </TableRow>)}
+            </TableBody>
+        </TableRoot>
         </Grid>
         </Box>
       </Grid>

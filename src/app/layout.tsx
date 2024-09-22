@@ -45,7 +45,6 @@ export default async function RootLayout({
                 {route: "/main", name: "Main List"},
                 {route: "/extended", name: "Extended List"},
                 {route: "/legacy", name: "Legacy List"},
-                {route: "/platformer", name: "Platformer List"},
                 {route: "/leaderboards", name: "Leaderboards"},
                 {route: "/packs", name: "Packs"},
                 {route: "/submit", name: "Submit"}

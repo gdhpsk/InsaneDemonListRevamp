@@ -1,7 +1,7 @@
 'use client'
 
-import { CheckIcon, Cross1Icon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pencil1Icon, PersonIcon, StopwatchIcon } from "@radix-ui/react-icons"
-import { Box, Button, Callout, Card, Dialog, Flex, Grid, IconButton, ScrollArea, Separator, Table, Tabs, Text, TextArea, TextField } from "@radix-ui/themes"
+import { CheckIcon, Cross1Icon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pencil1Icon, PersonIcon } from "@radix-ui/react-icons"
+import { Box, Button, CalloutIcon, CalloutRoot, CalloutText, Card, DialogClose, DialogContent, DialogDescription, DialogRoot, DialogTitle, DialogTrigger, Flex, Grid, IconButton, ScrollArea, Separator, Tabs, TabsList, TabsRoot, TabsTrigger, Text, TextArea, TextFieldInput, TextFieldRoot, TextFieldSlot } from "@radix-ui/themes"
 import { useEffect, useState } from "react"
 import styles from "../account.module.css"
 import cache from "../../../cache.json"
@@ -11,17 +11,7 @@ interface info {
 }
 
 export default function ProfileSubmissions({ data }: info) {
-    function timeToSeconds(time: string) {
-        let multipliers = [1, 60, 3600]
-        let times = time.split(":").reverse().map((e, i) => parseFloat(e) * multipliers[i])
-        return times.reduce((acc, cur) => acc + cur).toFixed(3)
-    }
-    function secondsToTime(seconds: number) {
-        let hours = (seconds - seconds % 3600) / 3600
-        let minutes = (seconds - hours*3600 - seconds % 60) / 60
-        let secs = (seconds - hours*3600 - minutes*60).toFixed(3)
-        return [hours, minutes, secs]
-    }
+
     let [error, setError] = useState({color: "red", message: ""})
     let [allSubmissions, setAllSubmissions] = useState<Array<any> | null>(null)
     let [submission, setSubmission] = useState<Record<any, any> | null>(null)
@@ -42,8 +32,6 @@ export default function ProfileSubmissions({ data }: info) {
         player: "",
         level: "",
         publisher: "",
-        type: "",
-        time: 0,
         comments: ""
     })
 
@@ -98,19 +86,18 @@ export default function ProfileSubmissions({ data }: info) {
 
     return (
         <Grid style={{placeItems: "center"}}>
-            <Tabs.Root defaultValue="all">
-  <Tabs.List size="2">
-    <Tabs.Trigger value="active" onClick={() => setType("active")}>Active</Tabs.Trigger>
-    <Tabs.Trigger value="all" onClick={() => setType("all")}>All</Tabs.Trigger>
-    <Tabs.Trigger value="archived" onClick={() => setType("archived")}>Archived</Tabs.Trigger>
-  </Tabs.List>
-</Tabs.Root>
+            <TabsRoot defaultValue="all">
+  <TabsList size="2">
+    <TabsTrigger value="active" onClick={() => setType("active")}>Active</TabsTrigger>
+    <TabsTrigger value="all" onClick={() => setType("all")}>All</TabsTrigger>
+    <TabsTrigger value="archived" onClick={() => setType("archived")}>Archived</TabsTrigger>
+  </TabsList>
+</TabsRoot>
 <br></br>
         <ScrollArea style={{ height: "1000px" }}>
-            {allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length ? allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e: any, i: number) => <><Dialog.Root key={i}>
-                <Dialog.Trigger className={styles.submission}>
+            {allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length ? allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e: any, i: number) => <><DialogRoot key={i}>
+                <DialogTrigger className={styles.submission}>
                     <Card key={i} style={{ marginRight: "40px" }} onClick={() => {
-                        e.time = parseFloat(e.time as any)
                         setSubmission(e)
                         setEdits({
                             video: {
@@ -121,25 +108,21 @@ export default function ProfileSubmissions({ data }: info) {
                             player: e.player,
                             level: e.level,
                             publisher: e.publisher,
-                            type: e.type,
-                            time: e.time,
                             comments: e.comments
                         })
                     }}>
                         <Text size="8" weight="bold">Submission #{i + 1}</Text>
                         <br></br>
-                        <Text size="5">{e.level} by {e.publisher}</Text>
+                        <Text size="5" as="p">{e.level} by {e.publisher}</Text>
                         <br></br>
-                        {e.type == "classic" ? "" : <><Text size="2" as="p">Time: {secondsToTime(e.time).join(":")}</Text>
-                        <br></br></>}
                         <Text size="3">By {e.player}</Text>
                         <br></br>
                         <Text size="1">Status: {cache.status[e.status]}</Text>
                         {e.status == 2 ? <><br></br>
                         <Text size="1">Rejection reason: {e.reason}</Text></> : ""}
                     </Card>
-                </Dialog.Trigger>
-                <Dialog.Content>
+                </DialogTrigger>
+                <DialogContent>
                     <Flex justify={'end'}> 
                     {!editing ? 
                                 <IconButton disabled={e.status != 0} onClick={() => {
@@ -152,8 +135,6 @@ export default function ProfileSubmissions({ data }: info) {
                                         },
                                         player: e.player,
                                         level: e.level,
-                                        type: e.type,
-                                        time: e.time,
                                         publisher: e.publisher,
                                         comments: e.comments
                                     })
@@ -174,8 +155,6 @@ export default function ProfileSubmissions({ data }: info) {
                                             player: edits.player,
                                             level: edits.level,
                                             publisher: edits.publisher,
-                                            type: edits.type,
-                                            time: edits.time,
                                             comments: edits.comments
                                          })
                                      })
@@ -212,16 +191,13 @@ export default function ProfileSubmissions({ data }: info) {
                                         player: e.player,
                                         level: e.level,
                                         publisher: e.publisher,
-                                        type: e.type,
-                                        time: e.time,
                                         comments: e.comments
                                     })
                                 }}><Cross1Icon></Cross1Icon></IconButton>
                             </Box>}
                     </Flex>
-                    <Dialog.Title size="8" weight="bold" as="h1" align="center">{e.level} by {e.publisher}</Dialog.Title>
-                    <Dialog.Description align={'center'} size="6">By {e.player}</Dialog.Description>
-                    {e.type == "platformer" ? <Text size="5" align="center" as="p">Time: {secondsToTime(e.time).join(":")}</Text> :  ""}
+                    <DialogTitle size="8" weight="bold" as="h1" align="center">{e.level} by {e.publisher}</DialogTitle>
+                    <DialogDescription align={'center'} size="6">By {e.player}</DialogDescription>
                     <br></br>
                     {!editing ? <><Grid style={{placeItems: "center"}}>
                     <iframe  src={`https://www.youtube.com/embed/${getYoutubeVideoId(e.link).videoId}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
@@ -239,32 +215,34 @@ export default function ProfileSubmissions({ data }: info) {
                     <br></br>
                     <br></br>
                     <Grid style={{ placeItems: "center" }}>
-                        <Dialog.Close>
+                        <DialogClose>
                             <Button size="3" color='red'>Close</Button>
-                        </Dialog.Close>
+                        </DialogClose>
                     </Grid></> : <>
                     <Text size="7" weight="bold">Level Name</Text>
             <br></br>
             <Text size="2" style={{lineHeight: "20px"}}>Case sensitive</Text>
                     <Flex gap="4" align='center' mt="4">
-            <TextField.Root style={{width: 225}} defaultValue={edits.level} placeholder="Level Name..." id="level" onClick={(e) => {
+            <TextFieldRoot>
+                <TextFieldSlot style={{paddingRight: "8px"}}><FileIcon></FileIcon></TextFieldSlot>
+                <TextFieldInput style={{width: 225}} defaultValue={edits.level} placeholder="Level Name..." id="level" onClick={(e) => {
                     setFilteredLevels(levels.filter((x:any) => x.name.toLowerCase().includes(edits?.level.toLowerCase())))
                     setOpenLevels(true)
                 }} onChange={(e) => {
                         setEdits({...edits, level: e.target.value});
                         setFilteredLevels(levels.filter((x:any) => x.name.toLowerCase().includes(e.target.value.toLowerCase())))
-                }}>
-                <TextField.Slot style={{paddingRight: "8px"}}><FileIcon></FileIcon></TextField.Slot>
-            </TextField.Root>
+                }}></TextFieldInput>
+            </TextFieldRoot>
             <Text>By</Text>
-            <TextField.Root defaultValue={edits.publisher} placeholder="Publisher..." id="publisher" onClick={(e) => {
+            <TextFieldRoot>
+            <TextFieldInput defaultValue={edits.publisher} placeholder="Publisher..." id="publisher" onClick={(e) => {
                     setFilteredLevels(levels.filter((x:any) => x.publisher.toLowerCase().includes(edits?.publisher.toLowerCase())))
                     setOpenLevels(true)
                 }} onChange={(e) => {
                         setEdits({...edits, publisher: e.target.value});
                         setFilteredLevels(levels.filter((x:any) => x.publisher.toLowerCase().includes(e.target.value.toLowerCase())))
-                }}>
-            </TextField.Root>
+                }}></TextFieldInput>
+            </TextFieldRoot>
             </Flex>
             <Card style={{display: openLevels ? "block" : "none", maxHeight: "300px", overflowY: "scroll", overflowX: "hidden", animation: "ease-in-out 1s"}}>
             <div style={{marginBottom: "10px"}}></div>
@@ -279,15 +257,16 @@ export default function ProfileSubmissions({ data }: info) {
             <Text size="7" weight="bold">Player Name</Text>
             <br></br>
             <Text size="2" style={{lineHeight: "20px"}}>Case sensitive</Text>
-            <TextField.Root mt="4" defaultValue={edits.player} placeholder="Player Name..." id="player" onClick={(e) => {
+            <TextFieldRoot mt="4">
+                <TextFieldSlot style={{paddingRight: "8px"}}><PersonIcon></PersonIcon></TextFieldSlot>
+                <TextFieldInput defaultValue={edits.player} placeholder="Player Name..." id="player" onClick={(e) => {
                     setFilteredPlayers(leaderboards.filter((x:any) => x.name.toLowerCase().includes(edits?.player.toLowerCase())))
                     setOpenPlayers(true)
                 }} onChange={(e) => {
                     setEdits({...edits, player: e.target.value});
                     setFilteredPlayers(leaderboards.filter((x:any) => x.name.toLowerCase().includes(e.target.value.toLowerCase())))
-                }}>
-                <TextField.Slot style={{paddingRight: "8px"}}><PersonIcon></PersonIcon></TextField.Slot>
-            </TextField.Root>
+                }}></TextFieldInput>
+            </TextFieldRoot>
             <Card style={{display: openPlayers ? "block" : "none", maxHeight: "300px", overflowY: "scroll", overflowX: "hidden", animation: "ease-in-out 1s"}}>
             <div style={{marginBottom: "10px"}}></div>
             {filteredPlayers.map((e:any, i: number) => <Box key={i}>{i ? <Separator my="3" size="4" /> : ""}<Text className={styles.option} size="3" as="p" style={{margin: "-8px"}} onClick={() => {
@@ -297,34 +276,10 @@ export default function ProfileSubmissions({ data }: info) {
             }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records} points)</Text></Box>)}
             </Card>
             <br></br>
-            {e.type == "platformer" ? <><Card style={{ padding: "10px", width: "min(100%, 600px)" }}>
-                <Text size="7" weight="bold">Time</Text>
-                <TextField.Root mt="4" placeholder="hh:mm:ss.SSS / mm:ss.SSS / ss.SSS" defaultValue={secondsToTime(edits.time).join(":")} onChange={(e) => {
-                    setEdits({ ...edits, time: parseFloat(timeToSeconds(e.target.value)) })
-                }}>
-                    <TextField.Slot style={{ paddingRight: "8px" }}><StopwatchIcon></StopwatchIcon></TextField.Slot>
-                </TextField.Root>
-                <Table.Root>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.ColumnHeaderCell>Hours</Table.ColumnHeaderCell>
-                            <Table.ColumnHeaderCell>Minutes</Table.ColumnHeaderCell>
-                            <Table.ColumnHeaderCell>Seconds</Table.ColumnHeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.RowHeaderCell>{secondsToTime(edits.time)[0]}</Table.RowHeaderCell>
-                            <Table.Cell>{secondsToTime(edits.time)[1]}</Table.Cell>
-                            <Table.Cell>{secondsToTime(edits.time)[2]}</Table.Cell>
-                        </Table.Row>
-                    </Table.Body>
-                </Table.Root>
-            </Card>
-            <br></br></> : ""}
             <Text size="7" weight="bold">YouTube Link</Text>
-            <TextField.Root mt="4" defaultValue={edits.video.text} placeholder="YouTube Link..." onChange={(e) => {
+            <TextFieldRoot mt="4">
+                <TextFieldSlot style={{paddingRight: "8px"}}><Link1Icon></Link1Icon></TextFieldSlot>
+                <TextFieldInput defaultValue={edits.video.text} placeholder="YouTube Link..." onChange={(e) => {
                     let valid = getYoutubeVideoId(e.target.value)
                     setEdits({...edits,
                         video: {
@@ -333,9 +288,8 @@ export default function ProfileSubmissions({ data }: info) {
                             text: e.target.value
                         }
                     })
-                }}>
-                <TextField.Slot style={{paddingRight: "8px"}}><Link1Icon></Link1Icon></TextField.Slot>
-            </TextField.Root>
+                }}></TextFieldInput>
+            </TextFieldRoot>
             {!edits.video.valid ? <Flex mt="2" align={'center'} gap="2">
                     <CrossCircledIcon color="red" style={{scale: 1.4}}></CrossCircledIcon>
                     <Text size="3" color="red" style={{lineHeight: "20px"}}>Not a valid youtube video</Text>
@@ -348,16 +302,16 @@ export default function ProfileSubmissions({ data }: info) {
                <Text size="7" weight="bold">Comments?</Text>
             <br></br>
             <Text size="2" style={{lineHeight: "20px"}}>Input your nationality / account ID here if you want</Text>
-            <br></br>
-            <br></br>
+            <TextFieldRoot mt="4">
                 <TextArea defaultValue={edits.comments} placeholder="Comments..." style={{width: "100%"}} onChange={(e) =>  setEdits({...edits, comments: e.target.value})}></TextArea>
+            </TextFieldRoot>
             <br></br>
-            {error.message ? <><Callout.Root color={error.color as any}>
-                <Callout.Icon>
+            {error.message ? <><CalloutRoot color={error.color as any}>
+                <CalloutIcon>
                     {error.color == "red" ? <CrossCircledIcon style={{scale: 1.5}}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{scale: 1.5}}></CheckIcon> : <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>}
-                </Callout.Icon>
-                <Callout.Text size="3" ml="-1">{error.message}</Callout.Text>
-            </Callout.Root><br></br></> : ""}
+                </CalloutIcon>
+                <CalloutText size="3" ml="-1">{error.message}</CalloutText>
+            </CalloutRoot><br></br></> : ""}
             <Grid style={{ placeItems: "center" }}>
                             <Button size="3" color='red' onClick={async (e) => {
                                      setError({color: "blue", message: "Loading..."})
@@ -391,16 +345,16 @@ export default function ProfileSubmissions({ data }: info) {
                                      }
                                 }}>Delete</Button>
                                 <br></br>
-                                <Dialog.Close>
+                                <DialogClose>
                                     <Button id='close' color='red' onClick={() => {
                                         setEditing(false)
                                         setSubmission(null)
                                     }}>Close</Button>
-                                </Dialog.Close>
+                                </DialogClose>
                     </Grid>
                     </>}
-                </Dialog.Content>
-            </Dialog.Root><br></br></>) : allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>There are no submissions in this section yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
+                </DialogContent>
+            </DialogRoot><br></br></>) : allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>There are no submissions in this section yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
         </ScrollArea>
         </Grid>
     )

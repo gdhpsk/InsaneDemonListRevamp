@@ -1,6 +1,6 @@
 'use client';
 import { HomeIcon, RocketIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Flex, Grid, Text } from "@radix-ui/themes";
+import { Button, DialogClose, DialogContent, DialogRoot, DialogTitle, DialogTrigger, Flex, Grid, Text } from "@radix-ui/themes";
 import styles from "../account.module.css"
 
 interface info {
@@ -11,15 +11,15 @@ interface info {
 export default function AdminPanel({part, selectPart}: info) {
 
     return (
-        <Dialog.Root>
-            <Dialog.Trigger>
+        <DialogRoot>
+            <DialogTrigger>
             <Flex gap="3" align={'center'}className={`${styles.option}`}>
                 <RocketIcon style={{scale: 1.4}}></RocketIcon>
                 <Text size="4" as='p'>Admin Panel</Text>
                 </Flex>
-            </Dialog.Trigger>
-            <Dialog.Content>
-                <Dialog.Title as="h1" weight="bold" align="center" size="8">Admin Panel</Dialog.Title>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogTitle as="h1" weight="bold" align="center" size="8">Admin Panel</DialogTitle>
                 <br></br>
                 <Grid style={{placeItems: "center"}}>
                     <Button onClick={() => window.location.href = "/editadmins"} size="3">Admin Editor</Button>
@@ -43,11 +43,11 @@ export default function AdminPanel({part, selectPart}: info) {
                 <br></br>
                 <br></br>
                 <Grid style={{placeItems: "center"}}>
-                    <Dialog.Close>
+                    <DialogClose>
                         <Button size="3" color="red">Close</Button>
-                    </Dialog.Close>
+                    </DialogClose>
                 </Grid>
-            </Dialog.Content>
-        </Dialog.Root>
+            </DialogContent>
+        </DialogRoot>
     )
 }

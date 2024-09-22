@@ -1,7 +1,7 @@
 'use client'
 import Level from '@/components/Level'
 import Profile from '@/components/Profile'
-import { Box, Button, ContextMenu, Dialog, Flex, Table, Text } from '@radix-ui/themes'
+import { Box, Button, ContextMenuContent, ContextMenuItem, ContextMenuRoot, ContextMenuSeparator, ContextMenuTrigger, DialogClose, DialogContent, DialogRoot, DialogTitle, DialogTrigger, Flex, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
 
 interface info {
     profile: Record<any, any>
@@ -13,36 +13,36 @@ interface info {
 
 export default function ProfileContextMenu({profile, metadata, time, nationality, icons}: info) {
   return (
-      <ContextMenu.Root>
-        <ContextMenu.Trigger>
+      <ContextMenuRoot>
+        <ContextMenuTrigger>
            <Box>
-           <Dialog.Root>
-            <Dialog.Trigger>
+           <DialogRoot>
+            <DialogTrigger>
                <Button id="debug" style={{display: "none"}}></Button>
-            </Dialog.Trigger>
-            <Dialog.Content>
-                <Dialog.Title as="h1" align="center" style={{fontSize: "30px"}}>Insane Demon List Debug Panel</Dialog.Title>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogTitle as="h1" align="center" style={{fontSize: "30px"}}>Insane Demon List Debug Panel</DialogTitle>
                 <br></br>
-                <Table.Root>
-                    <Table.Header>
-                    <Table.ColumnHeaderCell>Size</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>API Response Time</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>{nationality ? "Nationalities" : "Documents"}</Table.ColumnHeaderCell>
-                    </Table.Header>
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.RowHeaderCell>{JSON.stringify(profile).length / 1000} kb</Table.RowHeaderCell>
-                            <Table.RowHeaderCell>{time} ms</Table.RowHeaderCell>
-                            <Table.RowHeaderCell>{metadata.count}</Table.RowHeaderCell>
-                        </Table.Row>
-                    </Table.Body>
-                </Table.Root>
+                <TableRoot>
+                    <TableHeader>
+                    <TableColumnHeaderCell>Size</TableColumnHeaderCell>
+                        <TableColumnHeaderCell>API Response Time</TableColumnHeaderCell>
+                        <TableColumnHeaderCell>{nationality ? "Nationalities" : "Documents"}</TableColumnHeaderCell>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow>
+                            <TableRowHeaderCell>{JSON.stringify(profile).length / 1000} kb</TableRowHeaderCell>
+                            <TableRowHeaderCell>{time} ms</TableRowHeaderCell>
+                            <TableRowHeaderCell>{metadata.count}</TableRowHeaderCell>
+                        </TableRow>
+                    </TableBody>
+                </TableRoot>
                 <br></br>
-                <Dialog.Close>
+                <DialogClose>
                 <Button color="red">Close</Button>
-            </Dialog.Close>
-            </Dialog.Content>
-        </Dialog.Root>
+            </DialogClose>
+            </DialogContent>
+        </DialogRoot>
                 <Profile
                     profile={profile}
                     metadata={metadata}
@@ -50,13 +50,13 @@ export default function ProfileContextMenu({profile, metadata, time, nationality
                     icons={icons}
                 ></Profile>
            </Box>
-        </ContextMenu.Trigger>
-        <ContextMenu.Content>
-            <ContextMenu.Item onClick={() => document.getElementById("debug")?.click()}><Flex align={"center"} gap="2"><img src="/debug.png" height="20px"></img>Debug</Flex></ContextMenu.Item>
-            {!nationality ? <ContextMenu.Item onClick={() => navigator.clipboard.writeText(profile.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenu.Item> : ""}
-            <ContextMenu.Item onClick={() => navigator.clipboard.writeText(JSON.stringify(profile))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Profile JSON</Flex></ContextMenu.Item>
-            <ContextMenu.Item onClick={() => navigator.clipboard.writeText(JSON.stringify(metadata))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Metadata JSON</Flex></ContextMenu.Item>
-        </ContextMenu.Content>
-      </ContextMenu.Root>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+            <ContextMenuItem onClick={() => document.getElementById("debug")?.click()}><Flex align={"center"} gap="2"><img src="/debug.png" height="20px"></img>Debug</Flex></ContextMenuItem>
+            {!nationality ? <ContextMenuItem onClick={() => navigator.clipboard.writeText(profile.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenuItem> : ""}
+            <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(profile))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Profile JSON</Flex></ContextMenuItem>
+            <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(metadata))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Metadata JSON</Flex></ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenuRoot>
   )
 }

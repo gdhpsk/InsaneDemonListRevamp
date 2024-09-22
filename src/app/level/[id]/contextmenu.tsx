@@ -1,6 +1,6 @@
 'use client'
 import Level from '@/components/Level'
-import { Box, Button, ContextMenu, Dialog, Flex, Table, Text } from '@radix-ui/themes'
+import { Box, Button, ContextMenuContent, ContextMenuItem, ContextMenuRoot, ContextMenuSeparator, ContextMenuTrigger, DialogClose, DialogContent, DialogRoot, DialogTitle, DialogTrigger, Flex, Table, TableBody, TableColumnHeaderCell, TableHeader, TableRoot, TableRow, TableRowHeaderCell, Text } from '@radix-ui/themes'
 
 interface info {
     level: Record<any, any>
@@ -10,46 +10,46 @@ interface info {
 
 export default function LevelContextMenu({level, count, time}: info) {
   return (
-      <ContextMenu.Root>
-        <ContextMenu.Trigger>
+      <ContextMenuRoot>
+        <ContextMenuTrigger>
            <Box>
-           <Dialog.Root>
-            <Dialog.Trigger>
+           <DialogRoot>
+            <DialogTrigger>
                <Button id="debug" style={{display: "none"}}></Button>
-            </Dialog.Trigger>
-            <Dialog.Content>
-                <Dialog.Title as="h1" align="center" style={{fontSize: "30px"}}>Insane Demon List Debug Panel</Dialog.Title>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogTitle as="h1" align="center" style={{fontSize: "30px"}}>Insane Demon List Debug Panel</DialogTitle>
                 <br></br>
-                <Table.Root>
-                    <Table.Header>
-                    <Table.ColumnHeaderCell>Size</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>API Response Time</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>Documents</Table.ColumnHeaderCell>
-                    </Table.Header>
-                    <Table.Body>
-                        <Table.Row>
-                            <Table.RowHeaderCell>{JSON.stringify(level).length / 1000} kb</Table.RowHeaderCell>
-                            <Table.RowHeaderCell>{time} ms</Table.RowHeaderCell>
-                            <Table.RowHeaderCell>{count}</Table.RowHeaderCell>
-                        </Table.Row>
-                    </Table.Body>
-                </Table.Root>
+                <TableRoot>
+                    <TableHeader>
+                    <TableColumnHeaderCell>Size</TableColumnHeaderCell>
+                        <TableColumnHeaderCell>API Response Time</TableColumnHeaderCell>
+                        <TableColumnHeaderCell>Documents</TableColumnHeaderCell>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow>
+                            <TableRowHeaderCell>{JSON.stringify(level).length / 1000} kb</TableRowHeaderCell>
+                            <TableRowHeaderCell>{time} ms</TableRowHeaderCell>
+                            <TableRowHeaderCell>{count}</TableRowHeaderCell>
+                        </TableRow>
+                    </TableBody>
+                </TableRoot>
                 <br></br>
-                <Dialog.Close>
+                <DialogClose>
                 <Button color="red">Close</Button>
-            </Dialog.Close>
-            </Dialog.Content>
-        </Dialog.Root>
+            </DialogClose>
+            </DialogContent>
+        </DialogRoot>
                 <Level
                     level={level}
                     count={count}
                 ></Level>
            </Box>
-        </ContextMenu.Trigger>
-        <ContextMenu.Content>
-        <ContextMenu.Item disabled><Flex align={"center"} gap="2"><img src="/song.png" height="20px"></img>Copy Song Link</Flex></ContextMenu.Item>
-      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`https://youtu.be/${level.ytcode}`)}><Flex align={"center"} gap="2"><img src="/youtube.svg" height="20px"></img>Copy Video Link</Flex></ContextMenu.Item>
-      <ContextMenu.Item onClick={() => {
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+        <ContextMenuItem disabled><Flex align={"center"} gap="2"><img src="/song.png" height="20px"></img>Copy Song Link</Flex></ContextMenuItem>
+      <ContextMenuItem onClick={() => navigator.clipboard.writeText(`https://youtu.be/${level.ytcode}`)}><Flex align={"center"} gap="2"><img src="/youtube.svg" height="20px"></img>Copy Video Link</Flex></ContextMenuItem>
+      <ContextMenuItem onClick={() => {
         navigator.clipboard.writeText(Object.entries(level).filter(e => e[1] && !["id", "list"].includes(e[0])).map(e => {
              if(e[0] == "ytcode") {
                 e[0] = "link"
@@ -60,13 +60,13 @@ export default function LevelContextMenu({level, count, time}: info) {
             }
             return `${e[0]}: ${e[1]}`
         }).join("\n"))
-      }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenu.Item>
-      <ContextMenu.Separator></ContextMenu.Separator>
-      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/level/${level.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Exact Level URL</Flex></ContextMenu.Item>
-    <ContextMenu.Item onClick={() => navigator.clipboard.writeText(level.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenu.Item>
-    <ContextMenu.Item onClick={() => navigator.clipboard.writeText(JSON.stringify(level))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Level JSON</Flex></ContextMenu.Item>
-    <ContextMenu.Item onClick={() => document.getElementById("debug")?.click()}><Flex align={"center"} gap="2"><img src="/debug.png" height="20px"></img>Debug</Flex></ContextMenu.Item>
-        </ContextMenu.Content>
-      </ContextMenu.Root>
+      }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenuItem>
+      <ContextMenuSeparator></ContextMenuSeparator>
+      <ContextMenuItem onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/level/${level.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Exact Level URL</Flex></ContextMenuItem>
+    <ContextMenuItem onClick={() => navigator.clipboard.writeText(level.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenuItem>
+    <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(level))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Level JSON</Flex></ContextMenuItem>
+    <ContextMenuItem onClick={() => document.getElementById("debug")?.click()}><Flex align={"center"} gap="2"><img src="/debug.png" height="20px"></img>Debug</Flex></ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenuRoot>
   )
 }
