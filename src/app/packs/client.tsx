@@ -55,7 +55,6 @@ export default function Packs({ packs, leaderboards }: info) {
                 }}>Remove Selection</Button>
             </Grid></>}
             <TextField.Root mt="4" placeholder="Player Name..." id="player" onClick={(e) => {
-                console.log(e)
                     setFilteredPlayers(leaderboards.filter((x:any) => x.name.toLowerCase().includes(search.toLowerCase())))
                     setOpenPlayers(true)
                 }} onChange={(e) => {
