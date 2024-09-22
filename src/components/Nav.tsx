@@ -52,7 +52,7 @@ export default function Nav({authData, routes}: info) {
             {!data.user ? <Login small={true}></Login> : <Link href="/profile" style={{textDecoration: "none"}} className={search == "/profile" ? "active entry" : "entry"}><Text size="3">Settings</Text></Link>}
             </PopoverContent>
           </PopoverRoot></Flex>}
-   </Grid>
+   </Grid> 
    <br></br>
    {reset ? <Grid style={{placeItems: "center"}}><CalloutRoot color="green">
     <CalloutIcon><CheckIcon></CheckIcon></CalloutIcon>
