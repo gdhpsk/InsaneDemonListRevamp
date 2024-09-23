@@ -1,7 +1,7 @@
 'use client';
 import LeaderboardCard from '@/components/LeaderboardCard'
 import { CaretDownIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Box, Button, Flex, Grid, Select, Text, TextField } from '@radix-ui/themes'
+import { Box, Button, Flex, Grid, SegmentedControl, Select, Text, TextField } from '@radix-ui/themes'
 import { useEffect, useState } from 'react';
 import Image from "next/image"
 import cache from "../../../cache.json"
@@ -22,12 +22,13 @@ export default function LeaderboardClient({ profs, p }: info) {
     let [filter, setFilter] = useState("")
     let [nationality, setNationality] = useState(["International", "International"])
     let [max, setMax] = useState(25)
+    let [gdType, setGDType] = useState<"classic" | "platformer">("classic")
     let queue = ""
     let sliderQueue = ""
 
-    async function changePage(e: number, f: string = filter, reset: boolean = false, n: string = nationality[1], getNations: typeof type = type, m: number = max) {
+    async function changePage(e: number, f: string = filter, reset: boolean = false, n: string = nationality[1], getNations: typeof type = type, m: number = max, GDType: typeof gdType = gdType) {
         setLoading(true)
-        let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards${getNations == "nations" ? '/nations' : ""}?page=${e}${f ? `&name=${encodeURIComponent(f)}` : ""}${n != "International" ? `&nationality=${n}` : ""}&max=${m}`, { cache: "no-cache" })
+        let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards${GDType == "classic" ? "" : "/platformer"}${getNations == "nations" ? '/nations' : ""}?page=${e}${f ? `&name=${encodeURIComponent(f)}` : ""}${n != "International" ? `&nationality=${n}` : ""}&max=${m}`, { cache: "no-cache" })
         let profs = await req.json()
         if (getNations == "nations") {
             setNations(profs.profiles)
@@ -50,6 +51,13 @@ export default function LeaderboardClient({ profs, p }: info) {
             <Text size="5" className="header">This part of the list shows the best {type == "users" ? "players" : "countries"} on the Insane Demon List!</Text>
             <br></br><br></br>
             <Grid style={{ placeItems: "center" }}>
+            <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={(e:any) => {
+                setGDType(e)
+                changePage(1, undefined, true, undefined, undefined, undefined, e)
+            }}>
+                <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
+                <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
+            </SegmentedControl.Root>
                 <br></br>
                 <TextField.Root style={{ width: "min(100%, 800px)", fontSize: "20px", height: "40px" }} placeholder='Search...' onChange={async (e) => {
                         let key = crypto.randomUUID()
@@ -122,7 +130,7 @@ export default function LeaderboardClient({ profs, p }: info) {
                 <Text size={"1"} style={{ marginTop: "5px", opacity: 0.5 }} color={"gray"}>Click the &quot;...&quot; to specify a page!</Text>
             </Grid>
             <br></br>
-            {(type == "users" ? profiles : nations).map((e: Record<any, any>, i: number) => <Grid style={{ placeItems: "center" }} key={e.id}><LeaderboardCard profile={e} nationalities={type == "nations"}></LeaderboardCard><br></br></Grid>)}
+            {(type == "users" ? profiles : nations).map((e: Record<any, any>, i: number) => <Grid style={{ placeItems: "center" }} key={e.id}><LeaderboardCard profile={e} nationalities={type == "nations"} platformer={gdType ==  "platformer"}></LeaderboardCard><br></br></Grid>)}
         </Box>
     )
 }

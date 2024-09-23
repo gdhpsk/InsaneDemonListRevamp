@@ -1,8 +1,8 @@
-import prisma from "../../../../../prisma/prisma";
+import prisma from "../../../../../../prisma/prisma";
 import { ObjectId } from "bson";
 import createPipeline from "./pipeline";
 import { NextRequest, NextResponse } from "next/server";
-import { middleware } from "../../middleware";
+import { middleware } from "../../../middleware";
 
 export async function GET(req: Request, res: Record<any, any>) {
     try {
@@ -95,7 +95,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
 
     if(body.addedLevels) {
         try {
-            let actual_levels = await Promise.all(body.addedLevels.filter(async (x:any) => await prisma.level.findFirst({
+            let actual_levels = await Promise.all(body.addedLevels.filter(async (x:any) => await prisma.platformer.findFirst({
                 where: {
                     id: x
                 },
@@ -110,7 +110,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                         name: pack?.name || "",
                         color: pack?.color || "",
                         position: pack?.position || 1,
-                        type: "classic",
+                        type: "platformer",
                         levelId: e
                     }
                 })

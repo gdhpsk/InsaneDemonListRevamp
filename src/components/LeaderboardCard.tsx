@@ -9,10 +9,11 @@ import { useEffect, useState } from "react";
 
 interface info {
     profile: Record<any, any>,
-    nationalities?: boolean
+    nationalities?: boolean,
+    platformer?: boolean
 }
 
-export default function LeaderboardCard({profile,nationalities}: info) {
+export default function LeaderboardCard({profile,nationalities,platformer}: info) {
 
   let [icons, setIcons] = useState<any>(undefined)
 
@@ -30,7 +31,7 @@ export default function LeaderboardCard({profile,nationalities}: info) {
     return  <ContextMenu.Root>
     <ContextMenu.Trigger  className={styles.levelCard}>
     <Card style={{ marginTop: "15px", width: "min(100%, 800px)" }} onClick={() => {
-        window.location.href = `/${nationalities ? "nationality" : "player"}/${nationalities ? profile.abbr : profile.id}`
+        window.location.href = `/${nationalities ? "nationality" : "player"}/${nationalities ? profile.abbr : profile.id}${platformer ? "?platformer=true" : ""}`
     }}>
       <Box p={"3"}>
         <Flex align='center' gap='2'>
@@ -40,7 +41,7 @@ export default function LeaderboardCard({profile,nationalities}: info) {
                 <Text as="p" align="center" size="8" weight="bold" style={{lineBreak: "anywhere"}}>{profile.position}. {profile.name}</Text>
             </Flex>
         <Text as="p" size="5">
-            {profile.records} points
+            {profile.records || 0} points
         </Text>
         {profile.nationality ? <><br></br><Flex align='center' gap='2'>
                 <Text as="p" align="center" size="5" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>

@@ -63,6 +63,63 @@ export default function createPipeline(id: string) {
           }
         }, {
           '$lookup': {
+            'from': 'records', 
+            'let': {
+              'id': '$_id'
+            }, 
+            'pipeline': [
+              {
+                '$match': {
+                  '$expr': {
+                    '$eq': [
+                      '$playerId', '$$id'
+                    ]
+                  }
+                }
+              }, {
+                '$lookup': {
+                  'from': 'platformers', 
+                  'localField': 'levelId', 
+                  'foreignField': '_id', 
+                  'as': 'level'
+                }
+              }, {
+                '$project': {
+                  '_id': 0, 
+                  'id': {
+                    '$toString': '$_id'
+                  }, 
+                  'link': 1, 
+                  'verification': 1, 
+                  'beaten_when_weekly': 1, 
+                  'level': {
+                    '$first': '$level'
+                  }
+                }
+              }, {
+                '$project': {
+                  '_id': 0, 
+                  'id': '$_id', 
+                  'link': 1, 
+                  'verification': 1, 
+                  'beaten_when_weekly': 1, 
+                  'level': {
+                    'name': 1, 
+                    'extreme': {'$regexMatch': {'input': "$level.removalReason", 'regex': 'extreme', 'options': 'i'}},
+                    'position': 1,
+                    'ytcode': 1, 
+                    'publisher': 1, 
+                    'id': {
+                      '$toString': '$level._id'
+                    }
+                  }
+                }
+              }
+            ], 
+            'as': 'platformers'
+          }
+        }, {
+          '$lookup': {
             'from': 'packs', 
             'let': {
               'levels': {
@@ -87,6 +144,9 @@ export default function createPipeline(id: string) {
                   'levels': {
                     '$push': '$levelId'
                   }, 
+                  'type': {
+                    '$first': "$type"
+                  },
                   'color': {
                     '$first': '$color'
                   }
@@ -109,6 +169,36 @@ export default function createPipeline(id: string) {
                 }
               }, {
                 '$lookup': {
+                  'from': 'platformers', 
+                  'let': {
+                    'levs': '$levels'
+                  }, 
+                  'pipeline': [
+                    {
+                      '$match': {
+                        '$expr': {
+                          '$in': [
+                            '$_id', '$$levs'
+                          ]
+                        }
+                      }
+                    }, {
+                      '$project': {
+                        'name': 1, 
+                        'position': 1,
+                        'ytcode': 1,
+                        'publisher': 1, 
+                        'id': {
+                          '$toString': '$_id'
+                        }, 
+                        '_id': 0
+                      }
+                    }
+                  ], 
+                  'as': 'platformers'
+                }
+              }, {
+                '$lookup': {
                   'from': 'levels', 
                   'let': {
                     'levs': '$levels'
@@ -126,7 +216,7 @@ export default function createPipeline(id: string) {
                       '$project': {
                         'name': 1, 
                         'position': 1,
-                        'ytcode': 1, 
+                        'ytcode': 1,
                         'publisher': 1, 
                         'id': {
                           '$toString': '$_id'
@@ -143,9 +233,15 @@ export default function createPipeline(id: string) {
                     '$toString': '$packId'
                   }, 
                   'name': 1, 
+                  'type': 1,
                   'levels': {
                     '$sortArray': {
-                      'input': '$levels',
+                      'input': {
+                        '$concatArrays': [
+                          '$levels',
+                          '$platformers'
+                        ]
+                      },
                       'sortBy': { 'position': 1 }
                     }
                   }, 
@@ -163,6 +259,7 @@ export default function createPipeline(id: string) {
               '$toString': '$_id'
             }, 
             'name': 1, 
+            'type': 1,
             'records': {
               '$sortArray': {
                 'input': '$records',

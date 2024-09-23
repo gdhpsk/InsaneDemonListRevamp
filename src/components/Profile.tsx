@@ -2,9 +2,10 @@
 import hexToRGB from '@/functions/hexToRGB'
 import calc_points from '@/functions/points'
 import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon, StarFilledIcon } from '@radix-ui/react-icons'
-import { Badge, Box, Callout, Flex, Grid, HoverCard, IconButton, Popover, Table, Text } from '@radix-ui/themes'
+import { Badge, Box, Callout, Flex, Grid, HoverCard, IconButton, Popover, SegmentedControl, Table, Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
 import styles from "@/app/profile.module.css"
+import { useState } from 'react'
 
 interface info {
     profile: Record<any, any>
@@ -14,7 +15,7 @@ interface info {
 }
 
 export default function Profile({profile, metadata, nationality, icons}: info) {
-
+    let [type, setType] = useState<"classic" | "platformer">("classic")
     let main = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position < 76 && a[i-1]?.level?.position != e.level.position).length
     let extended = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position > 75 && e.level.position < 151 && a[i-1]?.level?.position != e.level.position).length
     let legacy = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position > 150 && a[i-1]?.level?.position != e.level.position).length
@@ -22,16 +23,21 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
+      <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setType(e as any)}>
+                <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
+                <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
+            </SegmentedControl.Root>
+            <br></br><br></br>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
        <Flex justify={"center"} align="center" gap="9">
-            {metadata.last ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last}`}></ChevronLeftIcon> : ""}
+            {metadata.last[type] ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last}`}></ChevronLeftIcon> : ""}
             <Flex align='center' gap='3'>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="80" onClick={() => {
                             window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
                     }}></img>
-                <Text as="p" align="center" size="9" weight="bold">{metadata.position}. {profile.name}</Text>
+                <Text as="p" align="center" size="9" weight="bold">{metadata[type]}. {profile.name}</Text>
             </Flex>
-            {metadata.next ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.next}`}></ChevronRightIcon> : ""}
+            {metadata.next[type] ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.next}`}></ChevronRightIcon> : ""}
         </Flex>
         {profile.nationality ? <><br></br><Flex align='center' gap='2' justify={'center'}>
                 <Text as="p" align="center" size="6" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
@@ -46,7 +52,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
         </Flex>
         <br></br></> : ""}
         <Flex gap="2" style={{maxWidth: "100%"}} wrap="wrap" justify="center">
-                            {profile.packs.length ? profile.packs.map((e: any) => {
+                            {profile.packs.filter((e:any) => e.type == type).length ? profile.packs.filter((e:any) => e.type == type).map((e: any) => {
                                 let rgb = hexToRGB(e.color)
                                 return <Popover.Root key={e.id}>
                                     <Popover.Trigger className={styles.pack}>
@@ -73,11 +79,11 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
     }}>
           <DotsHorizontalIcon></DotsHorizontalIcon>
           </IconButton>
-          <Text as='p' align='center' weight='bold'>{main} mainlists, {extended} extended lists, {legacy} legacy lists, {main+extended} list levels, {main+extended+legacy} total</Text>
+          {type == "classic" ? <Text as='p' align='center' weight='bold'>{main} mainlists, {extended} extended lists, {legacy} legacy lists, {main+extended} list levels, {main+extended+legacy} total</Text> : ""}
       </Box>
       </Grid>
       <br></br><br></br>
-      <Grid style={{placeItems: "center"}}>
+      {type == "classic" ? <><Grid style={{placeItems: "center"}}>
         <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
         <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Verifications</Text>
         <br></br>
@@ -180,7 +186,79 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
         </Table.Root>
         </Grid>
         </Box>
+      </Grid></> : <><Grid style={{placeItems: "center"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
+        <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Verifications</Text>
+        <br></br>
+        <Grid style={{placeItems: "center"}}>
+        <Table.Root size="3" m="2" style={{width: "90%"}}>
+            <Table.Header>
+                <Table.Row>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">#</Table.ColumnHeaderCell>
+                    {nationality ? <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Player</Table.ColumnHeaderCell> : ""}
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Time</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Link</Table.ColumnHeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {profile.platformers.filter((e:any) => e.verification).map((e:any) => <Table.Row key={e.id}>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
+                    {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></Table.RowHeaderCell> : ""}
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.platformer.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.platformer.name}</a></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.time}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
+                        <a href={e.link} target="_blank">
+                        <IconButton color="violet">
+                            <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
+                        </IconButton>
+                        </a>
+                    </Table.RowHeaderCell>
+                </Table.Row>)}
+            </Table.Body>
+        </Table.Root>
+        </Grid>
+        </Box>
       </Grid>
+      <br></br><br></br>
+      <Grid style={{placeItems: "center"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
+        <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Completions</Text>
+        <br></br>
+        <Grid style={{placeItems: "center"}}>
+        <Table.Root size="3" m="2" style={{width: "90%"}}>
+            <Table.Header>
+                <Table.Row>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">#</Table.ColumnHeaderCell>
+                    {nationality ? <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Player</Table.ColumnHeaderCell> : ""}
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Time</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Link</Table.ColumnHeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {profile.platformers.filter((e:any) => e.level.position <= 150  && !e.verification).map((e:any, i: number, a: any) => {
+                    let lastPos = e.level.position == a.at(-1).platformer.position
+                    let between = !lastPos ? [a.findIndex((x: any) => x.platformer.position == e.platformer.position), a.findLastIndex((x: any) => x.platformer.position == e.platformer.position)] : a.findIndex((x: any, ind: number) => x.platformer.position == a.at(-1).platformer.position)
+                    if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
+                    return <Table.Row key={e.id}>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
+                    {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</Table.RowHeaderCell> : ""}
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.platformer.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.platformer.name}</a></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.time}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
+                        <IconButton color="violet">
+                            <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
+                        </IconButton>
+                        </a><br></br></div>)}</Table.RowHeaderCell>
+                </Table.Row>
+                }).filter((e: any) => e)}
+            </Table.Body>
+        </Table.Root>
+        </Grid>
+        </Box>
+      </Grid>
+      <br></br><br></br></>}
       {nationality ? <>
         <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
@@ -197,7 +275,7 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {profile.missing.map((e:any) => <Table.Row key={e.id}>
+                {profile[`missing_${type}`].map((e:any) => <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.position > 150 ? "" : e.position}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.name}</a></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`https://youtu.be/${e.ytcode}`} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>

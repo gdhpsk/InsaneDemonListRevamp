@@ -1,29 +1,26 @@
 'use client';
 import hexToRGB from "@/functions/hexToRGB";
 import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon, ColorWheelIcon, FileIcon } from "@radix-ui/react-icons";
-import { Badge, Box, Button, Callout, Card, Dialog, DropdownMenu, Flex, Grid, IconButton, Separator, Table, Text, TextField } from "@radix-ui/themes"
+import { Badge, Box, Button, Callout, Card, Dialog, DropdownMenu, Flex, Grid, IconButton, SegmentedControl, Separator, Table, Text, TextField } from "@radix-ui/themes"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import styles from "../../app/submit.module.css"
 import dayjs from "dayjs";
 
 interface info {
-    packs: Array<Record<any, any>>,
-    levels: Array<Record<any, any>>,
     authData: Record<any, any>
 }
 
-export default function Packs({ packs, authData, levels }: info) {
-
-    let [originalLevels, setOriginalLevels] = useState(packs)
-    let [filteredPacks, setFilteredPacks] = useState(packs)
+export default function Packs({ authData }: info) {
+    let [levels, setLevels] = useState<Array<Record<any, any>>>([])
+    let [type, setType] = useState<"classic" | "platformer">("classic")
+    let [originalLevels, setOriginalLevels] = useState<Array<Record<any, any>>>([])
+    let [filteredPacks, setFilteredPacks] = useState<Array<Record<any, any>>>([])
     let [pack, setPack] = useState<Record<any, any> | null>(null)
     let [edits, setEdits] = useState<Array<Record<any, any>>>([])
     let [error, setError] = useState({color: "red", message: ""})
-    let [filteredLevels, setFilteredLevels] = useState(levels)
     let [addedLevels, setAddedLevels] = useState<Array<Record<any, any>>>([])
     let [removedLevels, setRemovedLevels] = useState<Array<Record<any, any>>>([])
-    let [openLevels, setOpenLevels] = useState(false)
 
     let [width, setWidth] = useState(0)
 
@@ -32,6 +29,18 @@ export default function Packs({ packs, authData, levels }: info) {
     useEffect(() => {
       setWidth(getWidth())
     })
+
+    useEffect(() => {
+        (async () => {
+            let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/packs${type == "classic" ? "" : "/platformer"}`)
+            let json = await req.json()
+            let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${type == "classic" ? "levels" : "platformers"}`)
+            let json1 = await req1.json()
+            setLevels(json1)
+            setOriginalLevels(json)
+            setFilteredPacks(json)
+        })()
+    }, [type])
 
     function allowDrop(ev: any) {
         ev.preventDefault();
@@ -87,7 +96,7 @@ export default function Packs({ packs, authData, levels }: info) {
             <Flex justify="center" gap="9">
                 <Button size="4" disabled={!filteredPacks.find(e => e.difference)} onClick={async () => {
                     setError({color: "blue", message: "Loading..."})
-                                     let req = await fetch("/api/packs", {
+                                     let req = await fetch(`/api/packs${type == "classic" ? "" : "/platformer"}`, {
                                          method: "PATCH",
                                          headers: {
                                              'content-type': 'application/json',
@@ -100,7 +109,7 @@ export default function Packs({ packs, authData, levels }: info) {
                                          setError({color: "red", message: data.message})
                                      } catch(_) {
                                         setError({color: "blue", message: "Fetching new information..."})
-                                        let req = await fetch(`/api/packs?start=0`, {
+                                        let req = await fetch(`/api/packs${type == "classic" ? "" : "/platformer"}?start=0`, {
                                             headers: {
                                                 authorization: authData.token
                                             }
@@ -189,7 +198,7 @@ export default function Packs({ packs, authData, levels }: info) {
                     <Button size='4' disabled={!pack?.name || !pack.position || !pack.color || !pack.levels.length} onClick={async () => {
                         let obj = structuredClone(pack)
                        setError({color: "blue", message: "Loading..."})
-                       let req = await fetch("/api/packs", {
+                       let req = await fetch(`/api/packs${type == "classic" ? "" : "/platformer"}`, {
                            method: "POST",
                            headers: {
                                'content-type': 'application/json',
@@ -203,7 +212,7 @@ export default function Packs({ packs, authData, levels }: info) {
                            setError({color: "red", message: data.message})
                        } catch(_) {
                           setError({color: "blue", message: "Fetching new information..."})
-                          let req = await fetch(`/api/packs?start=0`, {
+                          let req = await fetch(`/api/packs${type == "classic" ? "" : "/platformer"}?start=0`, {
                               headers: {
                                   authorization: authData.token
                               }
@@ -238,10 +247,15 @@ export default function Packs({ packs, authData, levels }: info) {
             </Grid>
             <br></br>
             <Grid style={{placeItems: "center"}}>
+            <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setType(e as any)}>
+                <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
+                <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
+            </SegmentedControl.Root>
+            <br></br>
             <Grid columns={width > 1200 ? "6" : width > 1000 ? "5" : width > 800 ? "4" : width > 600 ? "3" : width > 400 ? "2" : "1"} gap="4" style={{width: "min(2500px, 100%)"}}>
                 {filteredPacks.map((e: any) => <Dialog.Root key={e.id} onOpenChange={async open => {
                     if(open) {
-                        let req = await fetch(`/api/pack/${e.id}`)
+                        let req = await fetch(`/api/pack${type == "classic" ? "" : "/platformer"}/${e.id}`)
                         let pack = await req.json()
                         setPack(pack)
                     } else {
@@ -323,7 +337,7 @@ export default function Packs({ packs, authData, levels }: info) {
                                 }
                                 delete obj.levels
                                 setError({color: "blue", message: "Loading..."})
-                                let req = await fetch("/api/pack/"+pack?.id, {
+                                let req = await fetch(`/api/pack${type == "classic" ? "" : "/platformer"}/`+pack?.id, {
                                     method: "PATCH",
                                     headers: {
                                         'content-type': 'application/json',
@@ -336,7 +350,7 @@ export default function Packs({ packs, authData, levels }: info) {
                                     setError({color: "red", message: data.message})
                                 } catch(_) {
                                    setError({color: "blue", message: "Fetching new information..."})
-                                   let req = await fetch(`/api/packs?start=0`, {
+                                   let req = await fetch(`/api/packs${type == "classic" ? "" : "/platformer"}?start=0`, {
                                        headers: {
                                            authorization: authData.token
                                        }
@@ -354,7 +368,7 @@ export default function Packs({ packs, authData, levels }: info) {
                             <Dialog.Close>
                             <Button size="4" color='red' onClick={async () => {
                                 setError({color: "blue", message: "Loading..."})
-                                let req = await fetch("/api/pack/"+pack?.id, {
+                                let req = await fetch(`/api/pack${type == "classic" ? "" : "/platformer"}/`+pack?.id, {
                                     method: "DELETE",
                                     headers: {
                                         'content-type': 'application/json',
@@ -366,7 +380,7 @@ export default function Packs({ packs, authData, levels }: info) {
                                     setError({color: "red", message: data.message})
                                 } catch(_) {
                                    setError({color: "blue", message: "Fetching new information..."})
-                                   let req = await fetch(`/api/packs?start=0`, {
+                                   let req = await fetch(`/api/packs${type == "classic" ? "" : "/platformer"}?start=0`, {
                                        headers: {
                                            authorization: authData.token
                                        }

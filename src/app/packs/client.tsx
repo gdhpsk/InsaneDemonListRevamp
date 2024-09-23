@@ -1,19 +1,17 @@
 'use client';
 import hexToRGB from "@/functions/hexToRGB";
 import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon, CheckCircledIcon } from "@radix-ui/react-icons";
-import { Box, Button, Card, Dialog, Flex, Grid, Separator, Table, Text, TextField} from "@radix-ui/themes"
-import Image from "next/image"
+import { Box, Button, Card, Dialog, Flex, Grid, SegmentedControl, Separator, Table, Text, TextField} from "@radix-ui/themes"
 import { useEffect, useState } from "react"
 import styles from "../../app/submit.module.css"
-import dayjs from "dayjs";
 
 interface info {
-    packs: Array<Record<any, any>>,
     leaderboards: Array<Record<any, any>>
 }
 
-export default function Packs({ packs, leaderboards }: info) {
-
+export default function Packs({ leaderboards }: info) {
+    let [type, setType] = useState<"classic" | "platformer">("classic")
+    let [packs, setPacks] = useState<Array<Record<any, any>>>([])
     let [pack, setPack] = useState<Record<any, any> | null>(null)
 
     let [width, setWidth] = useState(0)
@@ -34,6 +32,13 @@ export default function Packs({ packs, leaderboards }: info) {
             setOpenPlayers(false)
         })
     })
+        useEffect(() => {
+            (async () => {
+                let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/packs${type == "classic" ? "" : "/platformer"}`)
+                let json = await req.json()
+                setPacks(json)
+            })()
+        }, [type])
 
     return (
         <Box>
@@ -44,6 +49,11 @@ export default function Packs({ packs, leaderboards }: info) {
             </Flex>
             <br></br>
             <Grid style={{placeItems: "center"}}>
+            <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setType(e as any)}>
+                <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
+                <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
+            </SegmentedControl.Root>
+            <br></br>
             <Card style={{padding: "10px", width: "min(100%, 600px)"}}>
             <Text size="7" weight="bold">Select Player</Text>
             {profile == null ? "" : <><br></br>
@@ -81,7 +91,7 @@ export default function Packs({ packs, leaderboards }: info) {
             <Grid columns={width > 1200 ? "6" : width > 1000 ? "5" : width > 800 ? "4" : width > 600 ? "3" : width > 400 ? "2" : "1"} gap="4" style={{width: "min(2500px, 100%)"}}>
                 {packs.sort((a: any, b: any) => profile != null ? ((!!(profile as any)?.packs?.find?.((i:any) => i.id == a.id)) as any) - ((!!(profile as any)?.packs?.find?.((i:any) => i.id == b.id)) as any) : a.position - b.position).map((e: any) => <Dialog.Root key={e.id} onOpenChange={async open => {
                     if(open) {
-                        let req = await fetch(`/api/pack/${e.id}`)
+                        let req = await fetch(`/api/pack${type == "classic" ? "" : "/platformer"}/${e.id}`)
                         let pack = await req.json()
                         setPack(pack)
                     } else {

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "../../../../prisma/prisma";
-import { middleware } from "../middleware";
+import prisma from "../../../../../prisma/prisma";
+import { middleware } from "../../middleware";
 import createPipeline from "./pipeline";
 
 export async function GET(request: Request) {
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     } catch(_) {
         return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid JSON body."}, {status: 400})
     }
-    let actual_levels = await Promise.all(body.levels.filter(async x => await prisma.level.findFirst({
+    let actual_levels = await Promise.all(body.levels.filter(async x => await prisma.platformer.findFirst({
         where: {
             id: x.id
         },
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
                         position: body.position,
                         name: body.name,
                         color: body.color,
-                        type: "classic",
+                        type: "platformer",
                         levelId: x.id
                     }
                 })

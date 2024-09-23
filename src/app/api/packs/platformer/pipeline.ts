@@ -1,10 +1,10 @@
 export default function createPipeline() {
     return [
-      {
-        '$match': {
-            'type': "classic"
-        }
-    },
+        {
+            '$match': {
+                'type': "platformer"
+            }
+        },
         {
           '$group': {
             '_id': '$position', 

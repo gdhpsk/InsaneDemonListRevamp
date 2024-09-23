@@ -3,7 +3,7 @@ export default function createPipeline(id: string) {
         {
             '$match': {
                 'name': id,
-                'type': "classic"
+                'type': "platformer"
             }
         },
         {
@@ -24,7 +24,7 @@ export default function createPipeline(id: string) {
           }
         }, {
           '$lookup': {
-            'from': 'levels', 
+            'from': 'platformers', 
             'let': {
               'levs': '$levels'
             }, 

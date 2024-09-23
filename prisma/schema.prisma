@@ -72,6 +72,7 @@ model Pack {
     platformer Platformer? @relation(fields: [levelId], references: [id])
     color String
     position Int
+    type String
 
     @@map(name: "packs")
 }
