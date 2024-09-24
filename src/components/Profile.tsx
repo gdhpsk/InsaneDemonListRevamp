@@ -20,7 +20,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
         let hours = (seconds - seconds % 3600) / 3600
         let minutes = (seconds - hours*3600 - seconds % 60) / 60
         let secs =parseFloat((seconds - hours*3600 - minutes*60).toFixed(3))
-        return `${hours ? `${hours}:` : ""}${hours || minutes ? `${!minutes ? "00" : minutes < 10 ? `0${minutes}` : minutes}:` : ""}${!secs ? "00" : secs < 10 ? `0${secs}` : secs}`
+        return `${hours ? `${hours}:` : ""}${hours || minutes ? `${!minutes ? "00" : minutes < 10 && hours ? `0${minutes}` : minutes}:` : ""}${!secs ? "00" : secs < 10 && (hours || minutes) ? `0${secs}` : secs}`
     }
     let [type, setType] = useState<"classic" | "platformer">(platformer ? "platformer" : "classic")
     let main = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position < 76 && a[i-1]?.level?.position != e.level.position).length
