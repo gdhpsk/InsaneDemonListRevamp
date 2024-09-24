@@ -33,6 +33,17 @@ export default function createPipeline(name: string, page: number = 0, max: numb
                   'as': 'level'
                 }
               }, {
+                '$match': {
+                  '$expr': {
+                    '$ne': [
+                      {
+                        '$size': '$level'
+                      },
+                      0
+                    ]
+                  }
+                }
+              },{
                 '$project': {
                   'level': {
                     '$first': '$level'
@@ -116,7 +127,7 @@ export default function createPipeline(name: string, page: number = 0, max: numb
                             '$add': [
                               105, {
                                 '$multiply': [
-                                  -5, '$$this.level.position'
+                                  -5, '$$this'
                                 ]
                               }
                             ]

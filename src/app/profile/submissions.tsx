@@ -1,7 +1,7 @@
 'use client'
 
 import { CheckIcon, Cross1Icon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pencil1Icon, PersonIcon, StopwatchIcon } from "@radix-ui/react-icons"
-import { Box, Button, Callout, Card, Dialog, Flex, Grid, IconButton, ScrollArea, Separator, Table, Tabs, Text, TextArea, TextField } from "@radix-ui/themes"
+import { Box, Button, Callout, Card, Dialog, Flex, Grid, IconButton, ScrollArea, SegmentedControl, Separator, Table, Tabs, Text, TextArea, TextField } from "@radix-ui/themes"
 import { useEffect, useState } from "react"
 import styles from "../account.module.css"
 import cache from "../../../cache.json"
@@ -32,6 +32,7 @@ export default function ProfileSubmissions({ data }: info) {
     let [filteredPlayers, setFilteredPlayers] = useState([])
     let [openLevels, setOpenLevels] = useState(false)
     let [openPlayers, setOpenPlayers] = useState(false)
+    let [gdType, setGDType] = useState<"classic" | "platformer">("classic")
     let [type, setType] = useState("all")
     let [edits, setEdits] = useState({
         video: {
@@ -54,9 +55,7 @@ export default function ProfileSubmissions({ data }: info) {
             setOpenPlayers(false)
         });
         (async () => {
-            let [req1, req2, req3] = await Promise.all([
-                await fetch(`/api/levels?start=0&end=150`),
-                await fetch(`/api/leaderboards?all=true`),
+            let [req1] = await Promise.all([
                 await fetch(`/api/user/submissions`, {
                     headers: {
                         authorization: data.token
@@ -64,18 +63,25 @@ export default function ProfileSubmissions({ data }: info) {
                 })
             ])
 
-            let [levels, leaderboards, submissions] = await Promise.all([
-                await req1.json(),
-                await req2.json(),
-                await req3.json()
+            let [ submissions] = await Promise.all([
+                await req1.json()
             ])
             setAllSubmissions(submissions)
-            setFilteredLevels(levels)
-            setLevels(levels)
-            setLeaderboards(leaderboards)
-            setFilteredPlayers(leaderboards)
         })()
     }, [])
+
+    useEffect(() => {
+        (async () => {
+            let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${gdType == "classic" ? "level" : "platformer"}s?start=0`)
+            let json = await req.json()
+            setLevels(json)
+            setFilteredLevels(json)
+            let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards${gdType == "classic" ? "" : "/platformer"}?all=true`)
+            let json1 = await req1.json()
+            setLeaderboards(json1)
+            setFilteredPlayers(json1)
+        })()
+    }, [gdType])
 
     function getYoutubeVideoId(link: string) {
         const text = link.trim()
@@ -98,6 +104,11 @@ export default function ProfileSubmissions({ data }: info) {
 
     return (
         <Grid style={{placeItems: "center"}}>
+            <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setGDType(e as any)}>
+                <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
+                <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
+            </SegmentedControl.Root>
+            <br></br><br></br>
             <Tabs.Root defaultValue="all">
   <Tabs.List size="2">
     <Tabs.Trigger value="active" onClick={() => setType("active")}>Active</Tabs.Trigger>
@@ -107,7 +118,7 @@ export default function ProfileSubmissions({ data }: info) {
 </Tabs.Root>
 <br></br>
         <ScrollArea style={{ height: "1000px" }}>
-            {allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length ? allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e: any, i: number) => <><Dialog.Root key={i}>
+            {allSubmissions?.filter((e:any) => gdType == e.type && (type == "all" ? true : type == "active" ? !e.status : e.status))?.length ? allSubmissions.filter((e:any) => gdType == e.type && (type == "all" ? true : type == "active" ? !e.status : e.status)).map((e: any, i: number) => <><Dialog.Root key={i}>
                 <Dialog.Trigger className={styles.submission}>
                     <Card key={i} style={{ marginRight: "40px" }} onClick={() => {
                         e.time = parseFloat(e.time as any)
@@ -294,7 +305,7 @@ export default function ProfileSubmissions({ data }: info) {
                  setEdits({...edits, player: e.name});
                 (document.getElementById("player") as any).value = e.name
                 setOpenPlayers(false)
-            }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records} points)</Text></Box>)}
+            }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records || 0} points)</Text></Box>)}
             </Card>
             <br></br>
             {e.type == "platformer" ? <><Card style={{ padding: "10px", width: "min(100%, 600px)" }}>
@@ -400,7 +411,7 @@ export default function ProfileSubmissions({ data }: info) {
                     </Grid>
                     </>}
                 </Dialog.Content>
-            </Dialog.Root><br></br></>) : allSubmissions?.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>There are no submissions in this section yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
+            </Dialog.Root><br></br></>) : allSubmissions?.filter((e:any) => gdType == e.type && (type == "all" ? true : type == "active" ? !e.status : e.status))?.length == 0 ? <Text size="8" weight="bold" as="p" align={'center'}>There are no submissions in this section yet!</Text> : <Text size="8" weight="bold" as="p" align={'center'}>Loading...</Text>}
         </ScrollArea>
         </Grid>
     )

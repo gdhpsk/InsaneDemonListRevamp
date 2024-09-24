@@ -5,12 +5,10 @@ import { useEffect, useState } from "react";
 import styles from "../app/submit.module.css"
 
 interface info {
-    levels: Array<Record<any, any>>,
-    leaderboards: Array<Record<any, any>>,
     authData: Record<any, any>
 }
 
-export default function Submit({ leaderboards, authData }: info) {
+export default function Submit({ authData }: info) {
     function timeToSeconds(time: string) {
         let multipliers = [1, 60, 3600]
         let times = time.split(":").reverse().map((e, i) => parseFloat(e) * multipliers[i])
@@ -24,6 +22,7 @@ export default function Submit({ leaderboards, authData }: info) {
     }
     let [error, setError] = useState({ color: "red", message: "" })
     let [levels, setLevels] = useState([])
+    let [leaderboards, setLeaderboards] = useState([])
     let [filteredLevels, setFilteredLevels] = useState(levels)
     let [filteredPlayers, setFilteredPlayers] = useState(leaderboards)
     let [openLevels, setOpenLevels] = useState(false)
@@ -54,6 +53,10 @@ export default function Submit({ leaderboards, authData }: info) {
             let json = await req.json()
             setLevels(json)
             setFilteredLevels(json)
+            let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards${submission.type == "classic" ? "" : "/platformer"}?all=true`)
+            let json1 = await req1.json()
+            setLeaderboards(json1)
+            setFilteredPlayers(json1)
         })()
     }, [submission.type])
 
@@ -137,7 +140,7 @@ export default function Submit({ leaderboards, authData }: info) {
                         setSubmission({ ...submission, player: e.name });
                         (document.getElementById("player") as any).value = e.name
                         setOpenPlayers(false)
-                    }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records} points)</Text></Box>)}
+                    }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records || 0} points)</Text></Box>)}
                 </Card>
             </Card>
             <br></br>

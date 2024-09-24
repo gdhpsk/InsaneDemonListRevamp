@@ -26,6 +26,17 @@ export default function createPipeline(name: string, page: number = 1, max: numb
                   'foreignField': '_id', 
                   'as': 'level'
                 }
+              },{
+                '$match': {
+                  '$expr': {
+                    '$ne': [
+                      {
+                        '$size': '$level'
+                      },
+                      0
+                    ]
+                  }
+                }
               }, {
                 '$project': {
                   '_id': 0, 

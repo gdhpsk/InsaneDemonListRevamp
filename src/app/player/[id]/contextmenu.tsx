@@ -2,6 +2,7 @@
 import Level from '@/components/Level'
 import Profile from '@/components/Profile'
 import { Box, Button, ContextMenu, Dialog, Flex, Table, Text } from '@radix-ui/themes'
+import { useSearchParams } from 'next/navigation'
 
 interface info {
     profile: Record<any, any>
@@ -12,6 +13,8 @@ interface info {
 }
 
 export default function ProfileContextMenu({profile, metadata, time, nationality, icons}: info) {
+    let params = useSearchParams()
+    let platformer = params.get("platformer") == "true"
   return (
       <ContextMenu.Root>
         <ContextMenu.Trigger>
@@ -48,6 +51,7 @@ export default function ProfileContextMenu({profile, metadata, time, nationality
                     metadata={metadata}
                     nationality={nationality}
                     icons={icons}
+                    platformer={platformer}
                 ></Profile>
            </Box>
         </ContextMenu.Trigger>

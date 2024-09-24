@@ -11,19 +11,25 @@ interface info {
     profile: Record<any, any>
     metadata: Record<any, any>
     nationality?: boolean,
-    icons?: Array<string>
+    icons?: Array<string>,
+    platformer: boolean
 }
 
-export default function Profile({profile, metadata, nationality, icons}: info) {
-    let [type, setType] = useState<"classic" | "platformer">("classic")
+export default function Profile({profile, metadata, nationality, icons, platformer}: info) {
+    function secondsToTime(seconds: number) {
+        let hours = (seconds - seconds % 3600) / 3600
+        let minutes = (seconds - hours*3600 - seconds % 60) / 60
+        let secs =parseFloat((seconds - hours*3600 - minutes*60).toFixed(3))
+        return `${hours ? `${hours}:` : ""}${hours || minutes ? `${!minutes ? "00" : minutes < 10 ? `0${minutes}` : minutes}:` : ""}${!secs ? "00" : secs < 10 ? `0${secs}` : secs}`
+    }
+    let [type, setType] = useState<"classic" | "platformer">(platformer ? "platformer" : "classic")
     let main = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position < 76 && a[i-1]?.level?.position != e.level.position).length
     let extended = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position > 75 && e.level.position < 151 && a[i-1]?.level?.position != e.level.position).length
     let legacy = profile.records.sort((a: any,b: any) => a.level.position - b.level.position).filter((e:any, i: number, a: any) => e.level.position > 150 && a[i-1]?.level?.position != e.level.position).length
-
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
-      <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setType(e as any)}>
+      <SegmentedControl.Root size="3" defaultValue={platformer ? "platformer" : "classic"} onValueChange={e => setType(e as any)}>
                 <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
                 <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
             </SegmentedControl.Root>
@@ -205,8 +211,8 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
                 {profile.platformers.filter((e:any) => e.verification).map((e:any) => <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
                     {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></Table.RowHeaderCell> : ""}
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.platformer.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.platformer.name}</a></Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.time}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.level.name}</a></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{secondsToTime(parseFloat(e.time))}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
                         <IconButton color="violet">
@@ -238,14 +244,14 @@ export default function Profile({profile, metadata, nationality, icons}: info) {
             </Table.Header>
             <Table.Body>
                 {profile.platformers.filter((e:any) => e.level.position <= 150  && !e.verification).map((e:any, i: number, a: any) => {
-                    let lastPos = e.level.position == a.at(-1).platformer.position
-                    let between = !lastPos ? [a.findIndex((x: any) => x.platformer.position == e.platformer.position), a.findLastIndex((x: any) => x.platformer.position == e.platformer.position)] : a.findIndex((x: any, ind: number) => x.platformer.position == a.at(-1).platformer.position)
+                    let lastPos = e.level.position == a.at(-1).level.position
+                    let between = !lastPos ? [a.findIndex((x: any) => x.level.position == e.level.position), a.findLastIndex((x: any) => x.level.position == e.level.position)] : a.findIndex((x: any, ind: number) => x.level.position == a.at(-1).level.position)
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
                     {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</Table.RowHeaderCell> : ""}
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.platformer.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.platformer.name}</a></Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.time}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.level.name}</a></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{secondsToTime(parseFloat(e.time))}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>

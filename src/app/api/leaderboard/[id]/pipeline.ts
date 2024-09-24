@@ -27,6 +27,17 @@ export default function createPipeline(id: string) {
                   'as': 'level'
                 }
               }, {
+                '$match': {
+                  '$expr': {
+                    '$ne': [
+                      {
+                        '$size': '$level'
+                      },
+                      0
+                    ]
+                  }
+                }
+              }, {
                 '$project': {
                   '_id': 0, 
                   'id': {
@@ -84,6 +95,17 @@ export default function createPipeline(id: string) {
                   'as': 'level'
                 }
               }, {
+                '$match': {
+                  '$expr': {
+                    '$ne': [
+                      {
+                        '$size': '$level'
+                      },
+                      0
+                    ]
+                  }
+                }
+              }, {
                 '$project': {
                   '_id': 0, 
                   'id': {
@@ -91,6 +113,7 @@ export default function createPipeline(id: string) {
                   }, 
                   'link': 1, 
                   'verification': 1, 
+                  'time': 1,
                   'beaten_when_weekly': 1, 
                   'level': {
                     '$first': '$level'
@@ -101,6 +124,7 @@ export default function createPipeline(id: string) {
                   '_id': 0, 
                   'id': '$_id', 
                   'link': 1, 
+                  'time': 1,
                   'verification': 1, 
                   'beaten_when_weekly': 1, 
                   'level': {
@@ -124,7 +148,12 @@ export default function createPipeline(id: string) {
             'let': {
               'levels': {
                 '$map': {
-                  'input': '$records', 
+                  'input': {
+                    '$concatArrays': [
+                      '$records',
+                      '$platformers'
+                    ]
+                  }, 
                   'in': {
                     '$toObjectId': '$$this.level.id'
                   }
@@ -260,6 +289,12 @@ export default function createPipeline(id: string) {
             }, 
             'name': 1, 
             'type': 1,
+            'platformers': {
+              '$sortArray': {
+                'input': '$platformers',
+                'sortBy': { 'level.position': 1}
+              }
+            }, 
             'records': {
               '$sortArray': {
                 'input': '$records',

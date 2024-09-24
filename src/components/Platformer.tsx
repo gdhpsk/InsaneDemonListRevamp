@@ -16,8 +16,8 @@ export default function Platformer({level, count}: info) {
     function secondsToTime(seconds: number) {
         let hours = (seconds - seconds % 3600) / 3600
         let minutes = (seconds - hours*3600 - seconds % 60) / 60
-        let secs = (seconds - hours*3600 - minutes*60).toFixed(3)
-        return `${hours ? `${hours}:` : ""}${hours || minutes ? `${minutes ? minutes : "00"}:` : ""}${secs ? secs : "00"}`
+        let secs =parseFloat((seconds - hours*3600 - minutes*60).toFixed(3))
+        return `${hours ? `${hours}:` : ""}${hours || minutes ? `${!minutes ? "00" : minutes < 10 ? `0${minutes}` : minutes}:` : ""}${!secs ? "00" : secs < 10 ? `0${secs}` : secs}`
     }
     dayjs.extend(utc)
   return (

@@ -2,7 +2,7 @@
 
 import styles from "../../app/submit.module.css"
 import { CaretDownIcon, ChatBubbleIcon, CheckIcon, Cross1Icon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pencil1Icon, PersonIcon, StopwatchIcon } from "@radix-ui/react-icons"
-import { Card, Grid, Box, Text, Flex, IconButton, TextField, Separator, TextArea, Callout, Button, DropdownMenu, Dialog, Tabs, Table} from "@radix-ui/themes"
+import { Card, Grid, Box, Text, Flex, IconButton, TextField, Separator, TextArea, Callout, Button, DropdownMenu, Dialog, Tabs, Table, SegmentedControl} from "@radix-ui/themes"
 import { useEffect, useState } from "react"
 import cache from "../../../cache.json"
 
@@ -12,7 +12,7 @@ interface info {
     leaderboards: Array<Record<any, any>>
 }
 
-export default function Submissions({submissions, authData, leaderboards}: info) {
+export default function Submissions({submissions, authData}: info) {
     function timeToSeconds(time: string) {
         let multipliers = [1, 60, 3600]
         let times = time.split(":").reverse().map((e, i) => parseFloat(e) * multipliers[i])
@@ -25,6 +25,7 @@ export default function Submissions({submissions, authData, leaderboards}: info)
         return [hours, minutes, secs]
     }
     let [levels, setLevels] = useState([])
+    let [leaderboards, setLeaderboards] = useState([])
     let [error, setError] = useState({color: "red", message: ""})
     let [allSubmissions, setAllSubmissions] = useState(submissions)
     let [submission, setSubmission] = useState<Record<any, any> | null>(submissions[0])
@@ -33,6 +34,7 @@ export default function Submissions({submissions, authData, leaderboards}: info)
     let [openLevels, setOpenLevels] = useState(false)
     let [openPlayers, setOpenPlayers] = useState(false)
     let [type, setType] = useState("active")
+    let [gdType, setGDType] = useState<"classic" | "platformer">("classic")
     let [edits, setEdits] = useState({
         video: {
             valid: true,
@@ -48,19 +50,24 @@ export default function Submissions({submissions, authData, leaderboards}: info)
         id: ""
     })
     useEffect(() => {
-        if(allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).length) {
-            setSubmission(allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)[0])
+        setSubmission(null)
+        if(allSubmissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status)).length) {
+            setSubmission(allSubmissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status))[0])
         }
-    }, [type])
+    }, [type, gdType])
 
     useEffect(() => {
         (async () => {
-            let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${edits.type == "classic" ? "level" : "platformer"}s?start=0`)
+            let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/${gdType == "classic" ? "level" : "platformer"}s?start=0`)
             let json = await req.json()
             setLevels(json)
             setFilteredLevels(json)
+            let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards${gdType == "classic" ? "" : "/platformer"}?all=true`)
+            let json1 = await req1.json()
+            setLeaderboards(json1)
+            setFilteredPlayers(json1)
         })()
-    }, [edits.type])
+    }, [gdType])
 
     useEffect(() => {
         document.addEventListener("click", (e) => {
@@ -110,6 +117,11 @@ export default function Submissions({submissions, authData, leaderboards}: info)
     <Grid style={{placeItems: "center"}}>
         <Card style={{width: "min(900px, 100%)", padding: "10px"}}>
         <Grid style={{placeItems: "center"}}>
+        <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setGDType(e as any)}>
+                <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
+                <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
+            </SegmentedControl.Root>
+            <br></br><br></br>
         <Tabs.Root defaultValue="active">
   <Tabs.List size="2">
     <Tabs.Trigger value="active" onClick={() =>{ 
@@ -130,12 +142,12 @@ export default function Submissions({submissions, authData, leaderboards}: info)
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger>
                 <Button style={{width: "min(100%, 600px)", height: "max-content"}} color="indigo">
-                            <Text size="5" align="left" as="p" style={{width: "100%"}}>{submission ? <span>Submission #{allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).findIndex(e => e.id == submission?.id)+1} by {submission.player}: {submission.level} by {submission.publisher}</span> : "No Submissions Available"}</Text>
-                            {allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).length ? <Text style={{textAlign: "end", width: "100%"}} as="p"><CaretDownIcon style={{scale: 2.5}}></CaretDownIcon></Text> : ""}
+                            <Text size="5" align="left" as="p" style={{width: "100%"}}>{submission ? <span>Submission #{allSubmissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status)).findIndex(e => e.id == submission?.id)+1} by {submission.player}: {submission.level} by {submission.publisher}</span> : "No Submissions Available"}</Text>
+                            {allSubmissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status)).length ? <Text style={{textAlign: "end", width: "100%"}} as="p"><CaretDownIcon style={{scale: 2.5}}></CaretDownIcon></Text> : ""}
                     </Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
-                    {allSubmissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).map((e:any, i: number) => <DropdownMenu.Item key={i} className={styles.option} onClick={() => setSubmission(e)}>Submission #{i+1} by {e.player}: {e.level} by {e.publisher}</DropdownMenu.Item>)}
+                    {allSubmissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status)).map((e:any, i: number) => <DropdownMenu.Item key={i} className={styles.option} onClick={() => setSubmission(e)}>Submission #{i+1} by {e.player}: {e.level} by {e.publisher}</DropdownMenu.Item>)}
                 </DropdownMenu.Content>
             </DropdownMenu.Root>
             </Grid>
@@ -208,7 +220,7 @@ export default function Submissions({submissions, authData, leaderboards}: info)
                  setEdits({...edits, player: e.name});
                 (document.getElementById("player") as any).value = e.name
                 setOpenPlayers(false)
-            }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records} points)</Text></Box>)}
+            }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} ({e.records || 0} points)</Text></Box>)}
             </Card>
             <br></br>
             {submission.type == "platformer" ? <><Card style={{ padding: "10px", width: "min(100%, 600px)" }}>
@@ -290,8 +302,8 @@ export default function Submissions({submissions, authData, leaderboards}: info)
                                          setError({color: "green", message: `Successfully added submission ${submission?.level} by ${submission?.publisher} from ${submission?.player}`})
                                          setSubmission(null)
                                          setAllSubmissions(submissions)
-                                         if(submissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).length) {
-                                            setSubmission(submissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)[0])
+                                         if(submissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status)).length) {
+                                            setSubmission(submissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status))[0])
                                         }
                                          setTimeout(() =>{
                                             setError({color: "red", message: ""})
@@ -331,8 +343,8 @@ export default function Submissions({submissions, authData, leaderboards}: info)
                                          setError({color: "green", message: `Successfully pended submission ${submission?.level} by ${submission?.publisher} from ${submission?.player}`})
                                          setSubmission(null)
                                          setAllSubmissions(submissions)
-                                         if(submissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).length) {
-                                            setSubmission(submissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)[0])
+                                         if(submissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status)).length) {
+                                            setSubmission(submissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status))[0])
                                         }
                                          setTimeout(() =>{
                                             setError({color: "red", message: ""})
@@ -382,8 +394,8 @@ export default function Submissions({submissions, authData, leaderboards}: info)
                                          setError({color: "green", message: `Successfully rejected submission ${submission?.level} by ${submission?.publisher} from ${submission?.player}`})
                                          setSubmission(null)
                                          setAllSubmissions(submissions)
-                                         if(submissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status).length) {
-                                            setSubmission(submissions.filter((e:any) => type == "all" ? true : type == "active" ? !e.status : e.status)[0])
+                                         if(submissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status)).length) {
+                                            setSubmission(submissions.filter((e:any) => gdType == e.type &&  (type == "all" ? true : type == "active" ? !e.status : e.status))[0])
                                         }
                                          setTimeout(() =>{
                                             setError({color: "red", message: ""})

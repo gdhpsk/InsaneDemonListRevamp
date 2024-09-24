@@ -23,17 +23,6 @@ export default async function LeaderboardClient() {
         }
       })
       let data = await req.json()
-
-    let [req1, req2] = await Promise.all([
-        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/levels?start=0&end=150`),
-        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`)
-    ])
-
-    let [levels, leaderboards] = await Promise.all([
-        await req1.json(),
-        await req2.json()
-    ])
-
   return (
     <Box>
       <Flex gap="4" style={{placeItems: "center", justifyContent: "center"}}>
@@ -45,8 +34,6 @@ export default async function LeaderboardClient() {
       <Text size="5" className="header">You can submit your records here!</Text>
         <br></br><br></br>
        <Submit
-            levels={levels}
-            leaderboards={leaderboards}
             authData={data}
        ></Submit>
     </Box>
