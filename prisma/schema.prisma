@@ -51,7 +51,7 @@ model Pack {
     id     String @id @default(auto()) @map("_id") @db.ObjectId
     name String
    levelId String @db.ObjectId
-    level Level @relation(fields: [levelId], references: [id])
+    level Level? @relation(fields: [levelId], references: [id])
     color String
     position Int
 
