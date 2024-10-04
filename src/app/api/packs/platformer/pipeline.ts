@@ -1,10 +1,10 @@
 export default function createPipeline() {
     return [
-      {
-        '$match': {
-            'type': "classic"
-        }
-    },
+        {
+            '$match': {
+                'type': "platformer"
+            }
+        },
         {
           '$group': {
             '_id': {
@@ -15,15 +15,15 @@ export default function createPipeline() {
                 "$type"
               ]
             }, 
+            'position': {
+              '$first': '$position'
+            },
             'packId': {
               '$first': '$_id'
             }, 
             'name': {
               '$first': '$name'
             }, 
-            'position': {
-              '$first': '$position'
-            },
             'levels': {
               '$push': {
                 '$toString': '$levelId'

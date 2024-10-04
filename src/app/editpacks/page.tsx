@@ -17,22 +17,11 @@ export default async function RootLayout() {
       return <NotFound></NotFound>
     }
 
-    let [req1, req2] = await Promise.all([
-        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/packs`),
-        await fetch(`${process.env.NEXT_PUBLIC_URL}/api/levels`)
-    ])
-    let [packs, levels] = await Promise.all([
-        await req1.json(),
-        await req2.json()
-    ])
-
   return (
     <>
     <br></br>
         <Packs
-            packs={packs}
             authData={data.user}
-            levels={levels}
         ></Packs>
     </>
   )

@@ -2,6 +2,7 @@
 import styles from "../app/levelcard.module.css"
 import { Card, Flex, Avatar, Box, Text, ContextMenuRoot, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, Inset, Table, TableRoot, TableHeader, TableRow, TableColumnHeaderCell, TableBody, TableCell, TableRowHeaderCell, Badge, AspectRatio, IconButton, HoverCardRoot, HoverCardTrigger, HoverCardContent, ContextMenuSub, ContextMenuSubTrigger, ContextMenuSubContent, ContextMenuSeparator } from "@radix-ui/themes";
 import points from "../functions/points"
+import { calc_points_plat } from "../functions/points";
 import hexToRGB from "../functions/hexToRGB"
 import { DotFilledIcon, DotsHorizontalIcon, SpeakerLoudIcon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
@@ -34,7 +35,7 @@ export default function InfoCard({level, removeTn}: info) {
         <a href={`https://youtu.be/${level.ytcode}`} target="_blank" className="bright" style={{textDecoration: "none", lineBreak: "anywhere"}} onClick={(e) =>  e.stopPropagation()}>{ level.position < 151 ? `${level.position}. ` : ""}{level.name} by {level.publisher}</a>
         </Text>
         <Text as="p" size="5" weight="bold">
-          {points(level.position)} points
+          { platformer ? calc_points_plat(level.position) : points(level.position)} points
         </Text>
         <br></br>
         <Flex gap="3" style={{maxWidth: "100%"}} wrap="wrap">

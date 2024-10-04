@@ -38,7 +38,7 @@ export default async function RootLayout({
       </head>
       <body>
         <ThemeProvider attribute="class">
-          <Theme accentColor="sky" appearance="dark">
+          <Theme accentColor="sky" appearance="inherit">
             <Nav
               authData={data || {}}
               routes={[

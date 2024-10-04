@@ -1,8 +1,8 @@
-import prisma from "../../../../../prisma/prisma";
+import prisma from "../../../../../../prisma/prisma";
 import { ObjectId } from "bson";
 import createPipeline from "./pipeline";
 import { NextRequest, NextResponse } from "next/server";
-import { middleware } from "../../middleware";
+import { middleware } from "../../../middleware";
 
 export async function GET(req: Request, res: Record<any, any>) {
     try {
@@ -39,7 +39,7 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
     if(!pack) return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find pack."}, {status: 400})
     let count =  await prisma.pack.count({
         where: {
-            type: "classic"
+            type: "platformer"
         }
     })
     
@@ -50,7 +50,7 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
                         AND: [
                             {position: {lte: count}},
                             {position: {gte: pack.position}},
-                            {type: "classic"}
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -64,7 +64,7 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
                         AND: [
                             {position: {gte: count}},
                             {position: {lte: pack.position}},
-                            {type: "classic"}
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -77,7 +77,7 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
                     where: {
                         AND: [
                             {name: pack.name},
-                            {type: "classic"}
+                            {type: "platformer"}
                         ]
                     }
                 })
@@ -104,7 +104,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
 
     if(body.addedLevels) {
         try {
-            let actual_levels = await Promise.all(body.addedLevels.filter(async (x:any) => await prisma.level.findFirst({
+            let actual_levels = await Promise.all(body.addedLevels.filter(async (x:any) => await prisma.platformer.findFirst({
                 where: {
                     id: x
                 },
@@ -119,7 +119,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                         name: pack?.name || "",
                         color: pack?.color || "",
                         position: pack?.position || 1,
-                        type: "classic",
+                        type: "platformer",
                         levelId: e
                     }
                 })
@@ -148,7 +148,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                         AND: [
                             {position: {lte: body.position}},
                             {position: {gte: pack.position}},
-                            {type: "classic"}
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -162,7 +162,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                         AND: [
                             {position: {gte: body.position}},
                             {position: {lte: pack.position}},
-                            {type: "classic"}
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -175,7 +175,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                     where: {
                         AND: [
                             {name: pack.name},
-                            {type: "classic"}
+                            {type: "platformer"}
                         ]
                     }, data: {
                         position: body.position
@@ -191,7 +191,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
         where: {
             AND: [
                 {name: pack.name},
-                {type: "classic"}
+                {type: "platformer"}
             ]
         },
         data: {

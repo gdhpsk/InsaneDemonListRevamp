@@ -4,6 +4,10 @@
   font-family: 'Varela Round', sans-serif !important;
 }
 
+body {
+  background-color: var(--color-background);;
+}
+
 
 :root {
   --link-color: #87ceeb;

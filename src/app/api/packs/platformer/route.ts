@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "../../../../prisma/prisma";
-import { middleware } from "../middleware";
+import prisma from "../../../../../prisma/prisma";
+import { middleware } from "../../middleware";
 import createPipeline from "./pipeline";
 
 export async function GET(request: Request) {
@@ -23,7 +23,7 @@ export async function PATCH(request: NextRequest) {
     }
     let count = await prisma.pack.count({
         where: {
-            type: "classic"
+            type: "platformer"
         }
     })
     try {
@@ -41,7 +41,7 @@ export async function PATCH(request: NextRequest) {
                     AND: [
                         {position: {lte: pack.position}},
                         {position: {gte: exists.position}},
-                        {type: "classic"}
+                        {type: "platformer"}
                     ]
                 },
                 data: {
@@ -55,7 +55,7 @@ export async function PATCH(request: NextRequest) {
                     AND: [
                         {position: {gte: pack.position}},
                         {position: {lte: exists.position}},
-                        {type: "classic"}
+                        {type: "platformer"}
                     ]
                 },
                 data: {
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
     } catch(_) {
         return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid JSON body."}, {status: 400})
     }
-    let actual_levels = await Promise.all(body.levels.filter(async x => await prisma.level.findFirst({
+    let actual_levels = await Promise.all(body.levels.filter(async x => await prisma.platformer.findFirst({
         where: {
             id: x.id
         },
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
     if(!actual_levels.length) return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find the given level ID"}, {status: 400})
     let count = await prisma.pack.count({
         where: {
-            type: "classic"
+            type: "platformer"
         }
     })
     if(body.position < 1 || body.position > count+1) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid position range."}, {status: 400})
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
                 where: {
                     AND: [
                         {position: {gte: body.position}},
-                        {type: "classic"}
+                        {type: "platformer"}
                     ]
                 },
                 data: {
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
                         position: body.position,
                         name: body.name,
                         color: body.color,
-                        type: "classic",
+                        type: "platformer",
                         levelId: x.id
                     }
                 })

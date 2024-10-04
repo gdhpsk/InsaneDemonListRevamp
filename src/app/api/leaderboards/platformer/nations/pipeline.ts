@@ -27,7 +27,7 @@ export default function createPipeline(name: string, page: number = 0, max: numb
                 }
               }, {
                 '$lookup': {
-                  'from': 'levels', 
+                  'from': 'platformers', 
                   'localField': 'levelId', 
                   'foreignField': '_id', 
                   'as': 'level'
@@ -117,25 +117,21 @@ export default function createPipeline(name: string, page: number = 0, max: numb
                   '$cond': {
                     'if': {
                       '$gt': [
-                        '$$this', 150
+                        '$$this', 20
                       ]
                     }, 
                     'then': 0, 
                     'else': {
                       '$round': [
                         {
-                          '$divide': [
-                            {
-                              '$subtract': [
-                                74875, {
-                                  '$multiply': [
-                                    375, '$$this'
-                                  ]
-                                }
-                              ]
-                            }, 298
-                          ]
-                        }, 2
+                            '$add': [
+                              105, {
+                                '$multiply': [
+                                  -5, '$$this'
+                                ]
+                              }
+                            ]
+                      }, 2
                       ]
                     }
                   }

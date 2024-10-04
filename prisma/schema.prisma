@@ -54,6 +54,7 @@ model Pack {
     level Level? @relation(fields: [levelId], references: [id])
     color String
     position Int
+    type String
 
     @@map(name: "packs")
 }

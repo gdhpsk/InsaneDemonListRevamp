@@ -1,4 +1,4 @@
-import calc_points from "@/functions/points";
+import calc_points, { calc_points_plat } from "@/functions/points";
 import prisma from "../../../../../../../prisma/prisma";
 
 export async function GET(req: Request, res: Record<any, any>) {
@@ -10,6 +10,11 @@ export async function GET(req: Request, res: Record<any, any>) {
             records: {
                 select: {
                     level: {
+                        select: {
+                            position: true
+                        }
+                    },
+                    platformer: {
                         select: {
                             position: true
                         }
@@ -30,16 +35,18 @@ export async function GET(req: Request, res: Record<any, any>) {
         }
     })
     let profiles = obj.map((e:any) => {
-        let c = 0
-        e.records = Array.from(new Set(e.records.map((x:any) => x.level.position)).values()).map((x:any) => calc_points(x))
-        e.records = parseFloat(e.records.reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2))
+        e.platformer = Array.from(new Set(e.records?.filter((x:any) => x.platformer).map((x:any) => x.platformer.position) || []).values()).map((x:any) => calc_points_plat(x))
+        e.platformer = parseFloat(e.platformer?.reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2) || "0")
+        e.records = Array.from(new Set(e.records?.filter((x:any) => x.level).map((x:any) => x.level.position) || []).values()).map((x:any) => calc_points(x))
+        e.records = parseFloat(e.records?.reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2) || "0")
         return e
     })
     profiles.sort((a: any, b: any) => b.records - a.records)
-    profiles.map((e:any, i: number) => e.position = i+1)
     let profile = profiles.findIndex((e:any) => e.abbr == res.params.id)
+    profiles.sort((a: any, b: any) => b.platformer - a.platformer)
+    let plat_placement = profiles.findIndex((e:any) => e.abbr == res.params.id)
     await prisma.$disconnect()
-    return new Response(JSON.stringify(profile == -1 ? null : {...profiles[profile], next: profiles[profile+1]?.abbr, last: profiles[profile-1]?.abbr, count: profiles.length}), {
+    return new Response(JSON.stringify(profile == -1 ? null : {...profiles[plat_placement], classic: profile+1, platformer: plat_placement+1, next: {classic: profiles[profile+1]?.abbr, platformer: profiles[plat_placement+1]?.abbr}, last: {classic: profiles[profile-1]?.abbr, platformer: profiles[plat_placement-1]?.abbr}, count: profiles.length}), {
         status: profile != -1 ? 200 : 404
     })
 }
