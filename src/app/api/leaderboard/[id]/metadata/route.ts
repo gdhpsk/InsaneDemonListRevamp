@@ -27,12 +27,20 @@ export async function GET(req: Request, res: Record<any, any>) {
         e.records = e.records?.reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2)
         return e
     })
+    let obj: Record<any, any> = {
+        next: {},
+        last: {}
+    }
     profiles.sort((a: any, b: any) => b.records - a.records)
     let profile = profiles.findIndex((e:any) => e.id == res.params.id)
+    obj.next.classic = profiles[profile+1]?.id
+    obj.last.classic = profiles[profile-1]?.id
     profiles.sort((a: any, b: any) => b.platformer - a.platformer)
     let plat_placement = profiles.findIndex((e:any) => e.id == res.params.id)
+    obj.next.platformer = profiles[plat_placement+1]?.id
+    obj.last.platformer = profiles[plat_placement-1]?.id
     await prisma.$disconnect()
-    return new Response(JSON.stringify(profile == -1 ? null : {...profiles[plat_placement], classic: profile+1, platformer: plat_placement+1, next: {classic: profiles[profile+1]?.id, platformer: profiles[plat_placement+1]?.id}, last: {classic: profiles[profile-1]?.id, platformer: profiles[plat_placement-1]?.id}, count: profiles.length}), {
+    return new Response(JSON.stringify(profile == -1 ? null : {...profiles[plat_placement], classic: profile+1, platformer: plat_placement+1, ...obj, count: profiles.length}), {
         status: profile != -1 ? 200 : 404
     })
 }
