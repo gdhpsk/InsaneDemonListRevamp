@@ -37,7 +37,7 @@ export default function LeaderboardClient({ profs, p }: info) {
         }
         setPage(e)
         if (reset) setPages(profs.pages)
-        setLoading(false)
+        setLoading(false) 
     }
 
     return (
