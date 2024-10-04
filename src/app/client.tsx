@@ -53,6 +53,9 @@ export default function HomePage({admins}: info) {
               <li>
               Levels completed with the use of Physics Bypass, Click Between Frames, or levels completed using the 2.1 GDPS (or other GDPS&apos;s) will not be accepted. An exception to the rule is if a level is completed prior to the release of 2.2.
               </li>
+              <li>
+              PLATFORM GUIDELINES: In levels with checkpoints, you may cut at each checkpoint. In levels without checkpoints do not cut (for example speedrun levels), unless it is a jump king styled level. In jump styled levels you can edit out big falls, as long as you have a connecting run. You do not need to show the prior death before each checkpoint. Raw footage is not required if you have clicks and appropriate cuts. We will not accept practice mode, or anything else that will normally be denied for classic levels. You may resubmit platformer levels for a better time if you want to. Platformer saving mod will NOT be accepted.
+              </li>
             </ul>
           </Text>
 <Box style={{marginTop: "40px"}}>
@@ -84,6 +87,17 @@ export default function HomePage({admins}: info) {
         <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>List Moderators</Text>
         <Flex wrap="wrap" gap="3">
         {admins.moderators.map((e: Record<any, any>) => <InfoCard
+              name={e.name}
+              tag={e.tag}
+              channel={e.channel}
+              avatar={e.avatar}
+              key={e.id}
+              id={e.id}
+            ></InfoCard>)}
+          </Flex>
+          <Text className='header' size="7" align="left" style={{marginTop: "30px", textAlign: "left !important" as any}}>Platformer Helpers</Text>
+          <Flex wrap="wrap" gap="3">
+          {admins.plat_helpers.map((e: Record<any, any>) => <InfoCard
               name={e.name}
               tag={e.tag}
               channel={e.channel}

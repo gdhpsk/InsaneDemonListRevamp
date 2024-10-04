@@ -46,9 +46,9 @@ export default function Platformer({level, count}: info) {
             <br></br>
         </> : ""}
        <Flex justify={"center"} align="center" gap="9">
-            {level.position != 1 ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position - 1}`}></ChevronLeftIcon> : ""}
+            {level.position != 1 ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/platformer/${level.position - 1}`}></ChevronLeftIcon> : ""}
             <Text as="p" align="center" size="9" weight="bold"><a href={`https://youtu.be/${level.ytcode}`} className="bright" target="_blank" style={{textDecoration: "none"}}>{level.position < 151 ? `${level.position}. ` : ""}{level.name}</a></Text>
-            {level.position != count ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/level/${level.position + 1}`}></ChevronRightIcon> : ""}
+            {level.position != count ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/platformer/${level.position + 1}`}></ChevronRightIcon> : ""}
         </Flex>
         <Text as="p" align="center" size="6" weight="bold" color="gray">by {level.publisher}</Text>
         <br></br>
@@ -151,7 +151,7 @@ export default function Platformer({level, count}: info) {
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.player.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.player.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
                             window.location.href = e.player.nationality ? `/nationality/${e.player.abbr}` : "#"
                     }}></img></Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}{e.verification ? <DrawingPinFilledIcon></DrawingPinFilledIcon> : ""}<a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a></Flex></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}{e.verification ? <DrawingPinFilledIcon></DrawingPinFilledIcon> : ""}<a href={`/player/${e.player.id}?platformer=true`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a></Flex></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
                         <a href={e.link} target="_blank">
                         <IconButton color="violet">

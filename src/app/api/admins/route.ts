@@ -11,6 +11,7 @@ export async function GET(request: Request) {
     let rankings: Record<string, Array<any>> = {
         leaders: [],
         moderators: [],
+        plat_helpers: [],
         helpers: [],
         server_admins: [],
         server_mods: [],
@@ -20,6 +21,7 @@ export async function GET(request: Request) {
         let roles: Record<string, string> = {
             '904477213712318475': 'leaders',
             '904477493229137961': "moderators",
+            '1285649220568748103': "plat_helpers",
             '904477700067037204': "helpers",
             "904477746745442365": "server_admins",
             '904477889439887371': "server_mods",
@@ -40,6 +42,16 @@ export async function GET(request: Request) {
                     channel: cache.channels.find(e => e.id == user.id)?.link || "#"
                 })
             }
+            let isAlsoListHelper = rank == "plat_helpers" && member.roles.includes("904477700067037204")
+            if(isAlsoListHelper) {
+                rankings["helpers"].push({
+                    id: user.id,
+                    name: user.global_name || user.username,
+                    tag: user.global_name ? user.username : `${user.username}#${user.discriminator}`,
+                    avatar: user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${user.avatar.startsWith("a_") ? "gif" : "png"}` : parseInt(user.discriminator) ? `https://cdn.discordapp.com/embed/avatars/${(parseInt(user.id) >> 22) % 6}.png` : `https://cdn.discordapp.com/embed/avatars/${parseInt(user.discriminator) % 5}.png`,
+                    channel: cache.channels.find(e => e.id == user.id)?.link || "#"
+                })
+            }
             rankings[rank].push({
                 id: user.id,
                 name: user.global_name || user.username,
@@ -49,7 +61,7 @@ export async function GET(request: Request) {
             })
         }
     } catch (_) {
-
+        console.log(_)
     }
     return new Response(JSON.stringify(rankings))
 }

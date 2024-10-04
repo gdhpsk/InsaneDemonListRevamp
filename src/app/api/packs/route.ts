@@ -21,7 +21,11 @@ export async function PATCH(request: NextRequest) {
     } catch(_) {
         return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid JSON body."}, {status: 400})
     }
-    let count = await prisma.pack.count()
+    let count = await prisma.pack.count({
+        where: {
+            type: "classic"
+        }
+    })
     try {
        for(const pack of body) {
         let exists = await prisma.pack.findFirst({
@@ -36,7 +40,8 @@ export async function PATCH(request: NextRequest) {
                 where: {
                     AND: [
                         {position: {lte: pack.position}},
-                        {position: {gte: exists.position}}
+                        {position: {gte: exists.position}},
+                        {type: "classic"}
                     ]
                 },
                 data: {
@@ -49,7 +54,8 @@ export async function PATCH(request: NextRequest) {
                 where: {
                     AND: [
                         {position: {gte: pack.position}},
-                        {position: {lte: exists.position}}
+                        {position: {lte: exists.position}},
+                        {type: "classic"}
                     ]
                 },
                 data: {
@@ -95,14 +101,19 @@ export async function POST(request: NextRequest) {
         }
     })))
     if(!actual_levels.length) return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find the given level ID"}, {status: 400})
-    let count = await prisma.pack.count()
+    let count = await prisma.pack.count({
+        where: {
+            type: "classic"
+        }
+    })
     if(body.position < 1 || body.position > count+1) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid position range."}, {status: 400})
     try {
         let pack = await prisma.$transaction([
             prisma.pack.updateMany({
                 where: {
                     AND: [
-                        {position: {gte: body.position}}
+                        {position: {gte: body.position}},
+                        {type: "classic"}
                     ]
                 },
                 data: {

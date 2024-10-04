@@ -8,13 +8,23 @@ export default function createPipeline(id: string) {
         },
         {
           '$group': {
-            '_id': '$position', 
+            '_id': {
+              '$concat': [
+                {
+                  '$toString': "$position"
+                },
+                "$type"
+              ]
+            }, 
             'packId': {
               '$first': '$_id'
             }, 
             'name': {
               '$first': '$name'
             }, 
+            'position': {
+              '$first': '$position'
+            },
             'levels': {
               '$push': '$levelId'
             }, 
@@ -65,7 +75,7 @@ export default function createPipeline(id: string) {
               }
             }, 
             'color': 1, 
-            'position': '$_id', 
+            'position': 1, 
             '_id': 0
           }
         }, {

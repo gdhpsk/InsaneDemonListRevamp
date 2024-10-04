@@ -5,14 +5,18 @@ import { Box, Button, Card, Dialog, Flex, Grid, SegmentedControl, Separator, Tab
 import { useEffect, useState } from "react"
 import styles from "../../app/submit.module.css"
 
-interface info {
-    leaderboards: Array<Record<any, any>>
-}
-
-export default function Packs({ leaderboards }: info) {
+export default function Packs() {
     let [type, setType] = useState<"classic" | "platformer">("classic")
     let [packs, setPacks] = useState<Array<Record<any, any>>>([])
     let [pack, setPack] = useState<Record<any, any> | null>(null)
+    let [leaderboards, setLeaderboards] = useState([])
+    useEffect(() => {
+        (async () => {
+            let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards${type == "platformer" ? "/platformer" : ""}?all=true`)
+            let json = await req.json()
+            setLeaderboards(json)
+        })()
+    }, [type])
 
     let [width, setWidth] = useState(0)
 
@@ -123,9 +127,9 @@ export default function Packs({ leaderboards }: info) {
                             <Table.Body>
                                 {pack.levels.map((x:any) => <Table.Row key={x.id}>
                                     <Table.RowHeaderCell><Text size="3">{x.position}</Text></Table.RowHeaderCell>
-                                    <Table.Cell><Text size="3"><a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.name}</a></Text></Table.Cell>
+                                    <Table.Cell><Text size="3"><a href={`/${type == "platformer" ? "platformer" : "level"}/${x.id}`} style={{textDecoration: "none"}}>{x.name}</a></Text></Table.Cell>
                                     <Table.Cell><Text size="3">{x.publisher}</Text></Table.Cell>
-                                    {profile ? (profile as any)?.packs?.find?.((i:any) => i.levels.find((e:any) => e.id == x.id)) ?  <Table.Cell><CheckCircledIcon style={{scale: 2}}></CheckCircledIcon></Table.Cell> :  <Table.Cell><CrossCircledIcon style={{scale: 2, color: "red"}}></CrossCircledIcon></Table.Cell> : ""}
+                                    {profile ? (profile as any)?.[type == "platformer" ? "platformers" : "records"]?.find?.((i:any) => i.level.id == x.id) ?  <Table.Cell><CheckCircledIcon style={{scale: 2}}></CheckCircledIcon></Table.Cell> :  <Table.Cell><CrossCircledIcon style={{scale: 2, color: "red"}}></CrossCircledIcon></Table.Cell> : ""}
                                 </Table.Row>)}
                             </Table.Body>
                         </Table.Root>

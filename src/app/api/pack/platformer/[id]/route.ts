@@ -37,7 +37,11 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
 
     let pack = await prisma.pack.findFirst({where: {id: res.params.id}})
     if(!pack) return NextResponse.json({error: "400 BAD REQUEST", message: "Could not find pack."}, {status: 400})
-    let count =  await prisma.pack.count()
+    let count =  await prisma.pack.count({
+        where: {
+            type: "platformer"
+        }
+    })
     
         try {
             await prisma.$transaction([
@@ -45,7 +49,8 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
                     where: {
                         AND: [
                             {position: {lte: count}},
-                            {position: {gte: pack.position}}
+                            {position: {gte: pack.position}},
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -58,7 +63,8 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
                     where: {
                         AND: [
                             {position: {gte: count}},
-                            {position: {lte: pack.position}}
+                            {position: {lte: pack.position}},
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -69,7 +75,10 @@ export async function DELETE(req: NextRequest, res: Record<any, any>) {
                 }),
                 prisma.pack.deleteMany({
                     where: {
-                        name: pack.name
+                        AND: [
+                            {name: pack.name},
+                            {type: "platformer"}
+                        ]
                     }
                 })
             ])
@@ -138,7 +147,8 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                     where: {
                         AND: [
                             {position: {lte: body.position}},
-                            {position: {gte: pack.position}}
+                            {position: {gte: pack.position}},
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -151,7 +161,8 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                     where: {
                         AND: [
                             {position: {gte: body.position}},
-                            {position: {lte: pack.position}}
+                            {position: {lte: pack.position}},
+                            {type: "platformer"}
                         ]
                     },
                     data: {
@@ -162,7 +173,10 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                 }),
                 prisma.pack.updateMany({
                     where: {
-                        name: pack.name
+                        AND: [
+                            {name: pack.name},
+                            {type: "platformer"}
+                        ]
                     }, data: {
                         position: body.position
                     }
@@ -175,7 +189,10 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
 
     await prisma.pack.updateMany({
         where: {
-            name: pack.name
+            AND: [
+                {name: pack.name},
+                {type: "platformer"}
+            ]
         },
         data: {
             name: body.name || pack.name,

@@ -36,14 +36,14 @@ export default function Profile({profile, metadata, nationality, icons, platform
             <br></br><br></br>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
        <Flex justify={"center"} align="center" gap="9">
-            {metadata.last[type] ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last}`}></ChevronLeftIcon> : ""}
+            {metadata.last[type] ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last[type]}${type == "platformer" ? "?platformer=true" : ""}`}></ChevronLeftIcon> : ""}
             <Flex align='center' gap='3'>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="80" onClick={() => {
                             window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
                     }}></img>
                 <Text as="p" align="center" size="9" weight="bold">{metadata[type]}. {profile.name}</Text>
             </Flex>
-            {metadata.next[type] ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.next}`}></ChevronRightIcon> : ""}
+            {metadata.next[type] ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.next[type]}${type == "platformer" ? "?platformer=true" : ""}`}></ChevronRightIcon> : ""}
         </Flex>
         {profile.nationality ? <><br></br><Flex align='center' gap='2' justify={'center'}>
                 <Text as="p" align="center" size="6" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
@@ -69,7 +69,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
                                         <br></br>
                                         <br></br>
                                         {e.levels.map((x:any) => <div key={x.id}><Text size="5">
-                                            <a href={`/level/${x.id}`} style={{textDecoration: "none"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by {x.publisher}</a>
+                                            <a href={`/${e.type == "platformer" ? "platformer" : "level"}/${x.id}`} style={{textDecoration: "none"}}>{x.position > 150 ? "" : `#${x.position} - `}{x.name} by {x.publisher}</a>
                                         </Text><br></br><br></br></div>)}
                                     </Popover.Content>
                                 </Popover.Root>
@@ -283,7 +283,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
             <Table.Body>
                 {profile[`missing_${type}`].map((e:any) => <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.position > 150 ? "" : e.position}</Table.RowHeaderCell>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/level/${e.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.name}</a></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/${type == "platformer" ? "platformer" : "level"}/${e.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.name}</a></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`https://youtu.be/${e.ytcode}`} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
                             <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
