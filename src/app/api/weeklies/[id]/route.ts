@@ -21,6 +21,14 @@ export async function GET(req: Request, res: Record<any, any>) {
                     publisher: true,
                     position: true
                 }
+            },
+            platformer: {
+                select: {
+                    name: true,
+                    ytcode: true,
+                    publisher: true,
+                    position: true
+                }
             }
         }
     })

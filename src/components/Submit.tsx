@@ -37,7 +37,7 @@ export default function Submit({ authData }: info) {
         level: "",
         publisher: "",
         comments: "",
-        type: "",
+        type: "classic",
         time: 0
     })
     useEffect(() => {

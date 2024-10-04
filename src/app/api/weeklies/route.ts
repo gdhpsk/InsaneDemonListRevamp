@@ -10,6 +10,14 @@ export async function GET(request: Request) {
                     publisher: true,
                     position: true
                 }
+            },
+            platformer: {
+                select: {
+                    name: true,
+                    ytcode: true,
+                    publisher: true,
+                    position: true
+                }
             }
         }
     })
