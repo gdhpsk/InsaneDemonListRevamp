@@ -1,6 +1,6 @@
 'use client'
 import styles from "../app/levelcard.module.css"
-import { Card, Flex, Avatar, Box, Text, ContextMenuRoot, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, Inset, Table, TableRoot, TableHeader, TableRow, TableColumnHeaderCell, TableBody, TableCell, TableRowHeaderCell, Badge, AspectRatio, IconButton, HoverCardRoot, HoverCardTrigger, HoverCardContent, ContextMenuSub, ContextMenuSubTrigger, ContextMenuSubContent, ContextMenuSeparator } from "@radix-ui/themes";
+import { Card, Flex, Box, Text, ContextMenu, Inset, Badge, IconButton, HoverCard } from "@radix-ui/themes";
 import points from "../functions/points"
 import { calc_points_plat } from "../functions/points";
 import hexToRGB from "../functions/hexToRGB"
@@ -10,15 +10,16 @@ import utc from "dayjs/plugin/utc"
 
 interface info {
     level: Record<any, any>,
+    platformer?: boolean,
     removeTn?: boolean
 }
 
-export default function InfoCard({level, removeTn}: info) {
+export default function InfoCard({level, removeTn, platformer}: info) {
   dayjs.extend(utc)
-    return  <ContextMenuRoot>
-    <ContextMenuTrigger  className={styles.levelCard}>
+    return  <ContextMenu.Root>
+    <ContextMenu.Trigger  className={styles.levelCard}>
     <Card style={{ marginTop: "15px", width: "min(100%, 1650px)", backgroundColor: `${level.weekly?.date > Date.now() - 604_800_000 ? "rgba(53, 53, 99, 0.5)" : ""}` }} variant="surface" onClick={() => {
-        window.location.href = `/level/${level.position}`
+        window.location.href = `/${platformer ? "platformer" : "level"}/${level.position}`
     }}>
     <Flex gap="5">
     <Inset side="left" clip="padding-box" style={{overflow: "visible", display: removeTn ? "none" : "block"}}>
@@ -50,7 +51,7 @@ export default function InfoCard({level, removeTn}: info) {
     </Flex>
     <IconButton style={{position: "absolute", right: "10px", top: "10px"}} radius="full" color="teal" onClick={(e) => {
       e.stopPropagation()
-        e.target.dispatchEvent(new MouseEvent('contextmenu', {
+        e.target.dispatchEvent(new MouseEvent('ContextMenu.', {
             bubbles: true,
             clientX: e.currentTarget.getBoundingClientRect().x - 150,
             clientY: e.currentTarget.getBoundingClientRect().y + 50
@@ -59,23 +60,23 @@ export default function InfoCard({level, removeTn}: info) {
           <DotsHorizontalIcon></DotsHorizontalIcon>
           </IconButton>
           <Box style={{position: "absolute", right: "10px", bottom: "10px"}}>
-          <HoverCardRoot>
-            <HoverCardTrigger onClick={(e) =>  e.stopPropagation()}>
+          <HoverCard.Root>
+            <HoverCard.Trigger onClick={(e) =>  e.stopPropagation()}>
             <IconButton radius="full" color="teal" disabled>
           <SpeakerLoudIcon></SpeakerLoudIcon>
           </IconButton>
-            </HoverCardTrigger>
-            <HoverCardContent>
+            </HoverCard.Trigger>
+            <HoverCard.Content>
                 <Text size="3">This feature is still in the works!</Text>
-            </HoverCardContent>
-        </HoverCardRoot>
+            </HoverCard.Content>
+        </HoverCard.Root>
         </Box>
             </Card>
-    </ContextMenuTrigger>
-    <ContextMenuContent>
-      <ContextMenuItem disabled><Flex align={"center"} gap="2"><img src="/song.png" height="20px"></img>Copy Song Link</Flex></ContextMenuItem>
-      <ContextMenuItem onClick={() => navigator.clipboard.writeText(`https://youtu.be/${level.ytcode}`)}><Flex align={"center"} gap="2"><img src="/youtube.svg" height="20px"></img>Copy Video Link</Flex></ContextMenuItem>
-      <ContextMenuItem onClick={() => {
+    </ContextMenu.Trigger>
+    <ContextMenu.Content>
+      <ContextMenu.Item disabled><Flex align={"center"} gap="2"><img src="/song.png" height="20px"></img>Copy Song Link</Flex></ContextMenu.Item>
+      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`https://youtu.be/${level.ytcode}`)}><Flex align={"center"} gap="2"><img src="/youtube.svg" height="20px"></img>Copy Video Link</Flex></ContextMenu.Item>
+      <ContextMenu.Item onClick={() => {
         navigator.clipboard.writeText(Object.entries(level).filter(e => e[1] && e[0] != "id").map(e => {
              if(e[0] == "ytcode") {
                 e[0] = "link"
@@ -86,16 +87,16 @@ export default function InfoCard({level, removeTn}: info) {
             }
             return `${e[0]}: ${e[1]}`
         }).join("\n"))
-      }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenuItem>
-      <ContextMenuSeparator></ContextMenuSeparator>
-      <ContextMenuItem onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/level/${level.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Exact Level URL</Flex></ContextMenuItem>
-    <ContextMenuItem onClick={() => navigator.clipboard.writeText(level.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenuItem>
-    <ContextMenuItem onClick={() => navigator.clipboard.writeText(JSON.stringify(level))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Level JSON</Flex></ContextMenuItem>
-    <ContextMenuItem onClick={async () => {
-        let req = await fetch(`/api/level/${level.id}`)
+      }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenu.Item>
+      <ContextMenu.Separator></ContextMenu.Separator>
+      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/${platformer ? "platformer" : "level"}/${level.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Exact Level URL</Flex></ContextMenu.Item>
+    <ContextMenu.Item onClick={() => navigator.clipboard.writeText(level.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenu.Item>
+    <ContextMenu.Item onClick={() => navigator.clipboard.writeText(JSON.stringify(level))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Level JSON</Flex></ContextMenu.Item>
+    <ContextMenu.Item onClick={async () => {
+        let req = await fetch(`/api/${platformer ? "platformer" : "level"}/${level.id}`)
         let full = await req.text()
         navigator.clipboard.writeText(full)
-    }}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Full Level JSON</Flex></ContextMenuItem>
-    </ContextMenuContent>
-  </ContextMenuRoot>
+    }}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Full Level JSON</Flex></ContextMenu.Item>
+    </ContextMenu.Content>
+  </ContextMenu.Root>
 }

@@ -1,5 +1,5 @@
 'use client'
-import Level from '@/components/Level'
+import Platformer from '@/components/Platformer'
 import { Box, Button, ContextMenu, Dialog, Flex, Table, Text } from '@radix-ui/themes'
 
 interface info {
@@ -40,10 +40,10 @@ export default function LevelContextMenu({level, count, time}: info) {
             </Dialog.Close>
             </Dialog.Content>
         </Dialog.Root>
-                <Level
+                <Platformer
                     level={level}
                     count={count}
-                ></Level>
+                ></Platformer>
            </Box>
         </ContextMenu.Trigger>
         <ContextMenu.Content>
@@ -62,7 +62,7 @@ export default function LevelContextMenu({level, count, time}: info) {
         }).join("\n"))
       }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px"></img>Copy Text Format</Flex></ContextMenu.Item>
       <ContextMenu.Separator></ContextMenu.Separator>
-      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/level/${level.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Exact Level URL</Flex></ContextMenu.Item>
+      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/platformer/${level.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Exact Level URL</Flex></ContextMenu.Item>
     <ContextMenu.Item onClick={() => navigator.clipboard.writeText(level.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px"></img>Copy Object ID</Flex></ContextMenu.Item>
     <ContextMenu.Item onClick={() => navigator.clipboard.writeText(JSON.stringify(level))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px"></img>Copy Level JSON</Flex></ContextMenu.Item>
     <ContextMenu.Item onClick={() => document.getElementById("debug")?.click()}><Flex align={"center"} gap="2"><img src="/debug.png" height="20px"></img>Debug</Flex></ContextMenu.Item>

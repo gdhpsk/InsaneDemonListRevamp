@@ -9,10 +9,11 @@ export async function POST(req: NextRequest, res: Record<any, any>) {
     let body: Record<any, any> = {}
     try {
         body = await req.json()
-        if(typeof body.level !== 'string'  || typeof body.publisher !== 'string' || typeof body.player !== 'string' || typeof body.link !== 'string' || typeof body.comments !== 'string') throw new Error()
+        if(typeof body.level !== 'string'  || typeof body.publisher !== 'string' || typeof body.player !== 'string' || typeof body.link !== 'string' || typeof body.comments !== 'string' || !['classic', 'platformer'].includes(body.type)) throw new Error()
     } catch(_) {
         return NextResponse.json({error: "400 BAD REQUEST", message: "Invalid JSON body."}, {status: 400})
     }
+    if(body.type == 'platformer' && (typeof body.time !== 'number' || !body.time)) return NextResponse.json({error: "400 BAD REQUEST", message: "Platformer levels must have a time specified"}, {status: 400})
     let valid = /^(https?:\/\/)?(www\.)?(youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/.test(body.link)
     if(!valid) return NextResponse.json({error: "400 BAD REQUEST", message: "Not a valid youtube link!"}, {status: 400})
     let submitted = await prisma.submission.findFirst({
@@ -58,6 +59,8 @@ export async function POST(req: NextRequest, res: Record<any, any>) {
                     editedAt: new Date(),
                     userId: req.headers.get("user") || "",
                     publisher: body.publisher,
+                    type: body.type,
+                    time: body.time?.toString?.(),
                     status: 0
                 }
             })
@@ -109,6 +112,7 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
                     player: typeof body.player === 'string' ? body.player : exists.player,
                     link: typeof body.link === 'string' ? body.link : exists.link,
                     comments: typeof body.comments === 'string' ? body.comments : exists.comments,
+                    time: typeof body.time == 'number' ? body.time.toString() : exists.time?.toString(),
                     editedAt: new Date(),
                     userId: req.headers.get("user") || "",
                     publisher: typeof body.publisher === 'string' ? body.publisher : exists.publisher,

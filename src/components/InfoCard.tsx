@@ -1,5 +1,5 @@
 'use client'
-import { Card, Flex, Avatar, Box, Text, ContextMenuRoot, ContextMenuTrigger, ContextMenuContent, ContextMenuItem } from "@radix-ui/themes";
+import { Card, Flex, Avatar, Box, Text, ContextMenu } from "@radix-ui/themes";
 
 interface info {
     avatar: string;
@@ -10,8 +10,8 @@ interface info {
 }
 
 export default function InfoCard({avatar, name, tag, channel, id}: info) {
-    return  <ContextMenuRoot>
-    <ContextMenuTrigger  className="infoCard">
+    return  <ContextMenu.Root>
+    <ContextMenu.Trigger  className="infoCard">
     <Card style={{ marginTop: "15px", width: "240px" }}>
     <Flex gap="3" align="center">
       <Avatar
@@ -30,9 +30,9 @@ export default function InfoCard({avatar, name, tag, channel, id}: info) {
       </Box>
     </Flex>
             </Card>
-    </ContextMenuTrigger>
-    <ContextMenuContent>
-      <ContextMenuItem onClick={() => navigator.clipboard.writeText(id)} style={{verticalAlign: "middle"}}><img src="/discord.png" height="25px"></img>&nbsp;&nbsp;Copy {name}{name.endsWith("s") ? "'" : "'s"} User ID</ContextMenuItem>
-    </ContextMenuContent>
-  </ContextMenuRoot>
+    </ContextMenu.Trigger>
+    <ContextMenu.Content>
+      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(id)} style={{verticalAlign: "middle"}}><img src="/discord.png" height="25px"></img>&nbsp;&nbsp;Copy {name}{name.endsWith("s") ? "'" : "'s"} User ID</ContextMenu.Item>
+    </ContextMenu.Content>
+  </ContextMenu.Root>
 }

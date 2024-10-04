@@ -124,7 +124,7 @@ export default function Packs({ authData }: info) {
                                          }, 3000)
                                      }
                 }}>Save</Button>
-                <DialogRoot onOpenChange={_ => {
+                <Dialog.Root onOpenChange={_ => {
                    if(_) {
                     setPack({
                         position: 1,
@@ -134,46 +134,43 @@ export default function Packs({ authData }: info) {
                     })
                    }
                 }}>
-                    <DialogTrigger>
+                    <Dialog.Trigger>
                         <IconButton size="4" disabled={!!filteredPacks.find(e => e.difference)}>+</IconButton>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogTitle as="h1" align='center' style={{fontSize: "30px"}}>Pack Addition</DialogTitle>
+                    </Dialog.Trigger>
+                    <Dialog.Content>
+                        <Dialog.Title as="h1" align='center' style={{fontSize: "30px"}}>Pack Addition</Dialog.Title>
                         <br></br>
                         <br></br>
-                        <TextFieldRoot>
-                            <TextFieldSlot>#</TextFieldSlot>
-                            <TextFieldInput onChange={e => {
+                        <TextField.Root onChange={e => {
                                 setPack({...pack, position: parseInt(e.target.value)})
-                            }} type="number"></TextFieldInput>
-                        </TextFieldRoot>
+                            }} type="number">
+                            <TextField.Slot>#</TextField.Slot>
+                        </TextField.Root>
                         <br></br>
-                        <TextFieldRoot>
-                            <TextFieldSlot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextFieldSlot>
-                            <TextFieldInput onChange={e => {
+                        <TextField.Root onChange={e => {
                                 setPack({...pack, name: e.target.value})
-                            }} placeholder="Name..."></TextFieldInput>
-                        </TextFieldRoot>
+                            }} placeholder="Name...">
+                            <TextField.Slot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextField.Slot>
+                        </TextField.Root>
                         <br></br>
-                        <TextFieldRoot>
-                            <TextFieldSlot><ColorWheelIcon></ColorWheelIcon></TextFieldSlot>
-                            <TextFieldInput onChange={e => {
+                        <TextField.Root onChange={e => {
                                 setPack({...pack, color: e.target.value})
-                            }} placeholder="Color..."></TextFieldInput>
-                        </TextFieldRoot>
+                            }} placeholder="Color...">
+                            <TextField.Slot><ColorWheelIcon></ColorWheelIcon></TextField.Slot>
+                        </TextField.Root>
             <br></br>
-            <TableRoot variant="surface" style={{backgroundColor: `rgba(${hexToRGB(pack?.color) as any ? Object.values(hexToRGB(pack?.color) as any).join(", ") : "0, 0, 0"}, 0.3)`}}>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableColumnHeaderCell><Text size="3">#</Text></TableColumnHeaderCell>
-                                    <TableColumnHeaderCell><Text size="3">Name</Text></TableColumnHeaderCell>
-                                    <TableColumnHeaderCell><Text size="3">Publisher</Text></TableColumnHeaderCell>
-                                    <TableColumnHeaderCell><DropdownMenuRoot>
-                                            <DropdownMenuTrigger>
+            <Table.Root variant="surface" style={{backgroundColor: `rgba(${hexToRGB(pack?.color) as any ? Object.values(hexToRGB(pack?.color) as any).join(", ") : "0, 0, 0"}, 0.3)`}}>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.ColumnHeaderCell><Text size="3">#</Text></Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell><Text size="3">Name</Text></Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell><Text size="3">Publisher</Text></Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell><DropdownMenu.Root>
+                                            <DropdownMenu.Trigger>
                                             <IconButton><PlusIcon></PlusIcon></IconButton>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                {levels.filter((x:any) => !pack?.levels.find((y:any) => y.id == x.id)).map(e => <DropdownMenuItem key={e.id} onClick={() => {
+                                            </DropdownMenu.Trigger>
+                                            <DropdownMenu.Content>
+                                                {levels.filter((x:any) => !pack?.levels.find((y:any) => y.id == x.id)).map(e => <DropdownMenu.Item key={e.id} onClick={() => {
                                                     setPack({...pack, levels: [...pack?.levels, e].sort((a,b) => a.position - b.position)})
                                                     setAddedLevels([...addedLevels, e])
                                                     setRemovedLevels(removedLevels.filter((x:any) => x.id != e.id))
@@ -191,12 +188,12 @@ export default function Packs({ authData }: info) {
                                         setPack({...pack, levels: pack?.levels.filter((y:any) => y.id != x.id)})
                                         setAddedLevels(addedLevels.filter((y:any) => y != x.id))
                                         setRemovedLevels([...removedLevels, x.id])
-                                    }}><MinusIcon></MinusIcon></IconButton></TableCell>
-                                </TableRow>)}
-                            </TableBody>
-                        </TableRoot>
+                                    }}><MinusIcon></MinusIcon></IconButton></Table.Cell>
+                                </Table.Row>)}
+                            </Table.Body>
+                        </Table.Root>
                <br></br>
-               <DialogClose>
+               <Dialog.Close>
                 <Flex gap="9" justify={'center'}>
                     <Button size='4' disabled={!pack?.name || !pack.position || !pack.color || !pack.levels.length} onClick={async () => {
                         let obj = structuredClone(pack)
@@ -231,9 +228,9 @@ export default function Packs({ authData }: info) {
                     }}>Add</Button>
                     <Button size='4' color='red'>Cancel</Button>
                 </Flex>
-               </DialogClose>
-                    </DialogContent>
-                </DialogRoot>
+               </Dialog.Close>
+                    </Dialog.Content>
+                </Dialog.Root>
                 <Button size="4" disabled={!filteredPacks.find(e => e.difference)} color='red' onClick={() => {
                      setFilteredPacks(originalLevels)
                      setEdits([])
@@ -241,12 +238,12 @@ export default function Packs({ authData }: info) {
             </Flex>
             <br></br>
             <Grid style={{placeItems: "center"}}>
-            {error.message ? <><CalloutRoot color={error.color as any} style={{width: "min(600px, 100%)"}}>
-                <CalloutIcon>
+            {error.message ? <><Callout.Root color={error.color as any} style={{width: "min(600px, 100%)"}}>
+                <Callout.Icon>
                     {error.color == "red" ? <CrossCircledIcon style={{scale: 1.5}}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{scale: 1.5}}></CheckIcon> : <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>}
-                </CalloutIcon>
-                <CalloutText size="3" ml="-1">{error.message}</CalloutText>
-            </CalloutRoot><br></br></> : ""}
+                </Callout.Icon>
+                <Callout.Text size="3" ml="-1">{error.message}</Callout.Text>
+            </Callout.Root><br></br></> : ""}
             </Grid>
             <br></br>
             <Grid style={{placeItems: "center"}}>
@@ -256,7 +253,7 @@ export default function Packs({ authData }: info) {
             </SegmentedControl.Root>
             <br></br>
             <Grid columns={width > 1200 ? "6" : width > 1000 ? "5" : width > 800 ? "4" : width > 600 ? "3" : width > 400 ? "2" : "1"} gap="4" style={{width: "min(2500px, 100%)"}}>
-                {filteredPacks.map((e: any) => <DialogRoot key={e.id} onOpenChange={async open => {
+                {filteredPacks.map((e: any) => <Dialog.Root key={e.id} onOpenChange={async open => {
                     if(open) {
                         let req = await fetch(`/api/pack${type == "classic" ? "" : "/platformer"}/${e.id}`)
                         let pack = await req.json()
@@ -267,48 +264,45 @@ export default function Packs({ authData }: info) {
                         setRemovedLevels([])
                     }
                 }}>
-                    <DialogTrigger>
+                    <Dialog.Trigger>
                         <Card draggable="true" onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id} key={e.id} style={{backgroundColor: `rgba(${hexToRGB(e.color) as any ? Object.values(hexToRGB(e.color) as any).join(", ") : "0, 0, 0"}, 0.5)`}}  className="infoCard" onClick={e => {
                             if(!!filteredPacks.find(e => e.difference)) e.preventDefault()
                         }}><Text size="4"><b>#{e.position}: </b>{e.name} {!e.difference ? "" : <Text size="4" color={e.difference < 0 ? "red" : "green"}>{e.difference < 0 ? "-" : "+"}{Math.abs(e.difference)}</Text>}</Text></Card>
-                    </DialogTrigger>
-                    <DialogContent>
+                    </Dialog.Trigger>
+                    <Dialog.Content>
                         {pack ? <>
-                            <DialogTitle as="h1" align='center' style={{fontSize: "30px"}}>{pack.name}</DialogTitle>
+                            <Dialog.Title as="h1" align='center' style={{fontSize: "30px"}}>{pack.name}</Dialog.Title>
                             <br></br>
-                        <TextFieldRoot>
-                            <TextFieldSlot>#</TextFieldSlot>
-                            <TextFieldInput defaultValue={e.position} onChange={e => {
+                        <TextField.Root defaultValue={e.position} onChange={e => {
                                 setPack({...pack, position: parseInt(e.target.value)})
-                            }} type="number"></TextFieldInput>
-                        </TextFieldRoot>
+                            }} type="number">
+                            <TextField.Slot>#</TextField.Slot>
+                        </TextField.Root>
                         <br></br>
-                        <TextFieldRoot>
-                            <TextFieldSlot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextFieldSlot>
-                            <TextFieldInput defaultValue={e.name} onChange={e => {
+                        <TextField.Root defaultValue={e.name} onChange={e => {
                                 setPack({...pack, name: e.target.value})
-                            }} placeholder="Name..."></TextFieldInput>
-                        </TextFieldRoot>
+                            }} placeholder="Name...">
+                            <TextField.Slot><LetterCaseCapitalizeIcon></LetterCaseCapitalizeIcon></TextField.Slot>
+                        </TextField.Root>
                         <br></br>
-                        <TextFieldRoot>
-                            <TextFieldSlot><ColorWheelIcon></ColorWheelIcon></TextFieldSlot>
-                            <TextFieldInput defaultValue={e.color} onChange={e => {
+                        <TextField.Root defaultValue={e.color} onChange={e => {
                                 setPack({...pack, color: e.target.value})
-                            }} placeholder="Color..."></TextFieldInput>
-                        </TextFieldRoot>
+                            }} placeholder="Color...">
+                            <TextField.Slot><ColorWheelIcon></ColorWheelIcon></TextField.Slot>
+                        </TextField.Root>
                         <br></br>
-                        <TableRoot variant="surface" style={{backgroundColor: `rgba(${hexToRGB(pack.color) as any ? Object.values(hexToRGB(pack.color) as any).join(", ") : "0, 0, 0"}, 0.3)`}}>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableColumnHeaderCell><Text size="3">#</Text></TableColumnHeaderCell>
-                                    <TableColumnHeaderCell><Text size="3">Name</Text></TableColumnHeaderCell>
-                                    <TableColumnHeaderCell><Text size="3">Publisher</Text></TableColumnHeaderCell>
-                                    <TableColumnHeaderCell><DropdownMenuRoot>
-                                            <DropdownMenuTrigger>
+                        <Table.Root variant="surface" style={{backgroundColor: `rgba(${hexToRGB(pack.color) as any ? Object.values(hexToRGB(pack.color) as any).join(", ") : "0, 0, 0"}, 0.3)`}}>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.ColumnHeaderCell><Text size="3">#</Text></Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell><Text size="3">Name</Text></Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell><Text size="3">Publisher</Text></Table.ColumnHeaderCell>
+                                    <Table.ColumnHeaderCell><DropdownMenu.Root>
+                                            <DropdownMenu.Trigger>
                                             <IconButton><PlusIcon></PlusIcon></IconButton>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent>
-                                                {levels.filter((x:any) => !pack?.levels.find((y:any) => y.id == x.id)).map(e => <DropdownMenuItem key={e.id} onClick={() => {
+                                            </DropdownMenu.Trigger>
+                                            <DropdownMenu.Content>
+                                                {levels.filter((x:any) => !pack?.levels.find((y:any) => y.id == x.id)).map(e => <DropdownMenu.Item key={e.id} onClick={() => {
                                                     setPack({...pack, levels: [...pack?.levels, e].sort((a,b) => a.position - b.position)})
                                                     setAddedLevels([...addedLevels, e.id])
                                                     setRemovedLevels(removedLevels.filter((x:any) => x.id != e.id))
@@ -326,15 +320,15 @@ export default function Packs({ authData }: info) {
                                         setPack({...pack, levels: pack?.levels.filter((y:any) => y.id != x.id)})
                                         setAddedLevels(addedLevels.filter((y:any) => y != x.id))
                                         setRemovedLevels([...removedLevels, x.id])
-                                    }}><MinusIcon></MinusIcon></IconButton></TableCell>
-                                </TableRow>)}
-                            </TableBody>
-                        </TableRoot>
+                                    }}><MinusIcon></MinusIcon></IconButton></Table.Cell>
+                                </Table.Row>)}
+                            </Table.Body>
+                        </Table.Root>
                         <br></br>
                         
                             <Box>
                             <Flex gap="9" justify={'center'}>
-                            <DialogClose>
+                            <Dialog.Close>
                             <Button size="4" onClick={async () => {
                                 let obj: Record<any, any> = {
                                     ...pack,
@@ -370,8 +364,8 @@ export default function Packs({ authData }: info) {
                                     }, 3000)
                                 }
                             }}>Save</Button>
-                            </DialogClose>
-                            <DialogClose>
+                            </Dialog.Close>
+                            <Dialog.Close>
                             <Button size="4" color='red' onClick={async () => {
                                 setError({color: "blue", message: "Loading..."})
                                 let req = await fetch(`/api/pack${type == "classic" ? "" : "/platformer"}/`+pack?.id, {
@@ -401,19 +395,19 @@ export default function Packs({ authData }: info) {
                                     }, 3000)
                                 }
                             }}>Delete</Button>
-                            </DialogClose>
+                            </Dialog.Close>
                             </Flex>
                             <br></br>
                             <br></br>
                             <Grid style={{placeItems: "center"}}>
-                            <DialogClose>
+                            <Dialog.Close>
                                 <Button color='red' size='3'>Close</Button>
-                                </DialogClose>
+                                </Dialog.Close>
                             </Grid>
                             </Box>
                         </> : <Text size="8" weight='bold' align='center' as='p'>Loading pack...</Text>}
-                    </DialogContent>
-                </DialogRoot>)}
+                    </Dialog.Content>
+                </Dialog.Root>)}
             </Grid>
             </Grid>
         </Box>

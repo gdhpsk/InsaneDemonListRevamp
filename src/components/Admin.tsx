@@ -1,5 +1,5 @@
 'use client'
-import { Button, CalloutIcon, CalloutRoot, CalloutText, Card, DialogClose, DialogContent, DialogRoot, DialogTitle, DialogTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRoot, DropdownMenuTrigger, Flex, Grid, Text } from "@radix-ui/themes";
+import { Button, Callout, Card, Dialog, DropdownMenu, Flex, Grid, Text } from "@radix-ui/themes";
 import { useState } from "react";
 import cache from "../../cache.json"
 import { CaretDownIcon, CheckIcon, Cross1Icon, CrossCircledIcon, InfoCircledIcon } from "@radix-ui/react-icons";
@@ -32,8 +32,8 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
     let [edits, setEdits] = useState<Record<any, any>>(admin)
     let [error, setError] = useState({color: "red", message: ""})
   return (
-    <DialogRoot>
-        <DialogTrigger>
+    <Dialog.Root>
+        <Dialog.Trigger>
             <Card style={{width: "min(600px, 100%)", padding: "10px"}}>
                 <Text size="8" weight="bold">{admin.name}{objectEquals(admin, edits) ? "" : " *"}</Text>
                 <br></br>
@@ -42,12 +42,12 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
                 <br></br>
                 <Text size="3">Perms: {cache.perms[admin.perms.idl-1]}</Text>
             </Card>
-        </DialogTrigger>
-            <DialogContent style={{padding: "30px"}}>
-            <DialogTitle as="h1" align="center" style={{fontSize: "30px"}}>Admin Settings</DialogTitle>
+        </Dialog.Trigger>
+            <Dialog.Content style={{padding: "30px"}}>
+            <Dialog.Title as="h1" align="center" style={{fontSize: "30px"}}>Admin Settings</Dialog.Title>
             <br></br>
-            <DropdownMenuRoot>
-                <DropdownMenuTrigger disabled={authData.perms.idl < 2}>
+            <DropdownMenu.Root>
+                <DropdownMenu.Trigger disabled={authData.perms.idl < 2}>
                 <Flex gap="2" justify={'center'}>
                     <Text size="5">User:</Text>
                     <Button style={{width: "90%"}} color="purple">
@@ -55,14 +55,14 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
                             <Text style={{textAlign: "end"}} as="p"><CaretDownIcon style={{scale: 2.5}}></CaretDownIcon></Text>
                     </Button>
                 </Flex>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                    {users.filter((e:any) =>  e._id != edits._id && (edits._id != admin._id ? e._id == admin._id : !e.perms?.idl)).map((e:any) => <DropdownMenuItem style={{fontSize: "15px"}} key={e._id} onClick={() => setEdits({...edits, email: e.email, name: e.name, _id: e._id})}>{e.email} ({e.name})</DropdownMenuItem>)}
-                </DropdownMenuContent>
-            </DropdownMenuRoot>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                    {users.filter((e:any) =>  e._id != edits._id && (edits._id != admin._id ? e._id == admin._id : !e.perms?.idl)).map((e:any) => <DropdownMenu.Item style={{fontSize: "15px"}} key={e._id} onClick={() => setEdits({...edits, email: e.email, name: e.name, _id: e._id})}>{e.email} ({e.name})</DropdownMenu.Item>)}
+                </DropdownMenu.Content>
+            </DropdownMenu.Root>
             <br></br>
-            <DropdownMenuRoot>
-                <DropdownMenuTrigger disabled={authData.perms.idl < 2}>
+            <DropdownMenu.Root>
+                <DropdownMenu.Trigger disabled={authData.perms.idl < 2}>
                 <Flex gap="2" justify={'center'}>
                     <Text size="5">Perms:</Text>
                     <Button style={{width: "87%"}} color="purple">
@@ -70,18 +70,18 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
                             <Text style={{textAlign: "end"}} as="p"><CaretDownIcon style={{scale: 2.5}}></CaretDownIcon></Text>
                     </Button>
                 </Flex>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                    {cache.perms.map((e,i) => <DropdownMenuItem style={{fontSize: "15px"}} key={e} onClick={() => setEdits({...edits, perms: {...edits.perms, idl: i+1}})}>{e}</DropdownMenuItem>)}
-                </DropdownMenuContent>
-            </DropdownMenuRoot>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                    {cache.perms.map((e,i) => <DropdownMenu.Item style={{fontSize: "15px"}} key={e} onClick={() => setEdits({...edits, perms: {...edits.perms, idl: i+1}})}>{e}</DropdownMenu.Item>)}
+                </DropdownMenu.Content>
+            </DropdownMenu.Root>
             <br></br>
-            {error.message ? <><CalloutRoot color={error.color as any}>
-                <CalloutIcon>
+            {error.message ? <><Callout.Root color={error.color as any}>
+                <Callout.Icon>
                     {error.color == "red" ? <CrossCircledIcon style={{scale: 1.5}}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{scale: 1.5}}></CheckIcon> : <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>}
-                </CalloutIcon>
-                <CalloutText size="3" ml="-1">{error.message}</CalloutText>
-            </CalloutRoot><br></br></> : ""}
+                </Callout.Icon>
+                <Callout.Text size="3" ml="-1">{error.message}</Callout.Text>
+            </Callout.Root><br></br></> : ""}
             <Flex gap="4" align="center" justify={'center'}>
                 <Button size="3" disabled={authData.perms.idl < 2 || objectEquals(admin, edits) || authData.perms.idl < 2} onClick={async () => {
                     setError({color: "blue", message: "Loading..."})
@@ -133,11 +133,11 @@ export default function Admin({authData, admin, users, stateFunc}: info) {
             <br></br>
             <br></br>
             <Grid style={{placeItems: "center"}}>
-            <DialogClose>
+            <Dialog.Close>
                 <Button color="red" size="3">Close</Button>
-            </DialogClose>
+            </Dialog.Close>
             </Grid>
-        </DialogContent>
-    </DialogRoot>
+        </Dialog.Content>
+    </Dialog.Root>
   )
 }

@@ -1,5 +1,5 @@
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
-import { Button, Flex, TextFieldInput } from "@radix-ui/themes";
+import { Button, Flex, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 
 interface IProps {
@@ -39,7 +39,7 @@ export default function Pagination(props: IProps) {
                 setTyping(true)
                 setTypingPage({type: "trailing", page: 1})
             }}>...</span> : <Flex>
-                <TextFieldInput type='number' style={{width: "40px"}} onChange={(e) => setTypingPage({type: "trailing", page: parseInt(e.target.value as any)})} onKeyDown={e => {
+                <TextField.Root type='number' style={{width: "40px"}} onChange={(e) => setTypingPage({type: "trailing", page: parseInt(e.target.value as any)})} onKeyDown={e => {
                     if(e.key == 'Enter') {
                         setTyping(false)
                         if(typingPage.page < 1 || typingPage.page > page-3) { 
@@ -49,7 +49,7 @@ export default function Pagination(props: IProps) {
                         }
                         setTypingPage({type: "leading", page: 1})
                     }
-                }}></TextFieldInput>
+                }}></TextField.Root>
                 <Button variant="solid" onClick={() => {
                     setTyping(false)
                     if(typingPage.page < 1 || typingPage.page > page-3) { 
@@ -68,7 +68,7 @@ export default function Pagination(props: IProps) {
                 setTyping(true)
                 setTypingPage({type: "leading", page: 1})
             }}>...</span> : <Flex>
-                <TextFieldInput type='number' style={{width: "40px"}} onChange={(e) => setTypingPage({type: "leading", page: parseInt(e.target.value as any)})} onKeyDown={e => {
+                <TextField.Root type='number' style={{width: "40px"}} onChange={(e) => setTypingPage({type: "leading", page: parseInt(e.target.value as any)})} onKeyDown={e => {
                     if(e.key == 'Enter') {
                         setTyping(false)
                         if(typingPage.page < page+3 || typingPage.page > count) {
@@ -78,7 +78,7 @@ export default function Pagination(props: IProps) {
                         }
                         setTypingPage({type: "leading", page: 1})
                     }
-                }}></TextFieldInput>
+                }}></TextField.Root>
                 <Button variant="solid" onClick={() => {
                     setTyping(false)
                     if(typingPage.page < page+3 || typingPage.page > count) {
