@@ -21,11 +21,11 @@ export async function GET(request: Request) {
         let roles: Record<string, string> = {
             '904477213712318475': 'leaders',
             '904477493229137961': "moderators",
-            '1285649220568748103': "plat_helpers",
             '904477700067037204': "helpers",
             "904477746745442365": "server_admins",
             '904477889439887371': "server_mods",
             '904507760236978186': 'developers',
+            '1285649220568748103': "plat_helpers",
         }
 
         for (let member of data) {
@@ -42,9 +42,9 @@ export async function GET(request: Request) {
                     channel: cache.channels.find(e => e.id == user.id)?.link || "#"
                 })
             }
-            let isAlsoListHelper = rank == "plat_helpers" && member.roles.includes("904477700067037204")
-            if(isAlsoListHelper) {
-                rankings["helpers"].push({
+            let isAlsoPlatHelper = rank != "plat_helpers" && member.roles.includes("1285649220568748103")
+            if(isAlsoPlatHelper) {
+                rankings["plat_helpers"].push({
                     id: user.id,
                     name: user.global_name || user.username,
                     tag: user.global_name ? user.username : `${user.username}#${user.discriminator}`,

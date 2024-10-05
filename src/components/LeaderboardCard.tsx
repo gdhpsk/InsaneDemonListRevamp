@@ -36,7 +36,7 @@ export default function LeaderboardCard({profile,nationalities,platformer}: info
       <Box p={"3"}>
         <Flex align='center' gap='2'>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="40" onClick={() => {
-                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
+                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}${platformer ? "?platformer=true" : ""}` : "#"
                     }}></img>
                 <Text as="p" align="center" size="8" weight="bold" style={{lineBreak: "anywhere"}}>{profile.position}. {profile.name}</Text>
             </Flex>
@@ -44,9 +44,9 @@ export default function LeaderboardCard({profile,nationalities,platformer}: info
             {profile.records || 0} points
         </Text>
         {profile.nationality ? <><br></br><Flex align='center' gap='2'>
-                <Text as="p" align="center" size="5" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
+                <Text as="p" align="center" size="5" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}${platformer ? "?platformer=true" : ""}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="24" onClick={() => {
-                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
+                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}${platformer ? "?platformer=true" : ""}` : "#"
                     }}></img>
             </Flex></> : ""}
             {!nationalities && icons ? <><br></br>
@@ -80,7 +80,7 @@ export default function LeaderboardCard({profile,nationalities,platformer}: info
         }).join("\n"))
       }}><Flex align={"center"} gap="2"><img src="/text.png" height="20px" loading='lazy'></img>Copy Text Format</Flex></ContextMenu.Item>
       <ContextMenu.Separator></ContextMenu.Separator>
-      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/${nationalities ? "nationality" : "player"}/${nationalities ? profile.abbr : profile.id}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px" loading='lazy'></img>Copy Profile URL</Flex></ContextMenu.Item>
+      <ContextMenu.Item onClick={() => navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_URL}/${nationalities ? "nationality" : "player"}/${nationalities ? profile.abbr : profile.id}${platformer ? "?platformer=true" : ""}`)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px" loading='lazy'></img>Copy Profile URL</Flex></ContextMenu.Item>
     {!nationalities ? <ContextMenu.Item onClick={() => navigator.clipboard.writeText(profile.id)}><Flex align={"center"} gap="2"><img src="/mongo.png" height="20px" loading='lazy'></img>Copy Object ID</Flex></ContextMenu.Item> : ""}
     <ContextMenu.Item onClick={() => navigator.clipboard.writeText(JSON.stringify(profile))}><Flex align={"center"} gap="2"><img src="/json.png" height="20px" loading='lazy'></img>Copy Profile JSON</Flex></ContextMenu.Item>
     </ContextMenu.Content>

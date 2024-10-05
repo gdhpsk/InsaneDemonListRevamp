@@ -65,11 +65,12 @@ export async function GET(req: Request, res: Record<any, any>) {
         e.missing_classic = e.missing_classic.filter((x:any) => x)
         e.missing_platformer = await Promise.all(pos_array2.filter(x => !e.platformer.includes(x)).map(async (x:any) => await prisma.platformer.findFirst({where: {AND: [{position: x}, {formerRank: undefined}]}})))
         e.missing_platformer = e.missing_platformer.filter((x:any) => x)
-        e.platformers = e.records?.filter((x:any) => x.platformer).map((x:any) => {
+        e.platformers = structuredClone(e.records?.filter((x:any) => x.platformer))?.map((x:any) => {
             x.level = x.platformer
             delete x.platformer
             return x
         }).sort((a: any, b: any) => a.level.position - b.level.position).sort((a: any, b: any) => b.verification - a.verification)
+
         e.records = e.records?.filter((e:any) => e.level).sort((a: any, b: any) => a.level.position - b.level.position).sort((a: any, b: any) => b.verification - a.verification)
         e.packs = (packs as any).filter((x: any) => (x.type == "classic" && x.levels.every((y: any) => e.classic.includes(y.position))) || (x.type == "platformer" && x.levels.every((y: any) => e.platformer.includes(y.position)))).sort((a: any, b: any) => a.position - b.position)
         e.classic = parseFloat(e.records?.map((x:any) => calc_points(x)).reduce((acc: any, cur: any) => acc + cur, 0).toFixed(2) || "0")

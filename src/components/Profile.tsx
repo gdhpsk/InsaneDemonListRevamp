@@ -39,16 +39,16 @@ export default function Profile({profile, metadata, nationality, icons, platform
             {metadata.last[type] ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last[type]}${type == "platformer" ? "?platformer=true" : ""}`}></ChevronLeftIcon> : ""}
             <Flex align='center' gap='3'>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="80" onClick={() => {
-                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
+                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}${type == "platformer" ? "?platformer=true" : ""}` : "#"
                     }}></img>
                 <Text as="p" align="center" size="9" weight="bold">{metadata[type]}. {profile.name}</Text>
             </Flex>
             {metadata.next[type] ? <ChevronRightIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.next[type]}${type == "platformer" ? "?platformer=true" : ""}`}></ChevronRightIcon> : ""}
         </Flex>
         {profile.nationality ? <><br></br><Flex align='center' gap='2' justify={'center'}>
-                <Text as="p" align="center" size="6" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
+                <Text as="p" align="center" size="6" weight="bold">Nationality: <a href={`/nationality/${profile.abbr}${type == "platformer" ? "?platformer=true" : ""}`} style={{textDecoration: "none"}}>{profile.nationality.replaceAll("_", " ")}</a></Text>
             <img src={profile.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${profile.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
-                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}` : "#"
+                            window.location.href = profile.nationality ? `/nationality/${profile.abbr}${type == "platformer" ? "?platformer=true" : ""}` : "#"
                     }}></img>
             </Flex></> : ""}
         <br></br>
@@ -210,7 +210,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
             <Table.Body>
                 {profile.platformers.filter((e:any) => e.verification).map((e:any) => <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
-                    {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></Table.RowHeaderCell> : ""}
+                    {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align='center' gap='2' justify={'center'}><a href={`/player/${e.player.id}?platformer=true`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.player.name}</a>{e.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex></Table.RowHeaderCell> : ""}
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.level.name}</a></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{secondsToTime(parseFloat(e.time))}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">
@@ -249,7 +249,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
-                    {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</Table.RowHeaderCell> : ""}
+                    {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}?platformer=true`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</Table.RowHeaderCell> : ""}
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.level.name}</a></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{secondsToTime(parseFloat(e.time))}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
