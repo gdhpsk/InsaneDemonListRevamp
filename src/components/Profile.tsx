@@ -1,4 +1,3 @@
-
 import hexToRGB from '@/functions/hexToRGB'
 import calc_points from '@/functions/points'
 import { ChevronLeftIcon, ChevronRightIcon, DotFilledIcon, DotsHorizontalIcon, ExclamationTriangleIcon, ExternalLinkIcon, InfoCircledIcon, SpeakerLoudIcon, StarFilledIcon } from '@radix-ui/react-icons'
@@ -229,7 +228,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
       <br></br><br></br>
       <Grid style={{placeItems: "center"}}>
         <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
-        <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Completions</Text>
+        <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>List Completions</Text>
         <br></br>
         <Grid style={{placeItems: "center"}}>
         <Table.Root size="3" m="2" style={{width: "90%"}}>
@@ -243,7 +242,45 @@ export default function Profile({profile, metadata, nationality, icons, platform
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {profile.platformers.filter((e:any) => e.level.position <= 150  && !e.verification).map((e:any, i: number, a: any) => {
+                {profile.platformers.filter((e:any) => e.level.position <= 20  && !e.verification).map((e:any, i: number, a: any) => {
+                    let lastPos = e.level.position == a.at(-1).level.position
+                    let between = !lastPos ? [a.findIndex((x: any) => x.level.position == e.level.position), a.findLastIndex((x: any) => x.level.position == e.level.position)] : a.findIndex((x: any, ind: number) => x.level.position == a.at(-1).level.position)
+                    if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
+                    return <Table.Row key={e.id}>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
+                    {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}?platformer=true`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</Table.RowHeaderCell> : ""}
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.level.name}</a></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{secondsToTime(parseFloat(e.time))}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
+                        <IconButton color="violet">
+                            <ExternalLinkIcon color="black" style={{scale: "1.5"}}></ExternalLinkIcon>
+                        </IconButton>
+                        </a><br></br></div>)}</Table.RowHeaderCell>
+                </Table.Row>
+                }).filter((e: any) => e)}
+            </Table.Body>
+        </Table.Root>
+        </Grid>
+        </Box>
+      </Grid>
+      <br></br><br></br>
+        <Grid style={{placeItems: "center"}}>
+        <Box style={{padding: "20px", width: "min(1000px, 100%)", backgroundColor: "var(--light-blue)"}}>
+        <Text size='9' as="p" align='center' weight='bold' style={{textDecoration: "underline"}}>Legacy Completions</Text>
+        <br></br>
+        <Grid style={{placeItems: "center"}}>
+        <Table.Root size="3" m="2" style={{width: "90%"}}>
+            <Table.Header>
+                <Table.Row>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">#</Table.ColumnHeaderCell>
+                    {nationality ? <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Player</Table.ColumnHeaderCell> : ""}
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Time</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Link</Table.ColumnHeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {profile.platformers.filter((e:any) => e.level.position > 20 && !e.verification).map((e:any, i: number, a: any) => {
                     let lastPos = e.level.position == a.at(-1).level.position
                     let between = !lastPos ? [a.findIndex((x: any) => x.level.position == e.level.position), a.findLastIndex((x: any) => x.level.position == e.level.position)] : a.findIndex((x: any, ind: number) => x.level.position == a.at(-1).level.position)
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
@@ -282,7 +319,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
             </Table.Header>
             <Table.Body>
                 {profile[`missing_${type}`].map((e:any) => <Table.Row key={e.id}>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.position > 150 ? "" : e.position}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(type == "platformer" ? e.position > 20 : e.position > 150) ? "" : e.position}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/${type == "platformer" ? "platformer" : "level"}/${e.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.name}</a></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`https://youtu.be/${e.ytcode}`} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
