@@ -27,21 +27,21 @@ export default function Platformer({level, count}: info) {
       {level.removalReason ? <>
             <Callout.Root color="green">
                 <Callout.Icon style={{height: "25px"}}><InfoCircledIcon style={{scale: 2}} /></Callout.Icon>
-                <Callout.Text size="5" ml="1">This level has since been removed off the list. Scroll down below to see why.</Callout.Text>
+                <Callout.Text size="5" ml="1">This platformer has since been removed off the list. Scroll down below to see why.</Callout.Text>
             </Callout.Root>
             <br></br>
         </> : ""}
-      {/* {level.position > 150 ? <>
+      {level.position > 20 ? <>
             <Callout.Root color="yellow">
                 <Callout.Icon style={{height: "25px"}}><ExclamationTriangleIcon style={{scale: 2}} /></Callout.Icon>
-                <Callout.Text size="5" ml="1">Since this level is legacy, you CANNOT submit records for it.</Callout.Text>
+                <Callout.Text size="5" ml="1">Since this platformer is legacy, you CANNOT submit records for it.</Callout.Text>
             </Callout.Root>
             <br></br>
-        </> : ""} */}
+        </> : ""}
         {level.weekly?.date > Date.now() + 604_800 ? <>
             <Callout.Root>
                 <Callout.Icon style={{height: "25px"}}><InfoCircledIcon style={{scale: "2"}} /></Callout.Icon>
-                <Callout.Text size="5" ml="1">This level is the current weekly level!</Callout.Text>
+                <Callout.Text size="5" ml="1">This platformet is the current weekly level!</Callout.Text>
             </Callout.Root>
             <br></br>
         </> : ""}
