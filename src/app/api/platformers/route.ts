@@ -90,7 +90,9 @@ export async function PATCH(request: NextRequest) {
                 where: {
                     id: level.id
                 },
-                data: {
+                data: level.position > 20 ? {
+                    position: level.position
+                } : {
                     position: level.position,
                     removalDate: null,
                     removalReason: null,

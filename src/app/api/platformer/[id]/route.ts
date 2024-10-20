@@ -144,7 +144,13 @@ export async function PATCH(req: NextRequest) {
             removalReason: null,
             formerRank: null
         }
-        removeReason = true
+        if(body.position <= 20) {
+            removeReason = true
+        } else {
+            obj = {
+                position: body.position
+            }
+        }
         await prisma.$transaction([
             prisma.platformer.updateMany({
                 where: {
