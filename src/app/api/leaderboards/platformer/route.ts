@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, res: Record<any, any>) {
         playerDb.aggregate(createPipeline(name, page, max, false, nationality)).toArray(),
         playerDb.aggregate(createPipeline(name, undefined, undefined, true, nationality)).toArray()
     ])
-    let count: number = total[0].documents ?? 0
+    let count: number = total[0]?.documents ?? 0
     return new Response(JSON.stringify({profiles, pages: Math.ceil(count / max)}))
 }
 
