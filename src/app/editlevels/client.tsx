@@ -1,6 +1,6 @@
 'use client';
 import hexToRGB from "@/functions/hexToRGB";
-import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon, FileIcon, ExternalLinkIcon, StarFilledIcon, DrawingPinFilledIcon, TrashIcon } from "@radix-ui/react-icons";
 import { Badge, Box, Button, Callout, Card, Dialog, DropdownMenu, Flex, Grid, IconButton, SegmentedControl, Select, Separator, Table, Text, TextField } from "@radix-ui/themes"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -29,6 +29,16 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
     let [filteredPlayers, setFilteredPlayers] = useState<Array<Record<any, any>>>([])
     let [type, setType] = useState<"level" | "platformer">("level")
     let [levelAddition, setLevelAddition] = useState<Record<any, any>>({})
+    let [intersectLevels, setIntersectLevels] = useState<Array<Record<any, any>>>()
+    let [intersect, setIntersect] = useState({
+        levels: [],
+        players: []
+    })
+    let [search, setSearch] = useState({
+        name: "",
+        publisher: ""
+    })
+    let [openLevels, setOpenLevels] = useState(false)
     let [openPlayers, setOpenPlayers] = useState(false)
 
     let [width, setWidth] = useState(0)
@@ -315,6 +325,113 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
             </Flex>
             <br></br>
             <Grid style={{placeItems: "center"}}>
+                <Dialog.Root onOpenChange={_ => {
+                    setIntersectLevels([])
+                    setOpenLevels(false)
+                    setIntersect({
+                        levels: [],
+                        players: []
+                     })
+                }}>
+                    <Dialog.Trigger>
+                        <Button size="3" color="blue">Check intersection</Button>
+                    </Dialog.Trigger>
+                    <Dialog.Content>
+                <Grid style={{placeItems: "center"}}>
+                        <Dialog.Title as="h1" size="8">Check Record Intersection</Dialog.Title>
+                        <Flex gap="4" align='center' mt="4">
+                    <TextField.Root style={{ width: 225 }} placeholder="Level Name..." id="level" onClick={(e) => {
+                        setOpenLevels(true)
+                    }} onChange={(e) => {
+                        setSearch({
+                            ...search,
+                            name: e.target.value
+                        })
+                    }}>
+                        <TextField.Slot style={{ paddingRight: "8px" }}><FileIcon></FileIcon></TextField.Slot>
+                    </TextField.Root>
+                    <Text>By</Text>
+                    <TextField.Root placeholder="Publisher..." id="publisher" onClick={(e) => {
+                        setOpenLevels(true)
+                    }} onChange={(e) => {
+                        setSearch({
+                            ...search,
+                            publisher: e.target.value
+                        })
+                    }}>
+                    </TextField.Root>
+                </Flex>
+                <Card style={{ display: openLevels ? "block" : "none", maxHeight: "300px", overflowY: "scroll", overflowX: "hidden", animation: "ease-in-out 1s" }}>
+                    <div style={{ marginBottom: "10px" }}></div>
+                    {originalLevels.filter(e => !intersectLevels?.find(x => x.id == e.id)).filter(e => e.name.toLowerCase().includes(search.name.toLowerCase()) && e.publisher.toLowerCase().includes(search.publisher.toLowerCase())).map((e: any, i: number) => <Box key={i}>{i ? <Separator my="3" size="4" /> : ""}<Text className={styles.option} size="3" as="p" style={{ margin: "-8px" }} onClick={() => {
+                        (document.getElementById("level") as any).value = "";
+                        (document.getElementById("publisher") as any).value = ""
+                        setIntersectLevels([
+                            ...intersectLevels as any,
+                            e
+                        ])
+                        setOpenLevels(false)
+                    }}><Text color="gray" mr="6">#{e.position}</Text> {e.name} by {e.publisher}</Text></Box>)}
+                </Card>
+                <br></br>
+                
+                <Button size="3" disabled={!intersectLevels?.length} onClick={async () => {
+                    let req = await fetch(`/api/levels/intersection`, {
+                        method: "POST",
+                        headers: {
+                            'content-type': "application/json"
+                        },
+                        body: JSON.stringify({
+                            levels: intersectLevels?.map(e => e.id.toString())
+                        })
+                    })
+                    let body = await req.json()
+                    setIntersect({
+                        levels: intersectLevels as any,
+                        players: body
+                    })
+                }}>Check</Button>
+                <br></br>
+                <Flex wrap={"wrap"} gap={"2"}>
+                {intersectLevels?.map(e => <Card draggable={true} onDragStart={drag} onDragOver={allowDrop} onDrop={drop} id={e.id}  className="infoCard" key={e.id}><Text size="3"><b>#{e.position}: </b>{e.name} by {e.publisher}  <TrashIcon color="red" style={{scale: 1.3}} onClick={() => {
+                    setIntersectLevels(intersectLevels.filter(x => x.id != e.id))
+                }}></TrashIcon></Text></Card>)}
+                </Flex>
+                <br></br>
+                {intersect.levels.length ? <Callout.Root style={{alignItems: "center"}}>
+                <Callout.Icon style={{height: "25px"}}><InfoCircledIcon style={{scale: "2"}} /></Callout.Icon>
+                <Callout.Text size="4" ml="1">Showing intersection between levels: {intersect.levels?.map((e:any) => e.name).join(", ")}</Callout.Text>
+            </Callout.Root> : ""}
+            <br></br>
+        <Box style={{padding: "20px", width: "100%"}} className={styles.back}>
+        <Grid style={{placeItems: "center"}}>
+                <Table.Root size="3" m="2" style={{width: "90%"}}>
+            <Table.Header>
+                <Table.Row>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center"><img src="https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true" width="32px"></img></Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</Table.ColumnHeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {intersect.players.map((e:any) => {
+                    return leaderboards.find(x => x.id == e.id)
+                }).map((e:any) => <Table.Row key={e.id}>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
+                            window.location.href = e.player.nationality ? `/nationality/${e.abbr}` : "#"
+                    }}></img></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}><a href={`/player/${e.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.name}</a></Flex></Table.RowHeaderCell>
+                </Table.Row>)}
+            </Table.Body>
+        </Table.Root>
+        </Grid>
+        </Box>
+                <br></br>
+                    <Dialog.Close>
+                        <Button color="red" size="4">Close</Button>
+                    </Dialog.Close>
+                </Grid>
+                    </Dialog.Content>
+                </Dialog.Root>
             {error.message ? <><Callout.Root color={error.color as any} style={{width: "min(600px, 100%)"}}>
                 <Callout.Icon>
                     {error.color == "red" ? <CrossCircledIcon style={{scale: 1.5}}></CrossCircledIcon> : error.color == "green" ? <CheckIcon style={{scale: 1.5}}></CheckIcon> : <InfoCircledIcon style={{scale: 1.5}}></InfoCircledIcon>}

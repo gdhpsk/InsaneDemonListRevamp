@@ -5,3 +5,7 @@
 .option:hover {
     background-color: rgba(77, 74, 255, 0.8);
 }
+
+.back {
+    background-color: var(--light-blue);
+  }
