@@ -366,6 +366,10 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                     {originalLevels.filter(e => !intersectLevels?.find(x => x.id == e.id)).filter(e => e.name.toLowerCase().includes(search.name.toLowerCase()) && e.publisher.toLowerCase().includes(search.publisher.toLowerCase())).map((e: any, i: number) => <Box key={i}>{i ? <Separator my="3" size="4" /> : ""}<Text className={styles.option} size="3" as="p" style={{ margin: "-8px" }} onClick={() => {
                         (document.getElementById("level") as any).value = "";
                         (document.getElementById("publisher") as any).value = ""
+                        setSearch({
+                            name: "",
+                            publisher: ""
+                        })
                         setIntersectLevels([
                             ...intersectLevels as any,
                             e
