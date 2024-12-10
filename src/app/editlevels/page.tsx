@@ -19,21 +19,18 @@ export default async function RootLayout() {
   if((data.user?.perms?.idl || 0) < 1) {
     return <NotFound></NotFound>
   }
-  let [req1, req2] = await Promise.all([
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`),
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/packs`)
+  let [req1] = await Promise.all([
+    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`)
 ])
 
-let [leaderboards, packs] = await Promise.all([
-    await req1.json(),
-    await req2.json()
+let [leaderboards] = await Promise.all([
+    await req1.json()
 ])
 
   return (
    <EditLevels
         authData={data.user}
         leaderboards={leaderboards}
-        packs={packs}
    ></EditLevels>
   )
 }

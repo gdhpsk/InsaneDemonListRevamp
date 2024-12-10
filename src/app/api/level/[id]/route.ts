@@ -204,7 +204,8 @@ export async function PATCH(req: NextRequest) {
                     name: x.name,
                     levelId: level?.id,
                     color: x.color,
-                    position: x.position
+                    position: x.position,
+                    type: "classic"
                 }
             })
            if(data.length) {

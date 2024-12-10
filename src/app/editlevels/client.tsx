@@ -10,11 +10,10 @@ import utc from "dayjs/plugin/utc"
 
 interface info {
     authData: Record<any, any>,
-    leaderboards: Array<Record<any, any>>,
-    packs: Array<Record<any, any>>
+    leaderboards: Array<Record<any, any>>
 }
 
-export default function EditLevels({ authData, leaderboards, packs }: info) {
+export default function EditLevels({ authData, leaderboards }: info) {
     dayjs.extend(utc)
 
     let [originalLevels, setOriginalLevels] = useState<Array<Record<any, any>>>([])
@@ -28,7 +27,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
     let [record, setRecord] = useState<number | null>(null)
     let [filteredPlayers, setFilteredPlayers] = useState<Array<Record<any, any>>>([])
     let [type, setType] = useState<"level" | "platformer">("level")
-    let [levelAddition, setLevelAddition] = useState<Record<any, any>>({})
+    let [packs, setPacks] = useState<Array<Record<any, any>>>([])
     let [intersectLevels, setIntersectLevels] = useState<Array<Record<any, any>>>()
     let [intersect, setIntersect] = useState({
         levels: [],
@@ -55,6 +54,9 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
             let json = await req.json()
             setOriginalLevels(json)
             setFilteredLevels(json)
+            let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/packs${type == "level" ? "" : `/${type}`}`)
+            let json1 = await req1.json()
+            setPacks(json1)
         })()
     }, [type])
 
@@ -489,7 +491,7 @@ export default function EditLevels({ authData, leaderboards, packs }: info) {
                                     <IconButton size="1"><PlusIcon></PlusIcon></IconButton>
                                 </DropdownMenu.Trigger>
                                 <DropdownMenu.Content>
-                                    {packs.filter(x => !level.packs.find((y:any) => y.id == x.id)).map((x:any) => <DropdownMenu.Item key={x.id} onClick={_ => {
+                                    {packs.filter(x => !level.packs.find((y:any) => y.name == x.name)).map((x:any) => <DropdownMenu.Item key={x.id} onClick={_ => {
                                         setLevel({...level, packs: [...level.packs, x].sort((a,b) => a.position - b.position)})
                                     }}>{x.name}</DropdownMenu.Item>)}
                                 </DropdownMenu.Content>
