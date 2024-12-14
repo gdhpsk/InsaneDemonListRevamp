@@ -60,6 +60,7 @@ model Player {
     name String
     nationality String?
     abbr String?
+    reliable Boolean?
 
     @@map(name: "players")
 }

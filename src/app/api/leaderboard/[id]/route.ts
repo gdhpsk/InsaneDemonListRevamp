@@ -42,7 +42,8 @@ export async function PATCH(req: NextRequest, res: Record<any, any>) {
             name: body.name || exists.name,
             nationality: body.nationality ?? exists.nationality,
             abbr: body.abbr ?? exists.abbr,
-            accountId: body.accountId ?? exists.accountId
+            accountId: body.accountId ?? exists.accountId,
+            reliable: body.reliable ?? exists.reliable
         }
     })
     await prisma.$disconnect()

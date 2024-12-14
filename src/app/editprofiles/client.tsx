@@ -1,7 +1,7 @@
 'use client';
 import styles from "../../app/submit.module.css"
 import { CaretDownIcon, CheckIcon, CrossCircledIcon, InfoCircledIcon, LetterCaseCapitalizeIcon, MagnifyingGlassIcon, PersonIcon } from '@radix-ui/react-icons';
-import { Box, Button, Callout, Card, Flex, Grid, Select, Separator, Text, TextField } from '@radix-ui/themes'
+import { Box, Button, Callout, Card, Checkbox, Flex, Grid, Select, Separator, Text, TextField } from '@radix-ui/themes'
 import { useEffect, useState } from 'react';
 import Image from "next/image"
 import cache from "../../../cache.json"
@@ -68,6 +68,7 @@ export default function LeaderboardClient({profiles, authData}: info) {
     {profile ? <Grid style={{placeItems: "center"}}>
     <Card style={{width: "min(600px, 100%)"}}>
       <Text size="8" weight='bold' as='p' align='center'>Profile {profile.name}</Text>
+      <br></br>
       <Grid style={{placeItems: "center"}}>
       <Select.Root size="3" defaultValue={profile.abbr || "International"} onValueChange={e => {
         if(e == "International") return setProfile({...profile, nationality: null, abbr: null})
@@ -86,6 +87,17 @@ export default function LeaderboardClient({profiles, authData}: info) {
           </Select.Group>
         </Select.Content>
       </Select.Root>
+      </Grid>
+      <br></br>
+      <Grid style={{placeItems: "center"}}>
+           <Flex gapX="3" style={{placeItems: "center", justifyContent: "center"}}>
+           <Checkbox size="3" variant="soft" checked={!!profile.reliable} onCheckedChange={e => {
+              setProfile({...profile, reliable: e})
+          }}></Checkbox>
+          <Text size="6" as="p">
+           Reliable
+          </Text>
+           </Flex>
       </Grid>
       <br></br>
      <TextField.Root defaultValue={profile.name} onChange={e => setProfile({...profile, name: e.target.value})}>

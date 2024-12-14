@@ -1,6 +1,6 @@
 'use client';
 import hexToRGB from "@/functions/hexToRGB";
-import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon, FileIcon, ExternalLinkIcon, StarFilledIcon, DrawingPinFilledIcon, TrashIcon } from "@radix-ui/react-icons";
+import { CrossCircledIcon, CheckIcon, InfoCircledIcon, Link1Icon, PersonIcon, VideoIcon, LetterCaseCapitalizeIcon, DotFilledIcon, MinusIcon, PlusIcon, FileIcon, ExternalLinkIcon, StarFilledIcon, DrawingPinFilledIcon, TrashIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Badge, Box, Button, Callout, Card, Dialog, DropdownMenu, Flex, Grid, IconButton, SegmentedControl, Select, Separator, Table, Text, TextField } from "@radix-ui/themes"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -416,16 +416,18 @@ export default function EditLevels({ authData, leaderboards }: info) {
                 <Table.Row>
                     <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center"><img src="https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true" width="32px"></img></Table.ColumnHeaderCell>
                     <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Name</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell style={{fontSize: "30px"}} align="center">Reliable?</Table.ColumnHeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
                 {intersect.players.map((e:any) => {
                     return leaderboards.find(x => x.id == e.id)
-                }).map((e:any) => <Table.Row key={e.id}>
+                }).toSorted((a: any , b: any) => (!!b.reliable ? 1 : 0) - (!!a.reliable ? 1 : 0)).map((e:any) => <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><img src={e.nationality ? `https://raw.githubusercontent.com/lipis/flag-icons/4f420bdd2e954f6da11220f1136fa181ed7019e7/flags/4x3/${e.abbr}.svg` : 'https://github.com/ppy/osu-resources/blob/master/osu.Game.Resources/Textures/Flags/__.png?raw=true'} width="32" onClick={() => {
                             window.location.href = e.player.nationality ? `/nationality/${e.abbr}` : "#"
                     }}></img></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><Flex align={"center"} gap='2' justify={'center'}><a href={`/player/${e.id}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.name}</a></Flex></Table.RowHeaderCell>
+                    <Table.RowHeaderCell align="center">{e.reliable ? <CheckIcon style={{scale: 2}} color="lightgreen"></CheckIcon> : <Cross2Icon style={{scale: 2}} color="red"></Cross2Icon>}</Table.RowHeaderCell>
                 </Table.Row>)}
             </Table.Body>
         </Table.Root>

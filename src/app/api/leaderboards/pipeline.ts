@@ -74,6 +74,7 @@ export default function createPipeline(name: string, page: number = 1, max: numb
         }, {
           '$project': {
             'name': 1, 
+            'reliable': 1,
             'nationality': 1,
             'abbr': 1,
             'accountId': 1,
@@ -114,6 +115,7 @@ export default function createPipeline(name: string, page: number = 1, max: numb
           '$project': {
             'id': {'$toString': '$_id'},
             'name': 1, 
+            'reliable': 1,
             'nationality': 1,
             'abbr': 1,
             'accountId': 1,

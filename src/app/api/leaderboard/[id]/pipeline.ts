@@ -299,6 +299,7 @@ export default function createPipeline(id: string) {
             }, 
             'name': 1, 
             'type': 1,
+            'reliable': 1,
             'platformers': {
               '$sortArray': {
                 'input': '$platformers',
