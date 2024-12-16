@@ -40,6 +40,10 @@ export const authOptions: NextAuthOptions = {
                 let db = await (await clientPromise).connect()
                 let authDb = db.db("authentication")
                 let exists = await authDb.collection("users").findOne({ email: credentials.email })
+                if(!exists) {
+                    let count = await authDb.collection("users").countDocuments({ sentVerification: {$exists: true}})
+                    if(count > 10) throw new Error("We're sorry, but you cannot sign up at this time. Please try again later")
+                }
                 if(exists && credentials.type == "signup") throw new Error("This email already exists!")
                 if(!exists && credentials.type == "login") throw new Error("This email does not exist!")
                 if (!exists) {
