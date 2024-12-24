@@ -144,7 +144,7 @@ export async function PATCH(req: NextRequest) {
             removalReason: null,
             formerRank: null
         }
-        if(body.position <= 20) {
+        if(body.position <= ((process.env.NEXT_PUBLIC_PLATFORMERS || 20) as number)) {
             removeReason = true
         } else {
             obj = {

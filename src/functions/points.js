@@ -4,6 +4,6 @@ export default function calc_points(placement) {
 }
 
 export function calc_points_plat(placement) {
-   if(placement > 20) return 0
-   return Math.round(100*(-5*placement + 105)) / 100
+   if(placement > 25) return 0
+   return Math.round(100*(-1*placement + ((process.env.NEXT_PUBLIC_PLATFORMERS || 20)) + 1)) / 100
 }

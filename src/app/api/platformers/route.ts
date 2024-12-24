@@ -90,7 +90,7 @@ export async function PATCH(request: NextRequest) {
                 where: {
                     id: level.id
                 },
-                data: level.position > 20 ? {
+                data: level.position > ((process.env.NEXT_PUBLIC_PLATFORMERS || 20) as number) ? {
                     position: level.position
                 } : {
                     position: level.position,

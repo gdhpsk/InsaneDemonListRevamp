@@ -31,7 +31,7 @@ export default function Platformer({level, count}: info) {
             </Callout.Root>
             <br></br>
         </> : ""}
-      {level.position > 20 ? <>
+      {level.position > ((process.env.NEXT_PUBLIC_PLATFORMERS || 20) as number) ? <>
             <Callout.Root color="yellow">
                 <Callout.Icon style={{height: "25px"}}><ExclamationTriangleIcon style={{scale: 2}} /></Callout.Icon>
                 <Callout.Text size="5" ml="1">Since this platformer is legacy, you CANNOT submit records for it.</Callout.Text>
