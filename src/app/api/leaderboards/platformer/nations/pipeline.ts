@@ -117,7 +117,7 @@ export default function createPipeline(name: string, page: number = 0, max: numb
                   '$cond': {
                     'if': {
                       '$gt': [
-                        '$$this', ((process.env.NEXT_PUBLIC_PLATFORMERS || 20) as number)
+                        '$$this', (parseInt(process.env.NEXT_PUBLIC_PLATFORMERS || "20") as number)
                       ]
                     }, 
                     'then': 0, 
@@ -125,7 +125,7 @@ export default function createPipeline(name: string, page: number = 0, max: numb
                       '$round': [
                         {
                             '$add': [
-                              ((process.env.NEXT_PUBLIC_PLATFORMERS || 20) as number) + 1, {
+                              (parseInt(process.env.NEXT_PUBLIC_PLATFORMERS || "20") as number) + 1, {
                                 '$multiply': [
                                   -1, '$$this'
                                 ]
