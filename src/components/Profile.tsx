@@ -280,7 +280,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {profile.platformers.filter((e:any) => e.level.position > 20 && !e.verification).map((e:any, i: number, a: any) => {
+                {profile.platformers.filter((e:any) => e.level.position > parseInt(process.env.NEXT_PUBLIC_PLATFORMERS || "20") && !e.verification).map((e:any, i: number, a: any) => {
                     let lastPos = e.level.position == a.at(-1).level.position
                     let between = !lastPos ? [a.findIndex((x: any) => x.level.position == e.level.position), a.findLastIndex((x: any) => x.level.position == e.level.position)] : a.findIndex((x: any, ind: number) => x.level.position == a.at(-1).level.position)
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
@@ -319,7 +319,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
             </Table.Header>
             <Table.Body>
                 {profile[`missing_${type}`].map((e:any) => <Table.Row key={e.id}>
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(type == "platformer" ? e.position > 20 : e.position > 150) ? "" : e.position}</Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(type == "platformer" ? e.position > parseInt(process.env.NEXT_PUBLIC_PLATFORMERS || "20") : e.position > 150) ? "" : e.position}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/${type == "platformer" ? "platformer" : "level"}/${e.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}}>{e.name}</a></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`https://youtu.be/${e.ytcode}`} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
