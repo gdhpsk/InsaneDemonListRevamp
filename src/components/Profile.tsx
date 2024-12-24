@@ -242,14 +242,14 @@ export default function Profile({profile, metadata, nationality, icons, platform
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {profile.platformers.filter((e:any) => e.level.position <= 20  && !e.verification).map((e:any, i: number, a: any) => {
+                {profile.platformers.filter((e:any) => e.level.position <= parseInt(process.env.NEXT_PUBLIC_PLATFORMERS || "20")  && !e.verification).map((e:any, i: number, a: any) => {
                     let lastPos = e.level.position == a.at(-1).level.position
                     let between = !lastPos ? [a.findIndex((x: any) => x.level.position == e.level.position), a.findLastIndex((x: any) => x.level.position == e.level.position)] : a.findIndex((x: any, ind: number) => x.level.position == a.at(-1).level.position)
                     if((!lastPos && between[0] != i) || (lastPos && between != i)) return null;
                     return <Table.Row key={e.id}>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{e.level.position}</Table.RowHeaderCell>
                     {nationality ? <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.player.id}><Flex align='center' gap='2' justify={'center'}><a href={`/player/${x.player.id}?platformer=true`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{x.player.name}</a>{x.beaten_when_weekly ? <StarFilledIcon></StarFilledIcon> : ""}</Flex><br></br></div>)}</Table.RowHeaderCell> : ""}
-                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.level.name}</a></Table.RowHeaderCell>
+                    <Table.RowHeaderCell style={{fontSize: "20px"}} align="center"><a href={`/platformer/${e.level.position}`} target="_self" style={{textDecoration: "none", lineBreak: "anywhere"}} className={styles.player}>{e.level.extreme ? <img src="/extreme.png" width={30}></img> : ""}{e.level.name}</a></Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{secondsToTime(parseFloat(e.time))}</Table.RowHeaderCell>
                     <Table.RowHeaderCell style={{fontSize: "20px"}} align="center">{(lastPos ? a.slice(between) : a.slice(i, between[1]+1)).map((x:any) => <div key={x.link}><a href={x.link} target="_blank"  style={{paddingBottom: "16px", display: "inline-block"}}>
                         <IconButton color="violet">
