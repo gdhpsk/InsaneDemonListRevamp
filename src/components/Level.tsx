@@ -13,6 +13,7 @@ interface info {
 }
 
 export default function Level({level, count}: info) {
+    level.list.sort((a: any, b: any) => b.verification - a.verification)
     dayjs.extend(utc)
   return (
     <div className={styles.content}>

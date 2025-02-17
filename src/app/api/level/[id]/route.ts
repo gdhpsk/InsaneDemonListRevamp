@@ -39,7 +39,7 @@ export async function GET(req: Request, res: Record<any, any>) {
             },
             list: {
                 orderBy: {
-                    verification: "desc"
+                    beaten_when_weekly: "desc"
                 },
                 select: {
                     id: true,
