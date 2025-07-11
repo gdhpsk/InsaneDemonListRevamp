@@ -6,6 +6,7 @@ import { Badge, Box, Callout, Flex, Grid, HoverCard, IconButton, Table,Text } fr
 import dayjs from 'dayjs'
 import utc from "dayjs/plugin/utc"
 import styles from "@/app/level.module.css"
+import AdComponent from './Ad';
 
 interface info {
     level: Record<any, any>
@@ -23,6 +24,8 @@ export default function Platformer({level, count}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
+    <Grid style={{width: "min(100%, 1000px)", placeItems: "center"}}><AdComponent adSlot="4403955848"></AdComponent></Grid>
+    <br></br>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
       {level.removalReason ? <>
             <Callout.Root color="green">
