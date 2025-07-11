@@ -131,7 +131,14 @@ export default function LeaderboardClient({ profs, p }: info) {
                 <Text size={"1"} style={{ marginTop: "5px", opacity: 0.5 }} color={"gray"}>Click the &quot;...&quot; to specify a page!</Text>
             </Grid>
             <br></br>
-            {(type == "users" ? profiles : nations).map((e: Record<any, any>, i: number) => <Grid style={{ placeItems: "center" }} key={e.id}>{(e.position-1) % 5 == 0 ? <Grid style={{width: "min(100%, 800px)"}}><AdComponent adSlot="4403955848"></AdComponent></Grid> : ""}<LeaderboardCard profile={e} nationalities={type == "nations"} platformer={gdType ==  "platformer"}></LeaderboardCard><br></br></Grid>)}
+            {(type == "users" ? profiles : nations).map((e: Record<any, any>, i: number) => <Grid style={{ placeItems: "center" }} key={e.id}>{(e.position-1) % 5 == 0 ? <Grid style={{width: "min(100%, 800px)"}}><AdComponent>
+                        <ins className="adsbygoogle"
+     style={{display:"block"}}
+     data-ad-client="ca-pub-4543250064393866"
+     data-ad-slot="4403955848"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+                    </AdComponent></Grid> : ""}<LeaderboardCard profile={e} nationalities={type == "nations"} platformer={gdType ==  "platformer"}></LeaderboardCard><br></br></Grid>)}
         </Box>
     )
 }

@@ -24,7 +24,14 @@ export default function Platformer({level, count}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
-    <Grid style={{width: "min(100%, 1000px)"}}><AdComponent adSlot="4403955848"></AdComponent></Grid>
+    <Grid style={{width: "min(100%, 1000px)"}}><AdComponent>
+                        <ins className="adsbygoogle"
+     style={{display:"block"}}
+     data-ad-client="ca-pub-4543250064393866"
+     data-ad-slot="4403955848"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+                    </AdComponent></Grid>
     <br></br>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
       {level.removalReason ? <>

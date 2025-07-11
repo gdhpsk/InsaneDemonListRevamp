@@ -28,7 +28,14 @@ export default function HomePage({admins}: info) {
       </Flex>
       <br></br>
         <Grid style={{width: "100%"}}>
-          <AdComponent adSlot="4403955848"></AdComponent>
+        <AdComponent>
+                        <ins className="adsbygoogle"
+     style={{display:"block"}}
+     data-ad-client="ca-pub-4543250064393866"
+     data-ad-slot="4403955848"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+                    </AdComponent>
         </Grid>
       <br></br>
       <Text size="5" className="header">The Official Demonlist that has insane demons ranked based on difficulty!</Text>

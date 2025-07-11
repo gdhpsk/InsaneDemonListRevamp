@@ -20,7 +20,14 @@ export default function Level({level, count}: info) {
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
         <Grid style={{width: "min(1000px, 100%)"}}>
-            <AdComponent adSlot="4403955848"></AdComponent>
+<AdComponent>
+                        <ins className="adsbygoogle"
+     style={{display:"block"}}
+     data-ad-client="ca-pub-4543250064393866"
+     data-ad-slot="4403955848"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+                    </AdComponent>
         </Grid>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
       {level.removalReason ? <>

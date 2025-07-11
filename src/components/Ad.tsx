@@ -1,30 +1,29 @@
-'use client'
-import React, { useEffect } from 'react';
+'use client';
+import React, { Fragment, ReactNode, useEffect } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
-interface AdComponentProps {
-  adSlot: string;
-  adFormat?: string;
-  adLayout?: string;
-}
-
-const AdComponent: React.FC<AdComponentProps> = ({ adSlot, adFormat = 'auto', adLayout = '' }) => {
-  useEffect(() => {
-    try {
-      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-      (window as any).adsbygoogle.push({});
-    } catch (e) {
-      console.error('Error loading ads:', e);
-    }
-  }, []);
-
-  return (
-    <ins className="adsbygoogle"
-         style={{ display: 'block' }}
-         data-ad-client="ca-pub-4543250064393866"
-         data-ad-slot={adSlot}
-         data-ad-format={adFormat}
-         data-ad-layout={adLayout}></ins>
-  );
+type Props = {
+  children: ReactNode;
 };
 
-export default AdComponent;
+declare global {
+  interface Window {
+    adsbygoogle?: any | any[];
+  }
+}
+
+const GoogleAdUnit = ({ children }: Props) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (err) {
+      console.error(err);
+    }
+  }, [pathname, searchParams]);
+  return <Fragment>{children}</Fragment>;
+}
+
+
+export default GoogleAdUnit;
