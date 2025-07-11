@@ -34,9 +34,9 @@ export default function Profile({profile, metadata, nationality, icons, platform
                 <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
             </SegmentedControl.Root>
             <br></br>
-                <Box style={{width: "min(1000px, 100%)"}}>
+                <Grid style={{width: "min(1000px, 100%)", placeItems: "center"}}>
                     <AdComponent adSlot='4403955848'></AdComponent>
-                </Box>
+                </Grid>
             <br></br>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
        <Flex justify={"center"} align="center" gap="9">

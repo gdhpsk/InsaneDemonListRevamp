@@ -82,7 +82,7 @@ export default function Submit({ authData }: info) {
 
     return (
         <Grid style={{ placeItems: "center" }}>
-            <div style={{width: "min(100%, 900px)"}}><AdComponent adSlot="4403955848"></AdComponent></div>
+            <Grid style={{width: "min(100%, 900px)", placeItems: "center"}}><AdComponent adSlot="4403955848"></AdComponent></Grid>
             <br></br>
             <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setSubmission({ ...submission, type: e })}>
                 <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>

@@ -27,7 +27,9 @@ export default function HomePage({admins}: info) {
         <img src="/favicon.ico" height="70px"></img>
       </Flex>
       <br></br>
-        <AdComponent adSlot="4403955848"></AdComponent>
+        <Grid style={{placeItems: "center", width: "100%"}}>
+          <AdComponent adSlot="4403955848"></AdComponent>
+        </Grid>
       <br></br>
       <Text size="5" className="header">The Official Demonlist that has insane demons ranked based on difficulty!</Text>
       <Grid columns={width > 1200 ? "2" : "1"} gap="9" style={{marginTop: "60px", [width < 700 ? "paddingTop" : "padding"]: "50px", maxWidth: "1800px", margin: "auto"}}>

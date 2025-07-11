@@ -17,8 +17,6 @@ export default async function Home(request: Record<any, any>) {
   return (
     <main>
         <br></br>
-        <AdComponent adSlot='4403955848'></AdComponent>
-        <br></br>
         <LevelContextMenu
             level={level}
             count={count}
