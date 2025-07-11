@@ -5,6 +5,7 @@ import { CaretDownIcon, ChatBubbleIcon, CheckIcon, Cross1Icon, CrossCircledIcon,
 import { Card, Grid, Box, Text, Flex, IconButton, TextField, Separator, TextArea, Callout, Button, DropdownMenu, Dialog, Tabs, Table, SegmentedControl} from "@radix-ui/themes"
 import { useEffect, useState } from "react"
 import cache from "../../../cache.json"
+import AdComponent from "@/components/Ad"
 
 interface info {
     submissions: Array<Record<any, any>>,

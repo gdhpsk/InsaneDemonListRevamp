@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Image from "next/image"
 import cache from "../../../cache.json"
 import Pagination from '@/components/Pagination';
+import AdComponent from '@/components/Ad';
 
 interface info {
     profs: Record<any, any>
@@ -130,7 +131,7 @@ export default function LeaderboardClient({ profs, p }: info) {
                 <Text size={"1"} style={{ marginTop: "5px", opacity: 0.5 }} color={"gray"}>Click the &quot;...&quot; to specify a page!</Text>
             </Grid>
             <br></br>
-            {(type == "users" ? profiles : nations).map((e: Record<any, any>, i: number) => <Grid style={{ placeItems: "center" }} key={e.id}><LeaderboardCard profile={e} nationalities={type == "nations"} platformer={gdType ==  "platformer"}></LeaderboardCard><br></br></Grid>)}
+            {(type == "users" ? profiles : nations).map((e: Record<any, any>, i: number) => <Grid style={{ placeItems: "center" }} key={e.id}>{(e.position-1) % 5 == 0 ? <div style={{width: "min(100%, 800px)"}}><AdComponent adSlot="4403955848"></AdComponent></div> : ""}<LeaderboardCard profile={e} nationalities={type == "nations"} platformer={gdType ==  "platformer"}></LeaderboardCard><br></br></Grid>)}
         </Box>
     )
 }

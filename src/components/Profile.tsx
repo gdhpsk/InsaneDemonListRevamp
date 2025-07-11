@@ -5,6 +5,7 @@ import { Badge, Box, Callout, Flex, Grid, HoverCard, IconButton, Popover, Segmen
 import dayjs from 'dayjs'
 import styles from "@/app/profile.module.css"
 import { useState } from 'react'
+import AdComponent from './Ad'
 
 interface info {
     profile: Record<any, any>
@@ -32,7 +33,11 @@ export default function Profile({profile, metadata, nationality, icons, platform
                 <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
                 <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
             </SegmentedControl.Root>
-            <br></br><br></br>
+            <br></br>
+                <Box style={{width: "min(1000px, 100%)"}}>
+                    <AdComponent adSlot='4403955848'></AdComponent>
+                </Box>
+            <br></br>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
        <Flex justify={"center"} align="center" gap="9">
             {metadata.last[type] ? <ChevronLeftIcon style={{scale: 6}} onClick={() => window.location.href = `/${nationality ? "nationality" : "player"}/${metadata.last[type]}${type == "platformer" ? "?platformer=true" : ""}`}></ChevronLeftIcon> : ""}

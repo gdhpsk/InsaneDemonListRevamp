@@ -1,6 +1,8 @@
 'use client'
+import AdComponent from '@/components/Ad'
 import InfoCard from '@/components/InfoCard'
 import { Avatar, Box, Card, Flex, Grid, Text } from '@radix-ui/themes'
+import Script from 'next/script'
 import { useEffect, useState } from 'react'
 
 interface info {
@@ -24,6 +26,8 @@ export default function HomePage({admins}: info) {
         <Text size="9" className="header" style={{display: "contents"}}>The Insane Demon List</Text>
         <img src="/favicon.ico" height="70px"></img>
       </Flex>
+      <br></br>
+        <AdComponent adSlot="4403955848"></AdComponent>
       <br></br>
       <Text size="5" className="header">The Official Demonlist that has insane demons ranked based on difficulty!</Text>
       <Grid columns={width > 1200 ? "2" : "1"} gap="9" style={{marginTop: "60px", [width < 700 ? "paddingTop" : "padding"]: "50px", maxWidth: "1800px", margin: "auto"}}>

@@ -1,5 +1,6 @@
 import NotFound from '@/app/not-found'
 import LevelContextMenu from './contextmenu'
+import AdComponent from '@/components/Ad'
 
 export default async function Home(request: Record<any, any>) {
     let date = Date.now()
@@ -15,7 +16,9 @@ export default async function Home(request: Record<any, any>) {
   
   return (
     <main>
-        <br></br><br></br>
+        <br></br>
+        <AdComponent adSlot='4403955848'></AdComponent>
+        <br></br>
         <LevelContextMenu
             level={level}
             count={count}

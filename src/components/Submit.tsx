@@ -3,6 +3,7 @@ import { CheckIcon, CrossCircledIcon, FileIcon, InfoCircledIcon, Link1Icon, Pers
 import { Box, Button, Callout, Card, DropdownMenu, Flex, Grid, SegmentedControl, Separator, Table, Text, TextArea, TextField } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import styles from "../app/submit.module.css"
+import AdComponent from "./Ad";
 
 interface info {
     authData: Record<any, any>
@@ -81,6 +82,8 @@ export default function Submit({ authData }: info) {
 
     return (
         <Grid style={{ placeItems: "center" }}>
+            <div style={{width: "min(100%, 900px)"}}><AdComponent adSlot="4403955848"></AdComponent></div>
+            <br></br>
             <SegmentedControl.Root size="3" defaultValue="classic" onValueChange={e => setSubmission({ ...submission, type: e })}>
                 <SegmentedControl.Item value="classic">Classic</SegmentedControl.Item>
                 <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
