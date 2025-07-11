@@ -34,7 +34,7 @@ export default function Profile({profile, metadata, nationality, icons, platform
                 <SegmentedControl.Item value="platformer">Platformer</SegmentedControl.Item>
             </SegmentedControl.Root>
             <br></br>
-                <Grid style={{width: "min(1000px, 100%)", placeItems: "center"}}>
+                <Grid style={{width: "min(1000px, 100%)"}}>
                     <AdComponent adSlot='4403955848'></AdComponent>
                 </Grid>
             <br></br>

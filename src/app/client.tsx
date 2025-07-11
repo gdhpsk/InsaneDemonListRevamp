@@ -27,7 +27,7 @@ export default function HomePage({admins}: info) {
         <img src="/favicon.ico" height="70px"></img>
       </Flex>
       <br></br>
-        <Grid style={{placeItems: "center", width: "100%"}}>
+        <Grid style={{width: "100%"}}>
           <AdComponent adSlot="4403955848"></AdComponent>
         </Grid>
       <br></br>
