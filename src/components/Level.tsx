@@ -19,7 +19,7 @@ export default function Level({level, count}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
-        <Grid style={{width: "min(1000px, 100%)", placeItems: "center"}}>
+        <Grid style={{width: "min(1000px, 100%)"}}>
             <AdComponent adSlot="4403955848"></AdComponent>
         </Grid>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>

@@ -24,7 +24,7 @@ export default function Platformer({level, count}: info) {
   return (
     <div className={styles.content}>
       <Grid style={{placeItems: "center"}}>
-    <Grid style={{width: "min(100%, 1000px)", placeItems: "center"}}><AdComponent adSlot="4403955848"></AdComponent></Grid>
+    <Grid style={{width: "min(100%, 1000px)"}}><AdComponent adSlot="4403955848"></AdComponent></Grid>
     <br></br>
       <Box style={{padding: "30px", width: "min(1000px, 100%)"}} className={styles.hover}>
       {level.removalReason ? <>
