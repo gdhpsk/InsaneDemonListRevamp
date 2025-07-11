@@ -33,7 +33,7 @@ export default function InfoCard({level, removeTn, platformer}: info) {
   </Inset>
       <Box p={"3"}>
         <Text as="p" size="8" weight="bold">
-        <a href={`https://youtu.be/${level.ytcode}`} target="_blank" className="bright" style={{textDecoration: "none", lineBreak: "anywhere"}} onClick={(e) =>  e.stopPropagation()}>{ level.position < 151 ? `${level.position}. ` : ""}{level.name} by {level.publisher}</a>
+        <a href={`https://youtu.be/${level.ytcode}`} target="_blank" className="bright" style={{textDecoration: "none", lineBreak: "anywhere"}} onClick={(e) =>  e.stopPropagation()}>{level.position}. {level.name} by {level.publisher}</a>
         </Text>
         <Text as="p" size="5" weight="bold">
           { platformer ? calc_points_plat(level.position) : points(level.position)} points
