@@ -69,6 +69,9 @@ export default function HomePage({admins}: info) {
               <li>
               PLATFORM GUIDELINES: In levels with checkpoints, you may cut at each checkpoint. In levels without checkpoints do not cut (for example speedrun levels), unless it is a jump king styled level. In jump styled levels you can edit out big falls, as long as you have a connecting run. You do not need to show the prior death before each checkpoint. Raw footage is not required if you have clicks and appropriate cuts. We will not accept practice mode, or anything else that will normally be denied for classic levels. You may resubmit platformer levels for a better time if you want to. Platformer saving mod will NOT be accepted.
               </li>
+              <li>
+                Your record must show the previous attempt/death before the successful run in order to check for legitimacy.
+              </li>
             </ul>
           </Text>
 <Box style={{marginTop: "40px"}}>
