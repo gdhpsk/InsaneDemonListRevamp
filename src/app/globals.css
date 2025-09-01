@@ -8,9 +8,6 @@ body {
   background-color: var(--color-background);;
 }
 
-.adsbygoogle {
-  min-height: 250px;
-}
 
 :root {
   --link-color: #87ceeb;
