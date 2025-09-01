@@ -16,11 +16,13 @@ const GoogleAdUnit = ({ children }: Props) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   useEffect(() => {
-    try {
+   setTimeout(() => {
+     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
       console.error(err);
     }
+   }, 200)
   }, [pathname, searchParams]);
   return <Fragment>{children}</Fragment>;
 }
