@@ -20,7 +20,7 @@ export default async function Home() {
         <br></br><br></br>
         {levels.map((e: Record<any, any>) => <Grid style={{placeItems: "center"}} key={e.id}>{(e.position-1) % 5 == 0 ? <Grid style={{width: "min(100%, 1650px)"}}><AdComponent>
                         <ins className="adsbygoogle"
-     style={{display:"block", minHeight: "250px"}}
+     style={{display:"block"}}
      data-ad-client="ca-pub-4543250064393866"
      data-ad-slot="4403955848"
      data-ad-format="auto"
