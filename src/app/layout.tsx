@@ -7,6 +7,28 @@ import { getServerSession } from 'next-auth';
 import jwt from "jsonwebtoken"
 import { headers } from 'next/headers';
 import Script from 'next/script';
+import type { Viewport } from 'next'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  openGraph: {
+    title: "Geometry Dash Insane Demonlist",
+    description: "A demon list with insane demons instead of extreme demons."
+  },
+  authors: {
+    name: "hpsk"
+  },
+  title: "Insane Demon List",
+  keywords: "hpsk,gdhpsk,insane,demon,list,demonlist,hardest,levels,geometry dash,gd",
+  description: "A demon list with insane demons instead of extreme demons.",
+  other: {
+    "google-adsense-account": "ca-pub-4543250064393866"
+  }
+}
+
+export const viewport: Viewport = {
+  width: 900,
+}
 
 export default async function RootLayout({
   children,
@@ -26,17 +48,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
-      <meta charSet="utf-8" />
-    <meta name="viewport" content="width=900" />
-    <title>Insane Demon List</title>
-    <meta property="og:title" content="Geometry Dash Insane Demonlist" />
-    <meta property="og:description" content="A demon list with insane demons instead of extreme demons." />
-    <meta name="author" content="hpsk" />
-    <meta name="keywords" content="hpsk,gdhpsk,insane,demon,list,demonlist,hardest,levels,geometry dash, gd" />
-    <meta name="description" content="A demon list with insane demons instead of extreme demons."></meta>
-    <meta name="google-adsense-account" content="ca-pub-4543250064393866"></meta>
-    <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
-     crossOrigin="anonymous" strategy="afterInteractive"></Script>
+        <meta charSet="utf-8" />
       </head>
       <body>
         <ThemeProvider attribute="class">
@@ -57,6 +69,8 @@ export default async function RootLayout({
           </Theme>
         </ThemeProvider>
       </body>
+      <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4543250064393866"
+     crossOrigin="anonymous" strategy="afterInteractive"></Script>
     </html>
   )
 }
