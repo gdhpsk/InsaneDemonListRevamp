@@ -28,6 +28,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   width: 900,
+  initialScale: 1.0
 }
 
 export default async function RootLayout({
