@@ -64,7 +64,7 @@ export default function HomePage({admins}: info) {
                 Please do not submit multiple records of the same record (don&apos;t submit dupes)!
               </li>
               <li>
-              Levels completed with the use of Physics Bypass, Click Between Frames, or levels completed using the 2.1 GDPS (or other GDPS&apos;s) will not be accepted. An exception to the rule is if a level is completed prior to the release of 2.2.
+              Levels completed with the use of Physics Bypass or levels completed using the 2.1 GDPS (or other GDPS&apos;) will not be accepted. An exception to the rule is if a level is completed prior to the release of 2.2.
               </li>
               <li>
               PLATFORM GUIDELINES: In levels with checkpoints, you may cut at each checkpoint. In levels without checkpoints do not cut (for example speedrun levels), unless it is a jump king styled level. In jump styled levels you can edit out big falls, as long as you have a connecting run. You do not need to show the prior death before each checkpoint. Raw footage is not required if you have clicks and appropriate cuts. We will not accept practice mode, or anything else that will normally be denied for classic levels. You may resubmit platformer levels for a better time if you want to. Platformer saving mod will NOT be accepted.
