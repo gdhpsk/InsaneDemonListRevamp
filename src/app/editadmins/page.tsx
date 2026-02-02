@@ -7,7 +7,6 @@ import Admin from '@/components/Admin';
 import EditAdmins from './client';
 
 export default async function RootLayout() {
-
   const session = await getServerSession()
 
   let req = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/me`, {
@@ -17,7 +16,7 @@ export default async function RootLayout() {
   })
   let data = await req.json()
   if((data.user?.perms?.idl || 0) < 1) {
-    return <NotFound></NotFound>
+    return <NotFound></NotFound>;
   }
   let req2 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/users`, {
     headers: {
