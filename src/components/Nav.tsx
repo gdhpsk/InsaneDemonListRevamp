@@ -69,7 +69,7 @@ export default function Nav({ authData, routes }: info) {
           List
         </Text>
       </a>
-      <Grid style={{ placeItems: "end", marginTop: "-15px" }}>
+      <Grid style={{ placeItems: "end", marginTop: "-5px" }}>
         {width > 1100 ? (
           <Flex className="nav-content" gap="1" align="center">
             <div
