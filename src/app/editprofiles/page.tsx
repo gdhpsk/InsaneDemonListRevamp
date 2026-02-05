@@ -17,12 +17,9 @@ export default async function Home() {
       return <NotFound></NotFound>
     }
 
-  let req1 = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`,
-    { cache: "no-cache" },
-  );
-  let profiles = await req1.json();
-
+  let req1 = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/leaderboards?all=true`, {cache: "no-cache"})
+  let profiles = await req1.json()
+  
   return (
     <main>
       <br></br>
@@ -31,7 +28,7 @@ export default async function Home() {
         authData={data.user}
       ></LeaderboardClient>
     </main>
-  );
+  )
 }
 
-export const revalidate = 0;
+export const revalidate = 0

@@ -4,7 +4,6 @@ import Packs from './client';
 import jwt from "jsonwebtoken"
 
 export default async function RootLayout() {
-  const { authorized, user } = await checkUserPermission(1);
 
     const session = await getServerSession()
 
@@ -25,7 +24,7 @@ export default async function RootLayout() {
             authData={data.user}
         ></Packs>
     </>
-  );
+  )
 }
 
-export const revalidate = 0;
+export const revalidate = 0

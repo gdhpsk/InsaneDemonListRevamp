@@ -1,33 +1,17 @@
 .levelCard {
-    background-color: var(--hover-back);
-    scale: 1;
-    transition-duration: 0.5s;
-    will-change: transform;
-    cursor: pointer;
+  background-color: var(--hover-back);
+  scale: 1;
+  transition-duration: 0.5s;
+  will-change: transform;
 }
 
 .levelCard:hover {
     scale: 1.05;
     transition-duration: 0.5s;
-}
+  }
 
 @media screen and (max-width: 900px) {
     .ytImage {
-        display: none;
-    }
-
-    .levelCard {
-        margin: 10px 0 !important;
-        width: 100% !important;
-    }
-
-    .levelCard:hover {
-        scale: 1.02;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .levelCard {
-        font-size: 0.9rem;
+        display: none
     }
 }
