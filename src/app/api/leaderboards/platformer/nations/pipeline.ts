@@ -182,7 +182,7 @@ export default function createPipeline(name: string, page: number = 0, max: numb
               '$setWindowFields': {
                 'partitionBy': '_id', 
                 'sortBy': {
-                  'records': -1
+                  'position': 1
                 }, 
                 'output': {
                   'number': {
